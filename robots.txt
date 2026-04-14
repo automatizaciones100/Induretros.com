@@ -1,0 +1,14 @@
+# Bloqueamos secciones privadas que no deben aparecer en Google ni en otros buscadores
+User-agent: *
+Disallow: /carrito/
+Disallow: /checkout/
+Disallow: /mi-cuenta/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /admin/
+
+# Permitimos todo lo demás
+Allow: /
+
+# Mapa del sitio para facilitar indexación
+Sitemap: https://induretros.com/sitemap.xml

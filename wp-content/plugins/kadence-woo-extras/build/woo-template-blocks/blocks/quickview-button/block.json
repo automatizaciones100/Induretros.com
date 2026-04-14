@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "kadence-wootemplate-blocks/quickview-button",
+  "title": "Product: Quickview button",
+  "category": "kadence-wootemplate-blocks",
+  "description": "Display the products quickview button.",
+  "textdomain": "kadence-woo-extras",
+  "attributes": {
+    "uniqueID": {
+      "type": "string"
+    },
+    "productId": {
+      "type": "string"
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId",
+    "templateType"
+  ],
+  "supports": {
+    "html": false
+  }
+}

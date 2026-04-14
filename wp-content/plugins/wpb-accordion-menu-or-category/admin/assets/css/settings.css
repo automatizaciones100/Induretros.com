@@ -1,0 +1,33 @@
+/*
+    Discount notice
+*/
+.wp-admin .wpb-wmca-bf-discount-notice {
+    color: #5e5e5e;
+background: #42275a;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #734b6d, #42275a);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #734b6d, #42275a); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    border-radius: 12px;
+    box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);
+    border: 0;
+    padding: 15px;
+}
+.wpb-wmca-bf-discount-notice h3 {
+    color: #fff;
+    font-size: 19px;
+}
+.wpb-wmca-bf-discount-notice p {
+    font-size: 15px;
+    color: #fff;
+}
+.wpb-wmca-bf-discount-notice a {
+    color: #fff;
+}
+.wpb-wmca-bf-discount-notice .notice-dismiss {
+    text-decoration: none;
+}
+.wpb-wmca-bf-discount-notice .notice-dismiss::before {
+    color: #FCFCFC;
+    box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);
+}

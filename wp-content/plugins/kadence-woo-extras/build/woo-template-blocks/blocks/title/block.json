@@ -1,0 +1,152 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "kadence-wootemplate-blocks/title",
+  "title": "Product: Title",
+  "category": "kadence-wootemplate-blocks",
+  "description": "Display the products title.",
+  "textdomain": "kadence-woo-extras",
+  "attributes": {
+    "uniqueID": {
+      "type": "string"
+    },
+    "tagName": {
+      "type": "string",
+      "default": ""
+    },
+    "isLink": {
+      "type": "boolean",
+      "default": true
+    },
+    "rel": {
+      "type": "string",
+      "default": ""
+    },
+    "linkTarget": {
+      "type": "boolean",
+      "default": false
+    },
+    "color": {
+      "type": "string",
+      "default": ""
+    },
+    "colorHover": {
+      "type": "string",
+      "default": ""
+    },
+    "margin": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginType": {
+      "type": "string",
+      "default": "px"
+    },
+    "padding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "textAlign": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "typography": {
+      "type": "array",
+      "default": [
+        {
+          "size": [
+            "",
+            "",
+            ""
+          ],
+          "sizeType": "px",
+          "lineHeight": [
+            "",
+            "",
+            ""
+          ],
+          "lineType": "px",
+          "letterSpacing": [
+            "",
+            "",
+            ""
+          ],
+          "letterSpacingType": "px",
+          "textTransform": "",
+          "family": "",
+          "google": "",
+          "style": "",
+          "weight": "",
+          "variant": "",
+          "subset": "",
+          "loadGoogle": true
+        }
+      ]
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId",
+    "templateType"
+  ],
+  "supports": {
+    "html": false
+  },
+  "editorStyle": "kadence-wootemplate-blocks",
+  "style": "kadence-wootemplate-styles"
+}

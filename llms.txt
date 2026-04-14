@@ -1,0 +1,14 @@
+# Permitimos a las IA leer y citar lo que más nos interesa
+User-agent: *
+Allow: /repuestos/
+Allow: /excavadoras-hidraulicas/
+Allow: /blog/
+Allow: /contacto/
+
+# Bloqueamos zonas privadas o que no sirven para IA
+Disallow: /carrito/
+Disallow: /checkout/
+Disallow: /mi-cuenta/
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /wp-login.php

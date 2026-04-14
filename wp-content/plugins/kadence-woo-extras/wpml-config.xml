@@ -1,0 +1,23 @@
+<wpml-config>
+    <custom-fields>
+        <custom-field action="copy" type="post-ids" sub-type="attachment">_kt_extra_variation_img_ids</custom-field>
+    </custom-fields>                             
+    <custom-types>
+        <custom-type translate="1">kt_size_chart</custom-type>
+        <custom-type translate="1">kt_cart_notice</custom-type>
+        <custom-type translate="1">kt_reviews</custom-type>
+        <custom-type translate="1">product_brands</custom-type>
+    </custom-types>    
+    <admin-texts>
+        <key name="kt_woo_extras">
+        	<key name="add_to_cart_text" />
+        	<key name="variable_add_to_cart_text" />
+        	<key name="grouped_add_to_cart_text" />
+        	<key name="out_add_to_cart_text" />
+        	<key name="single_add_to_cart_text" />
+        	<key name="product_brands_singular" />
+        	<key name="product_brands_plural" />
+        	<key name="product_brands_slug" />
+        </key>
+    </admin-texts>
+</wpml-config>

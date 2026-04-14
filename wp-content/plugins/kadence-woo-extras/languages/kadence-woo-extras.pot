@@ -1,0 +1,4235 @@
+# Copyright (C) 2025 Kadence WP
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Kadence Shop Kit 2.4.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/kadence-woo-extras\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-04-03T14:48:18+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.7.1\n"
+"X-Domain: kadence-woo-extras\n"
+
+#. Plugin Name of the plugin
+#: inc/class-kadence-woo-extras-settings.php:77
+msgid "Kadence Shop Kit"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://www.kadencewp.com/product/kadence-woo-extras/"
+msgstr ""
+
+#. Description of the plugin
+msgid "This plugin adds extra features for WooCommerce to help improve your online shops."
+msgstr ""
+
+#. Author of the plugin
+msgid "Kadence WP"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://kadencewp.com/"
+msgstr ""
+
+#: classes/class-kadence-woo-duplicate-post.php:43
+msgid "Make a duplicate from this."
+msgstr ""
+
+#: classes/class-kadence-woo-duplicate-post.php:44
+msgid "Duplicate"
+msgstr ""
+
+#: classes/class-kadence-woo-duplicate-post.php:54
+msgid "No post to duplicate has been supplied!"
+msgstr ""
+
+#. translators: %s: product id
+#: classes/class-kadence-woo-duplicate-post.php:64
+msgid "Post creation failed, could not find original post: %s"
+msgstr ""
+
+#: classes/class-kadence-woo-duplicate-post.php:83
+msgid "%s (Copy)"
+msgstr ""
+
+#: classes/custom_functions.php:228
+msgid "Select a Coupon"
+msgstr ""
+
+#: classes/custom_functions.php:238
+msgid "Select a Product"
+msgstr ""
+
+#: classes/custom_functions.php:257
+#: inc/class-kadence-woo-extras-settings.php:1118
+#: inc/class-kadence-woo-extras-settings.php:1190
+#: lib/sizechart/kt-size-chart.php:520
+msgid "None"
+msgstr ""
+
+#: classes/custom_functions.php:420
+#: classes/custom_functions.php:428
+#: inc/class-kadence-woo-extras-settings.php:1363
+msgid "Play"
+msgstr ""
+
+#: classes/custom_functions.php:436
+#: inc/class-kadence-woo-extras-settings.php:1362
+msgid "Eye"
+msgstr ""
+
+#: classes/taxonomy-meta-class.php:270
+#: classes/taxonomy-meta-class.php:298
+#: lib/variation-gallery/kadence-variation-gallery.php:240
+#: lib/variation-gallery/kadence-variation-gallery.php:260
+msgid "Delete"
+msgstr ""
+
+#: classes/taxonomy-meta-class.php:277
+msgid "Select File"
+msgstr ""
+
+#: classes/taxonomy-meta-class.php:305
+msgid "Select Image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:76
+msgid "Shop Kit"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:99
+msgid "Settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:104
+msgid "Documentation"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:105
+msgid "Need help? We have a knowledge base full of articles to get you started."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:107
+msgid "Browse Docs"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:110
+msgid "Support"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:111
+msgid "Have a question, we are happy to help! Get in touch with our support team."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:113
+msgid "Submit a Ticket"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:116
+msgid "Web Creators Community"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:117
+msgid "Join our community of fellow kadence users creating effective websites! Share your site, ask a question and help others."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:119
+msgid "Join our Facebook Group"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:128
+msgid "Product Customization"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:132
+msgid "Product Variations"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:136
+msgid "Product Features"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:140
+msgid "Cart & Checkout"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:148
+#: build/wootemplate-blocks.js:21
+msgid "Product Gallery"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:149
+msgid "Design dynamic galleries that uniquely connect with customers, no matter what device they're using to shop. Customize your look on mobile, tablet, and desktop."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:157
+msgid "Enable Product Slider Gallery"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:158
+msgid "This changes the woocommerce product image and gallery into a slider"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:167
+#: inc/class-kadence-woo-extras-settings.php:210
+#: inc/class-kadence-woo-extras-settings.php:253
+msgid "Choose a gallery type"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:298
+msgid "Enable Custom Size for Gallery Images"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:299
+msgid "This enables options to set custom image sizes for the product gallery."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:306
+msgid "Product image width"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:319
+msgid "Product image ratio"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:321
+#: inc/class-kadence-woo-extras-settings.php:432
+msgid "Square 1:1"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:322
+#: inc/class-kadence-woo-extras-settings.php:433
+msgid "Portrait 3:4"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:323
+#: inc/class-kadence-woo-extras-settings.php:434
+msgid "Landscape 4:3"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:324
+#: inc/class-kadence-woo-extras-settings.php:435
+msgid "Landscape 3:2"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:325
+#: inc/class-kadence-woo-extras-settings.php:436
+msgid "Landscape 16:9"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:326
+#: inc/class-kadence-woo-extras-settings.php:437
+msgid "Wide Landscape 4:2"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:327
+msgid "Custom"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:338
+msgid "Product image Height"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:364
+#: inc/class-kadence-woo-extras-settings.php:373
+#: inc/class-kadence-woo-extras-settings.php:382
+msgid "Thumbnail Width %"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:402
+#: inc/class-kadence-woo-extras-settings.php:411
+#: inc/class-kadence-woo-extras-settings.php:420
+msgid "Select how many thumbnail columns are visible at a time"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:430
+msgid "Product thumbnail image ratio"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:438
+msgid "Inherit from image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:449
+msgid "Slider transition"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:451
+msgid "Slide"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:452
+msgid "Fade"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:460
+msgid "Slider transition speed"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:461
+msgid "How long the transition takes, in milliseconds."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:471
+msgid "Slider auto play"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:473
+#: inc/class-kadence-woo-extras-settings.php:553
+#: inc/class-kadence-woo-extras-settings.php:603
+#: lib/reviews/reviews.php:1142
+#: lib/sizechart/kt-size-chart.php:707
+msgid "False"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:474
+#: inc/class-kadence-woo-extras-settings.php:554
+#: inc/class-kadence-woo-extras-settings.php:604
+#: lib/reviews/reviews.php:1143
+#: lib/sizechart/kt-size-chart.php:706
+msgid "True"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:487
+msgid "Slider pause time"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:488
+msgid "How long to pause on each slide, in milliseconds."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:499
+msgid "Adjust height to each photo?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:513
+msgid "Warning! Using adjust height with autoplay is not recommended, on mobile devices this will cause your content to move up and down when slides change."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:529
+msgid "Enable Product Image Hover Zoom"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:530
+msgid "This allows you to magnify product images without having to click to a lightbox. Note that slider arrows do not show with zoom on."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:537
+msgid "Show image magnification on top of image or beside image?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:539
+msgid "Magnify window is beside of image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:540
+msgid "Magnify window is on top of image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:551
+msgid "Show slide arrows on product image?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:568
+msgid "Enable thumbnail hover selection."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:569
+msgid "This changes the main image when you hover over a thumbnail image."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:576
+msgid "Enable Lightbox"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:577
+msgid "This allows users to open a lightbox of your product images on click"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:584
+msgid "Lightbox Style"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:586
+msgid "Dark"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:587
+msgid "Light"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:601
+msgid "Show Caption overlay on images"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:612
+msgid "Enable meta area for shortcode override"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:613
+msgid "This adds a metabox area in each product allowing you to override the gallery with a shortcode or html content."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:624
+msgid "Product Templates"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:625
+msgid "Supercharge the WordPress block editor to create dynamic and attractive product layouts with Kadence Shop Kit’s custom template builder."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:633
+msgid "Enable Product Templates"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:634
+msgid "This allows you to create custom product templates"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:640
+msgid "Find product templates under the \"Products\" menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:646
+msgid "Add WooCommerce notices to top of single and archive templates?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:647
+msgid "You can manually add notices using a block, but if you are using the snackbar style notices, this is a simple way to add them."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:659
+#: lib/swatches/kt-variations-swatches.php:348
+msgid "Variation Swatches"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:660
+msgid "Display product variations in a way that converts, including color swatches, image swatches, and radio boxes. Set displays on an attribute-by-attribute basis to optimize the best look for each variation."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:667
+msgid "Enable swatches control with variations"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:668
+msgid "This allows you to display images or colors for variation choices."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:674
+msgid "Product Page Settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:680
+#: inc/class-kadence-woo-extras-settings.php:861
+msgid "Variation label display"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:681
+#: inc/class-kadence-woo-extras-settings.php:862
+msgid "Control how the variation label is displayed on the product page"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:684
+#: lib/swatches/kt-variations-swatches.php:287
+#: lib/swatches/kt-variations-swatches.php:434
+#: lib/swatches/kt-variations-swatches.php:456
+#: lib/swatches/kt-variations-swatches.php:471
+msgid "Default"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:685
+#: inc/class-kadence-woo-extras-settings.php:866
+msgid "Above the variation"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:686
+#: inc/class-kadence-woo-extras-settings.php:867
+msgid "Hidden"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:693
+msgid "Choose a default swatch type"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:695
+msgid "Dropdown Select Box"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:696
+#: lib/swatches/kt-variations-swatches.php:289
+msgid "Radio Boxes"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:697
+#: lib/swatches/kt-variations-swatches.php:290
+msgid "Image and Color swatches"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:698
+#: lib/swatches/kt-variations-swatches.php:438
+msgid "Taxonomy defined"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:700
+#: inc/class-kadence-woo-extras-settings.php:708
+#: inc/class-kadence-woo-extras-settings.php:722
+#: inc/class-kadence-woo-extras-settings.php:878
+msgid "This can be overridden in each product."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:707
+msgid "Choose a default swatch label option"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:710
+#: lib/swatches/kt-variations-swatches.php:457
+msgid "No label"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:711
+#: lib/swatches/kt-variations-swatches.php:458
+msgid "Show above"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:712
+#: lib/swatches/kt-variations-swatches.php:459
+msgid "Show below"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:713
+#: lib/swatches/kt-variations-swatches.php:460
+msgid "Show above on hover"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:721
+#: inc/class-kadence-woo-extras-settings.php:877
+msgid "Choose a default swatch size option"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:726
+#: inc/class-kadence-woo-extras-settings.php:882
+msgid "16px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:727
+#: inc/class-kadence-woo-extras-settings.php:883
+msgid "xxs"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:731
+#: inc/class-kadence-woo-extras-settings.php:887
+msgid "30px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:732
+#: inc/class-kadence-woo-extras-settings.php:888
+msgid "xs"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:736
+#: inc/class-kadence-woo-extras-settings.php:892
+msgid "40px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:737
+#: inc/class-kadence-woo-extras-settings.php:893
+msgid "sm"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:741
+#: inc/class-kadence-woo-extras-settings.php:897
+msgid "50px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:742
+#: inc/class-kadence-woo-extras-settings.php:898
+msgid "md"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:746
+#: inc/class-kadence-woo-extras-settings.php:902
+msgid "60px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:747
+#: inc/class-kadence-woo-extras-settings.php:903
+msgid "lg"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:751
+#: inc/class-kadence-woo-extras-settings.php:907
+msgid "75px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:752
+#: inc/class-kadence-woo-extras-settings.php:908
+msgid "xl"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:756
+#: inc/class-kadence-woo-extras-settings.php:912
+msgid "90px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:757
+#: inc/class-kadence-woo-extras-settings.php:913
+msgid "xxl"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:761
+#: inc/class-kadence-woo-extras-settings.php:917
+msgid "120px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:762
+#: inc/class-kadence-woo-extras-settings.php:918
+msgid "3xl"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:766
+#: inc/class-kadence-woo-extras-settings.php:922
+msgid "150px"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:767
+#: inc/class-kadence-woo-extras-settings.php:923
+msgid "4xl"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:776
+msgid "Dropdown \"Choose an option\" text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:777
+msgid "Standard: Choose an option"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:802
+msgid "Archive Settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:808
+msgid "Enable swatches for Archives"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:809
+msgid "Display variation swatches with all product loops on shop / archive pages."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:816
+msgid "Archive Swatch Mode"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:817
+msgid "Select how swatches work on shop / archive pages. Catelog Mode will only show one attribute."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:819
+#: build/wootemplate-blocks.js:21
+msgid "Normal"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:820
+msgid "Catalog Mode"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:831
+msgid "Catalog Attribute"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:832
+msgid "Select which attribute to show for catalog mode."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:833
+#: inc/class-kadence-woo-extras-settings.php:1951
+msgid "First Attribute"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:844
+msgid "Swatch Position"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:845
+msgid "Select where the swatches display on archives"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:847
+msgid "Before Title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:848
+msgid "After Title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:849
+msgid "Before Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:850
+msgid "After Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:865
+msgid "Beside Variation"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:939
+msgid "Advanced Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:948
+msgid "Enable Advanced Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:949
+msgid "This allows you to change the review order as well as have titles and vote on reviews."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:955
+msgid "Select Review Order"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:957
+msgid "Order by most helpful with fallback newest first"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:958
+msgid "Newest First"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:959
+msgid "Oldest First"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:968
+msgid "Enable Review Titles"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:969
+msgid "This allows you to have titles for reviews."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:976
+msgid "Enable Review Consent Checkbox"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:977
+msgid "This adds a consent to privacy policy checkbox"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:984
+msgid "When using polylang or WPML show reviews in every language."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:991
+msgid "Enable Review Voting"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:992
+msgid "This allows users to upvote reviews that are more helpful."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:999
+msgid "Voters must be logged in?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1000
+msgid "With this turned on only logged in users will be able to vote."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1007
+msgid "Show Review Overview?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1008
+msgid "With this turned on there will be overview of all reviews."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1015
+msgid "Overview highlight color"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1022
+msgid "Enabled Featured Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1023
+msgid "With this turned on you can set reviews to be featured and show at the top of your list."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1030
+msgid "Enabled Load More for Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1031
+msgid "With this turned on reviews will only load the inital amount and a load more button will show."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1038
+msgid "Read More Reviews Button Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1039
+msgid "Default: Read More Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1048
+msgid "Load more inital and per load amount"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1061
+msgid "Convert previous reviews to Advanced Reviews"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1062
+msgid "This will convert all your previous reviews into advanced."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1073
+#: lib/brands/class-kt-extra-brands.php:339
+msgid "Product Brands"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1074
+msgid "Leverage brand influence on product displays, choosing where to show on archive and single product pages. Show recognizable logos, or just the brand name. Add a filter-by-brands widget to your site."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1082
+msgid "Enable Product Brands Options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1083
+msgid "This adds a new Taxonomy for Products"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1089
+msgid "Singular Custom Name"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1090
+msgid "Default: Product Brand"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1096
+msgid "Plural Custom Name"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1097
+msgid "Default: Product Brands"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1103
+msgid "URL Custom slug"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1104
+msgid "Default: product-brands (lowercase, no spaces)"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1110
+msgid "Product Brands Single Output settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1116
+msgid "Single Product Page Output"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1119
+#: inc/class-kadence-woo-extras-settings.php:1321
+msgid "Above Title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1120
+msgid "Below Title, Above Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1121
+msgid "Below Price, Above Short Description"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1122
+msgid "Below Short Description, Above Add to cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1123
+msgid "Below Add to cart, Above meta content"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1124
+msgid "Below meta content"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1132
+#: inc/class-kadence-woo-extras-settings.php:1204
+msgid "Show as text or image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1134
+#: inc/class-kadence-woo-extras-settings.php:1206
+#: lib/badges/kt-badges.php:595
+#: lib/brands/class-kt-extra-brands.php:696
+#: lib/swatches/kt-variations-swatches.php:556
+#: lib/swatches/kt-variations-swatches.php:604
+#: lib/swatches/kt-variations-swatches.php:622
+#: lib/swatches/kt-variations-swatches.php:731
+msgid "Image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1135
+#: inc/class-kadence-woo-extras-settings.php:1207
+#: lib/badges/kt-badges.php:597
+msgid "Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1142
+msgid "Single Product Page Brand Image Width"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1153
+#: inc/class-kadence-woo-extras-settings.php:1225
+msgid "Enable to Hard Crop Image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1154
+#: inc/class-kadence-woo-extras-settings.php:1226
+msgid "If enabled you can force a specific height to hard crop to."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1160
+msgid "Single Product Page Brand Image Height"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1174
+#: inc/class-kadence-woo-extras-settings.php:1246
+msgid "Link Image to Brand Page"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1175
+#: inc/class-kadence-woo-extras-settings.php:1247
+msgid "Adds Link to brand archive page from image."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1182
+msgid "Product Brands Archive Output settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1188
+msgid "Archive Page Output"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1191
+msgid "Above image"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1192
+msgid "Below image, Above title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1193
+msgid "Below title, Above excerpt"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1194
+msgid "Below excerpt, Above price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1195
+msgid "Below price, Above add to cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1196
+msgid "Below add to cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1214
+msgid "Archive Page Brand Image Width"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1232
+msgid "Archive Page Brand Image Height"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1259
+msgid "Product Badges"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1260
+msgid "Add custom badges to products in your shop and single product pages. Highlight sale items or special categories."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1268
+msgid "Enable Product Badges Options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1269
+msgid "This adds a new post type to your site."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1275
+msgid "Disable Woocommerce Sale Flash"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1276
+msgid "WooCommerce displays a sale notice on products by default. This notice can overlap with badges. This setting disables the notice where badges may be active."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1283
+msgid "Find Badges under the \"Products\" Menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1293
+msgid "Product Quickview"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1294
+msgid "Let customers quickly preivew products on the shop and category pages."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1302
+msgid "Enable Product Quickview"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1303
+msgid "This adds quickview buttons to product listings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1309
+msgid "Automatically insert button"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1310
+msgid "Quickview will attempt to automatically insert the Quickview button. Disable this if you wish to place quickview buttons yourself via shortcode [kt_quickview_button]"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1317
+msgid "Button Placement"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1319
+msgid "After Add to Cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1320
+msgid "Before add to Cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1322
+msgid "Below Title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1323
+msgid "Before Item"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1324
+msgid "After Item"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1325
+msgid "Above Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1326
+msgid "Below Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1337
+msgid "Quickview Button Show Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1344
+msgid "Quickview Button Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1345
+msgid "Default: Quickview"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1354
+msgid "Add a Button Icon"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1364
+msgid "Click"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1366
+msgid "Button Icon"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1376
+msgid "Button Icon Color"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1386
+msgid "Button Icon Color Hover"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1403
+msgid "WARNING! Your quickview button has no text or icon content. It will not be displayed."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1413
+msgid "Button Text Color"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1420
+msgid "Button Text Color Hover"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1427
+msgid "Button Background"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1434
+msgid "Button Background Hover"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1441
+msgid "Button Border Width"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1451
+msgid "Button Border Color"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1458
+msgid "Button Border Color Hover"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1465
+msgid "Button Border Radius"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1475
+msgid "Allow scrolling"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1476
+msgid "When quickview opens, users can \"scroll\" with arrows or \"swipe\" to the next product in the list."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1483
+msgid "Use a Woo Template"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1484
+msgid "Enable Woo Templates to customize the appearance of your quick view, disable to use Shop Kit’s default"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1491
+msgid "Quickview Template"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1502
+msgid "Create Woo Templates in the \"Products\" Menu item in your admin. Select \"Quickview\" when making the new template."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1515
+msgid "Affiliate Product Options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1517
+msgid "Grow your revenue capabilities by unlocking affiliate sales with the Shop Kit affiliate product options."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1524
+msgid "Enable Affiliate/External Product Options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1525
+msgid "This gives you control to add direct links for product images and archive action buttons."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1531
+msgid "Product Archive Settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1537
+#: inc/class-kadence-woo-extras-settings.php:1583
+msgid "Enable Affiliate link for Product Images"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1538
+msgid "This makes the product image link to the affilate instead of the single product page."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1545
+#: inc/class-kadence-woo-extras-settings.php:1591
+msgid "Enable Affiliate Product Image link to opens new browser tab"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1546
+#: inc/class-kadence-woo-extras-settings.php:1592
+msgid "This makes the product image link open a new tab."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1553
+msgid "Enable Affiliate link for Product Title"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1554
+msgid "This makes the product title link to the affilate instead of the single product page."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1561
+msgid "Enable Affiliate Product Title link to opens new browser tab"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1562
+msgid "This makes the product title link open a new tab."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1569
+#: inc/class-kadence-woo-extras-settings.php:1599
+msgid "Enable Affiliate Button link to open new browser tab"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1570
+#: inc/class-kadence-woo-extras-settings.php:1600
+msgid "This makes the product button link open a new tab."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1577
+msgid "Product Single Settings"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1584
+msgid "This makes the product image link to the affiliate instead of the lightbox."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1612
+msgid "Add to Cart Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1613
+msgid "Build unique and creative custom text labels for a more personalized shopping experience. \"Add to Cart\" easily becomes \"Buy Shoes.\" Take the mystery out of variable products setting specific archives names instead of \"select options.\""
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1621
+msgid "Enable Custom add to cart text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1622
+msgid "This allows you to change the text for the add to cart buttons."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1628
+msgid "Archive Add to Cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1634
+msgid "Simple Product"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1635
+#: inc/class-kadence-woo-extras-settings.php:1669
+msgid "Default: Add to cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1641
+msgid "Variable Product"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1642
+msgid "Default: Select options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1648
+msgid "Grouped Product"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1649
+msgid "Default: View Products"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1655
+msgid "Out of Stock Product"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1656
+msgid "Default: Read More"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1662
+msgid "Single Add to Cart"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1668
+#: lib/badges/kt-badges.php:930
+msgid "All Products"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1679
+msgid "Variation Options"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1680
+msgid "Optionally change how your variable products display pricing by showing either the lowest or highest price in the variable product. You can also add text before or after the price, for example \"Base Price: $45.\""
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1687
+msgid "Variation Price Output"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1689
+msgid "Show Price Range ($lowest - $highest)"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1690
+msgid "Show lowest price only"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1691
+msgid "Show highest price only"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1698
+msgid "Archive Text Before Variation Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1699
+msgid "Example: From:"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1705
+msgid "Archive Text After Variation Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1706
+msgid "Example: Base Price"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1716
+#: lib/sizechart/kt-size-chart.php:89
+msgid "Size Charts"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1717
+msgid "Simplify sizing decisions with easy-to-build size charts that can be applied to one product or to a whole product category. Add size charts to the product page as a tab, or use a button that opens a modal with your site chart."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1725
+msgid "Enable Size Charts"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1726
+msgid "This gives you options to add popup size charts to products."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1732
+msgid "Find Size Charts under the \"Products\" menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1742
+msgid "Global Tabs"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1743
+msgid "Build dynamic informational tabs using the WordPress block editor to unlock any kind of global tab layout you desire with Shop Kit's custom template builder."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1751
+msgid "Enable Global Tabs"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1752
+msgid "This allows you to create tabs and apply them globally to products"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1758
+msgid "Find Global Tabs under the \"Products\" Menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1768
+msgid "Snackbar Style Notices"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1769
+msgid "Display succinct messages that clear after a short delay to encourage desired shopper behavior or provide helpful yet non-intrusive confirmation notices. Helpful for lightweight yet helpful messages such as add to cart confirmation and more."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1777
+msgid "Enable Snackbar Style Notices"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1778
+msgid "This changes the default notice style in woocommerce from a banner in the page content to a fixed slide up that is dismissible."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1784
+msgid "Enable Snackbar Style Notices for Cart Page"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1791
+msgid "Enable Snackbar Style Notices for Checkout Page"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1802
+msgid "Conditional Cart Banners"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1803
+msgid "Create custom cart messages that target specific carts based on cart contents, total price, or total weight of items in the cart. Generate personalized upsells specific to the shopper's experience, or offer promotions to encourage another product purchase or choosing a product with more value."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1811
+msgid "Enable Cart Banners"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1812
+msgid "This gives you options to add specialized notices to the cart page to entice with specials and upsell products."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1818
+msgid "Find Cart Banners under the \"Woocommerce\" Menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1828
+msgid "Checkout Coupon Modal"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1829
+msgid "Add a coupon input field as a link in the order overview and open a modal to input the coupon. This feature is only available for the standard checkout, not the checkout block."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1837
+msgid "Enable Coupon Checkout Modal."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1838
+msgid "This allows you to display the coupon input field as a link in the order overview and opens a modal to input coupon. Note this only works with standard checkout, not the checkout block."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1844
+msgid "Coupon Modal Link Placement"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1846
+msgid "Before Order Review"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1847
+msgid "In Order Review table before total"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1848
+msgid "In Order Review table after total"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1849
+msgid "Between Order Review and Payment"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1850
+msgid "After Payment"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1858
+msgid "Pre Modal Link Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1859
+msgid "Standard: Have a promo code?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1860
+#: lib/checkout_coupon/kt-checkout-coupon.php:26
+msgid "Have a promo code?"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1866
+msgid "Modal Link Text"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1867
+msgid "Standard: Click here to enter your code."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1868
+#: lib/checkout_coupon/kt-checkout-coupon.php:27
+msgid "Click here to enter your code."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1874
+msgid "Modal Description"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1875
+msgid "Standard: If you have a promo code, please apply it below."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1876
+#: lib/checkout_coupon/kt-checkout-coupon.php:72
+msgid "If you have a promo code, please apply it below."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1882
+msgid "Input Placeholder"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1883
+msgid "Standard: Promo code"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1884
+#: lib/checkout_coupon/kt-checkout-coupon.php:73
+msgid "Promo code"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1890
+msgid "Apply Button"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1891
+msgid "Standard: Apply Code"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1892
+#: lib/checkout_coupon/kt-checkout-coupon.php:74
+msgid "Apply Code"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1902
+msgid "Checkout Editor"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1903
+msgid "Reduce checkout friction by customizing the checkout to your customers unique needs. Enable and disable checkout fields or create your own fields using the checkout manager. Easily customize your checkout forms and control which fields are added to WooCommerce emails."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1911
+msgid "Enable Checkout Fields Editor"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1912
+msgid "This gives you total control over your checkout fields and allows you to add custom fields. Note this only works with standard checkout, not the checkout block."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1918
+msgid "Find the checkout editor under the \"Woocommerce\" Menu item in your admin."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1928
+msgid "Extra Category Description"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1929
+msgid "Add an extra description box for each category to allow you to place content below the products on your category page."
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1937
+msgid "Enable Extra Category Description Box"
+msgstr ""
+
+#: inc/class-kadence-woo-extras-settings.php:1938
+msgid "This gives you an extra description box for each category to allow you to place content below the products on your category page."
+msgstr ""
+
+#: inc/uplink/Connect.php:87
+msgid "Your license key is valid"
+msgstr ""
+
+#: inc/uplink/Connect.php:139
+#: inc/uplink/Connect.php:219
+#: inc/uplink/Connect.php:225
+msgid "License Key"
+msgstr ""
+
+#: inc/uplink/Connect.php:147
+#: lib/swatches/kt-variations-swatches.php:213
+msgid "Clear"
+msgstr ""
+
+#: inc/uplink/Connect.php:187
+msgid "Kadence Shop Kit - License"
+msgstr ""
+
+#: inc/uplink/Connect.php:187
+msgid "Kadence Shop Kit License"
+msgstr ""
+
+#: inc/uplink/Connect.php:215
+msgid "A valid license key is required for support and updates"
+msgstr ""
+
+#: inc/uplink/Connect.php:234
+msgid "Save Changes"
+msgstr ""
+
+#: inc/uplink/Connect.php:250
+msgid "Network License Controlled"
+msgstr ""
+
+#: inc/uplink/Connect.php:388
+#: inc/uplink/Connect.php:393
+msgid "Kadence Shop Kit has not been activated."
+msgstr ""
+
+#: inc/uplink/Connect.php:388
+#: inc/uplink/Connect.php:393
+msgid "Click here to activate."
+msgstr ""
+
+#: kadence-woo-extras.php:180
+msgid "Install Kadence Blocks"
+msgstr ""
+
+#: kadence-woo-extras.php:183
+msgid "Activate Kadence Blocks"
+msgstr ""
+
+#. translators: %s is a link to kadence block plugin.
+#: kadence-woo-extras.php:200
+msgid "Woocommerce templating requires %s to be active to work."
+msgstr ""
+
+#: kadence-woo-extras.php:202
+msgid "Activating..."
+msgstr ""
+
+#: kadence-woo-extras.php:202
+msgid "Activated"
+msgstr ""
+
+#: kadence-woo-extras.php:202
+msgid "Installing..."
+msgstr ""
+
+#: kadence-woo-extras.php:202
+msgid "Installed"
+msgstr ""
+
+#: lib/badges/kt-badges.php:311
+#: lib/badges/kt-badges.php:312
+msgid "Badges"
+msgstr ""
+
+#: lib/badges/kt-badges.php:324
+#: lib/badges/kt-badges.php:336
+msgid "Badge"
+msgstr ""
+
+#: lib/badges/kt-badges.php:325
+msgid "Badge Item"
+msgstr ""
+
+#: lib/badges/kt-badges.php:326
+#: lib/badges/kt-badges.php:327
+msgid "Add New Badge"
+msgstr ""
+
+#: lib/badges/kt-badges.php:328
+msgid "Edit Badge"
+msgstr ""
+
+#: lib/badges/kt-badges.php:329
+msgid "New Badge"
+msgstr ""
+
+#: lib/badges/kt-badges.php:330
+msgid "All Badges"
+msgstr ""
+
+#: lib/badges/kt-badges.php:331
+msgid "View Badge"
+msgstr ""
+
+#: lib/badges/kt-badges.php:332
+msgid "Search Badgees"
+msgstr ""
+
+#: lib/badges/kt-badges.php:333
+msgid "No Badge found"
+msgstr ""
+
+#: lib/badges/kt-badges.php:334
+msgid "No Badges found in Trash"
+msgstr ""
+
+#: lib/badges/kt-badges.php:369
+#: lib/badges/kt-badges.php:373
+#: lib/badges/kt-badges.php:377
+#: lib/badges/kt-badges.php:381
+#: lib/badges/kt-badges.php:385
+#: lib/badges/kt-badges.php:620
+#: lib/badges/kt-badges.php:621
+#: lib/badges/kt-badges.php:622
+#: lib/badges/kt-badges.php:623
+#: lib/badges/kt-badges.php:624
+msgid "Best Seller"
+msgstr ""
+
+#: lib/badges/kt-badges.php:389
+#: lib/badges/kt-badges.php:393
+#: lib/badges/kt-badges.php:397
+#: lib/badges/kt-badges.php:625
+#: lib/badges/kt-badges.php:626
+#: lib/badges/kt-badges.php:627
+msgid "Black Friday"
+msgstr ""
+
+#: lib/badges/kt-badges.php:401
+#: lib/badges/kt-badges.php:405
+#: lib/badges/kt-badges.php:409
+#: lib/badges/kt-badges.php:628
+#: lib/badges/kt-badges.php:629
+#: lib/badges/kt-badges.php:630
+msgid "Cyber Monday"
+msgstr ""
+
+#: lib/badges/kt-badges.php:413
+#: lib/badges/kt-badges.php:417
+#: lib/badges/kt-badges.php:421
+#: lib/badges/kt-badges.php:425
+#: lib/badges/kt-badges.php:429
+#: lib/badges/kt-badges.php:433
+#: lib/badges/kt-badges.php:631
+#: lib/badges/kt-badges.php:632
+#: lib/badges/kt-badges.php:633
+#: lib/badges/kt-badges.php:634
+#: lib/badges/kt-badges.php:635
+#: lib/badges/kt-badges.php:636
+msgid "Deal"
+msgstr ""
+
+#: lib/badges/kt-badges.php:437
+#: lib/badges/kt-badges.php:441
+#: lib/badges/kt-badges.php:445
+#: lib/badges/kt-badges.php:449
+#: lib/badges/kt-badges.php:453
+#: lib/badges/kt-badges.php:457
+#: lib/badges/kt-badges.php:637
+#: lib/badges/kt-badges.php:638
+#: lib/badges/kt-badges.php:639
+#: lib/badges/kt-badges.php:640
+#: lib/badges/kt-badges.php:641
+#: lib/badges/kt-badges.php:642
+msgid "Discount"
+msgstr ""
+
+#: lib/badges/kt-badges.php:461
+#: lib/badges/kt-badges.php:465
+#: lib/badges/kt-badges.php:469
+#: lib/badges/kt-badges.php:473
+#: lib/badges/kt-badges.php:477
+#: lib/badges/kt-badges.php:643
+#: lib/badges/kt-badges.php:644
+#: lib/badges/kt-badges.php:645
+#: lib/badges/kt-badges.php:646
+#: lib/badges/kt-badges.php:647
+msgid "New"
+msgstr ""
+
+#: lib/badges/kt-badges.php:481
+#: lib/badges/kt-badges.php:485
+#: lib/badges/kt-badges.php:489
+#: lib/badges/kt-badges.php:493
+#: lib/badges/kt-badges.php:648
+#: lib/badges/kt-badges.php:649
+#: lib/badges/kt-badges.php:650
+#: lib/badges/kt-badges.php:651
+msgid "Out of Stock"
+msgstr ""
+
+#: lib/badges/kt-badges.php:497
+#: lib/badges/kt-badges.php:501
+#: lib/badges/kt-badges.php:505
+#: lib/badges/kt-badges.php:509
+#: lib/badges/kt-badges.php:513
+#: lib/badges/kt-badges.php:652
+#: lib/badges/kt-badges.php:653
+#: lib/badges/kt-badges.php:654
+#: lib/badges/kt-badges.php:655
+#: lib/badges/kt-badges.php:656
+msgid "Sale"
+msgstr ""
+
+#: lib/badges/kt-badges.php:517
+#: lib/badges/kt-badges.php:521
+#: lib/badges/kt-badges.php:525
+#: lib/badges/kt-badges.php:529
+#: lib/badges/kt-badges.php:657
+#: lib/badges/kt-badges.php:658
+#: lib/badges/kt-badges.php:659
+#: lib/badges/kt-badges.php:660
+msgid "Free Shipping"
+msgstr ""
+
+#: lib/badges/kt-badges.php:533
+#: lib/badges/kt-badges.php:537
+#: lib/badges/kt-badges.php:541
+#: lib/badges/kt-badges.php:661
+#: lib/badges/kt-badges.php:662
+#: lib/badges/kt-badges.php:663
+msgid "Top Rated"
+msgstr ""
+
+#: lib/badges/kt-badges.php:584
+msgid "Badge Settings"
+msgstr ""
+
+#: lib/badges/kt-badges.php:591
+msgid "Badge Type"
+msgstr ""
+
+#: lib/badges/kt-badges.php:596
+msgid "Custom Image"
+msgstr ""
+
+#: lib/badges/kt-badges.php:598
+msgid "HTML"
+msgstr ""
+
+#: lib/badges/kt-badges.php:604
+msgid "Badge Text"
+msgstr ""
+
+#: lib/badges/kt-badges.php:616
+#: lib/badges/kt-badges.php:721
+msgid "Badge Image"
+msgstr ""
+
+#: lib/badges/kt-badges.php:736
+msgid "Badge HTML"
+msgstr ""
+
+#: lib/badges/kt-badges.php:743
+msgid "Badge Position"
+msgstr ""
+
+#: lib/badges/kt-badges.php:747
+msgid "Top Right"
+msgstr ""
+
+#: lib/badges/kt-badges.php:748
+msgid "Bottom Right"
+msgstr ""
+
+#: lib/badges/kt-badges.php:749
+msgid "Bottom Left"
+msgstr ""
+
+#: lib/badges/kt-badges.php:750
+msgid "Top Left"
+msgstr ""
+
+#: lib/badges/kt-badges.php:751
+#: lib/badges/kt-badges.php:867
+msgid "Center"
+msgstr ""
+
+#: lib/badges/kt-badges.php:757
+msgid "Max Width (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:767
+msgid "Max Width Loop (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:777
+msgid "Margin (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:784
+msgid "Padding (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:795
+msgid "Badge Design Settings"
+msgstr ""
+
+#: lib/badges/kt-badges.php:802
+#: lib/swatches/kt-variations-swatches.php:558
+#: lib/swatches/kt-variations-swatches.php:603
+#: lib/swatches/kt-variations-swatches.php:614
+#: lib/swatches/kt-variations-swatches.php:730
+#: build/wootemplate-blocks.js:21
+msgid "Color"
+msgstr ""
+
+#: lib/badges/kt-badges.php:813
+msgid "Background Color"
+msgstr ""
+
+#: lib/badges/kt-badges.php:820
+msgid "Font Size (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:832
+msgid "Font style"
+msgstr ""
+
+#: lib/badges/kt-badges.php:836
+#: lib/badges/kt-badges.php:851
+msgid "Regular"
+msgstr ""
+
+#: lib/badges/kt-badges.php:837
+msgid "Italic"
+msgstr ""
+
+#: lib/badges/kt-badges.php:847
+msgid "Font Weight"
+msgstr ""
+
+#: lib/badges/kt-badges.php:852
+msgid "Bold"
+msgstr ""
+
+#: lib/badges/kt-badges.php:862
+msgid "Text Align"
+msgstr ""
+
+#: lib/badges/kt-badges.php:866
+msgid "Left"
+msgstr ""
+
+#: lib/badges/kt-badges.php:868
+msgid "Right"
+msgstr ""
+
+#: lib/badges/kt-badges.php:878
+#: build/wootemplate-blocks.js:21
+msgid "Border Radius"
+msgstr ""
+
+#: lib/badges/kt-badges.php:888
+msgid "Border Width (px)"
+msgstr ""
+
+#: lib/badges/kt-badges.php:898
+msgid "Border Color"
+msgstr ""
+
+#: lib/badges/kt-badges.php:907
+msgid "Badge Visibility Settings"
+msgstr ""
+
+#: lib/badges/kt-badges.php:914
+msgid "General Visibility"
+msgstr ""
+
+#: lib/badges/kt-badges.php:918
+msgid "Product loops and single products"
+msgstr ""
+
+#: lib/badges/kt-badges.php:919
+msgid "Product loops only"
+msgstr ""
+
+#: lib/badges/kt-badges.php:920
+msgid "Single products only"
+msgstr ""
+
+#: lib/badges/kt-badges.php:926
+msgid "Product Visibility"
+msgstr ""
+
+#: lib/badges/kt-badges.php:931
+msgid "Show on certain products"
+msgstr ""
+
+#: lib/badges/kt-badges.php:932
+msgid "Show on products that are on sale"
+msgstr ""
+
+#: lib/badges/kt-badges.php:933
+msgid "Show on products that are not on sale"
+msgstr ""
+
+#: lib/badges/kt-badges.php:934
+msgid "Show on products that are out of stock"
+msgstr ""
+
+#: lib/badges/kt-badges.php:935
+msgid "Show on products that are low stock"
+msgstr ""
+
+#: lib/badges/kt-badges.php:936
+msgid "Show on products that are on backorder"
+msgstr ""
+
+#: lib/badges/kt-badges.php:937
+msgid "Show on featured products"
+msgstr ""
+
+#: lib/badges/kt-badges.php:938
+msgid "Show on products in certain categories"
+msgstr ""
+
+#: lib/badges/kt-badges.php:939
+msgid "Show on products with certain tags"
+msgstr ""
+
+#: lib/badges/kt-badges.php:945
+#: lib/tabs/class-kadence-global-tabs.php:221
+msgid "Choose which products"
+msgstr ""
+
+#: lib/badges/kt-badges.php:960
+msgid "Choose which tags"
+msgstr ""
+
+#: lib/badges/kt-badges.php:976
+msgid "Choose which categories"
+msgstr ""
+
+#: lib/badges/kt-badges.php:994
+msgid "Badge Preview"
+msgstr ""
+
+#: lib/brands/class-kt-active-filter-widget.php:26
+msgid "Display a list of active product filters."
+msgstr ""
+
+#: lib/brands/class-kt-active-filter-widget.php:28
+msgid "Active Product Filters (Includes Brands)"
+msgstr ""
+
+#: lib/brands/class-kt-active-filter-widget.php:32
+msgid "Active filters"
+msgstr ""
+
+#: lib/brands/class-kt-active-filter-widget.php:33
+#: lib/brands/class-kt-filter-by-brand-widget.php:34
+#: lib/brands/class-kt-product-brand-widget.php:40
+msgid "Title"
+msgstr ""
+
+#. translators: %s: minimum price
+#. translators: %s: maximum price
+#. translators: %s: rating
+#: lib/brands/class-kt-active-filter-widget.php:86
+#: lib/brands/class-kt-active-filter-widget.php:111
+#: lib/brands/class-kt-active-filter-widget.php:118
+#: lib/brands/class-kt-active-filter-widget.php:124
+#: lib/brands/class-kt-active-filter-widget.php:133
+msgid "Remove filter"
+msgstr ""
+
+#. translators: %s: minimum price
+#: lib/brands/class-kt-active-filter-widget.php:118
+msgid "Min %s"
+msgstr ""
+
+#. translators: %s: maximum price
+#: lib/brands/class-kt-active-filter-widget.php:124
+msgid "Max %s"
+msgstr ""
+
+#. translators: %s: rating
+#: lib/brands/class-kt-active-filter-widget.php:133
+#: lib/reviews/kt-rating.php:25
+#: lib/reviews/reviews.php:755
+msgid "Rated %s out of 5"
+msgstr ""
+
+#: lib/brands/class-kt-extra-brands.php:320
+msgid "Product Brand"
+msgstr ""
+
+#: lib/brands/class-kt-extra-brands.php:723
+msgid "Thumbnail"
+msgstr ""
+
+#. translators: %s name of brand taxonomy plural name.
+#: lib/brands/class-kt-extra-brands.php:738
+msgid "All %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:740
+msgid "Parent %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:742
+msgid "Parent %s :"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:744
+msgid "New %s Name"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:746
+msgid "Add New %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:748
+msgid "Edit %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:750
+msgid "Update %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:752
+msgid "View %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:754
+msgid "Separate %s With Commas"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:756
+msgid "Add or remove %s"
+msgstr ""
+
+#: lib/brands/class-kt-extra-brands.php:757
+msgid "Choose from the most used"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:759
+msgid "Popular %s"
+msgstr ""
+
+#. translators: %s name of brand taxonomy name.
+#: lib/brands/class-kt-extra-brands.php:761
+msgid "Search %s"
+msgstr ""
+
+#: lib/brands/class-kt-extra-brands.php:762
+msgid "Not Found"
+msgstr ""
+
+#: lib/brands/class-kt-extra-brands.php:800
+#: lib/brands/class-kt-extra-brands.php:805
+msgid "Brand Image"
+msgstr ""
+
+#. translators: %s name of brand taxonomy.
+#: lib/brands/class-kt-extra-brands.php:834
+msgid "Filter by %s"
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:26
+msgid "Display a list of %s to filter products in your store."
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:28
+msgid "Filter Products by "
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:33
+msgid "Filter by Brand"
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:39
+msgid "Display type"
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:41
+#: build/wootemplate-blocks.js:21
+msgid "List"
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:42
+#: lib/swatches/kt-variations-swatches.php:435
+msgid "Dropdown"
+msgstr ""
+
+#. translators: %s: taxonomy name
+#: lib/brands/class-kt-filter-by-brand-widget.php:305
+msgid "Any %s"
+msgstr ""
+
+#: lib/brands/class-kt-filter-by-brand-widget.php:370
+msgctxt "enhanced select"
+msgid "No matches found"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:33
+msgid "Display a list of %s in your store."
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:35
+msgid "Product List: "
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:39
+msgid "List %s"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:45
+msgid "Order by"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:47
+msgid "%s order"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:48
+#: lib/reviews/kt-product-reviews.php:216
+msgid "Name"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:54
+msgid "Show as dropdown"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:59
+msgid "Show product counts"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:64
+msgid "Show hierarchy"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:69
+msgid "Only show children of the current %s"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:74
+msgid "Hide empty %s"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:79
+msgid "Maximum depth"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:376
+msgid "Select a %s"
+msgstr ""
+
+#: lib/brands/class-kt-product-brand-widget.php:407
+msgid "No product brands exist."
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:84
+#: lib/cartnotice/kt-cart-notice.php:85
+msgid "Cart Banners"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:552
+#: lib/cartnotice/kt-cart-notice.php:564
+#: lib/tabs/class-kadence-global-tabs.php:259
+msgid "Cart Notice"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:553
+msgid "Cart Notice Item"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:554
+#: lib/cartnotice/kt-cart-notice.php:555
+msgid "Add New Cart Notice"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:556
+msgid "Edit Cart Notice"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:557
+msgid "New Cart Notice"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:558
+msgid "All Cart Notices"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:559
+msgid "View Cart Notice"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:560
+msgid "Search Cart Notices"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:561
+msgid "No Cart Notice found"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:562
+msgid "No Cart Notices found in Trash"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:590
+msgid "Cart Notice Settings"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:597
+#: lib/tabs/class-kadence-global-tabs.php:191
+msgid "Display Type"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:601
+msgid "Always Show"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:602
+msgid "Show when a certain product is in cart"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:603
+msgid "Show when a certain category is in cart"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:604
+msgid "Show when the cart total price is Equal or LESS than a certain amount"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:605
+msgid "Show when the cart total price is Equal or MORE than a certain amount"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:606
+msgid "Show when the cart total weight is LESS than a certain amount"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:607
+msgid "Show when the cart total weight is MORE than a certain amount"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:613
+msgid "Choose which product"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:626
+#: lib/tabs/class-kadence-global-tabs.php:204
+msgid "Choose which category"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:642
+msgid "Choose the price"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:654
+msgid "Choose the weight"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:666
+msgid "Cart Notice Message"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:673
+msgid "Cart Notice Button"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:680
+msgid "Button Type"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:684
+msgid "Custom Link"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:685
+msgid "Add a product to cart"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:686
+msgid "Add a coupon code"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:687
+msgid "Add product and coupon code"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:688
+msgid "\"upgrade\" Only for product display type - remove product and add new product"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:689
+msgid "\"upgrade + coupon\" Only for product display type - remove product and add new product with coupon code"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:695
+msgid "Cart Notice Button Link"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:706
+msgid "Product to add to cart"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:707
+msgid "Also note that the notice will not show if this product is already in cart."
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:720
+msgid "If Product Type Variation"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:721
+msgid "Add variation selection eg: &variation_id=117&attribute_size=Small&attribute_color=Black"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:732
+msgid "Coupon to add"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:733
+msgid "Note that the notice will not show if this coupon is already applied."
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:746
+msgid "Cart Notice Expiration (optional)"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:753
+msgid "Cart Notice Design Settings"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:760
+msgid "Notice Background Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:768
+msgid "Notice Border Radius"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:776
+msgid "Notice Border Width"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:784
+msgid "Notice Border Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:792
+msgid "Notice Message Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:800
+msgid "Notice Button Text Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:808
+msgid "Notice Button Hover Text Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:816
+msgid "Notice Button Background"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:824
+msgid "Notice Button Hover Background"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:840
+msgid "Notice Button Border Radius"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:848
+msgid "Notice Button Border Width"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:856
+msgid "Notice Button Border Color"
+msgstr ""
+
+#: lib/cartnotice/kt-cart-notice.php:863
+msgid "Notice Button Hover Border Color"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:629
+msgid "WooCommerce"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:636
+#: lib/checkout_editor/kt-checkout-editor.php:637
+#: lib/checkout_editor/kt-checkout-editor.php:678
+msgid "Checkout Manager"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:664
+msgid "+ Add field"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:665
+msgid "Remove"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:666
+msgid "Enable"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:667
+#: build/wootemplate-blocks.js:21
+msgid "Disable"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:670
+msgid "Save changes"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:671
+msgid "Reset to default fields"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:683
+msgid "Billing Fields"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:684
+msgid "Shipping Fields"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:685
+#: lib/checkout_editor/kt-checkout-editor.php:721
+msgid "Extra Fields"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:702
+msgid "%1$s Settings Reset"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:710
+msgid "Billing Settings"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:716
+msgid "Shipping Settings"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:851
+#: lib/reviews/kt-admin-reviews-list.php:448
+msgid "Edit"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:1201
+msgid "%1$s Settings Updated"
+msgstr ""
+
+#: lib/checkout_editor/kt-checkout-editor.php:1205
+msgid "%1$s settings could not be updated or no changes were made. Please try again."
+msgstr ""
+
+#: lib/extracatdesc/kt-extra-cat-desc.php:44
+msgid "Extra Product Category Description Box"
+msgstr ""
+
+#: lib/extracatdesc/kt-extra-cat-desc.php:50
+msgid "Product Category Bottom Description"
+msgstr ""
+
+#: lib/extracatdesc/kt-extra-cat-desc.php:51
+msgid "Add Text here to show in the bottom of your Category page"
+msgstr ""
+
+#: lib/gallery/class-product-gallery.php:78
+msgid "Product Video URL (Youtube, Vimeo)"
+msgstr ""
+
+#: lib/gallery/class-product-gallery.php:79
+msgid "Used in Product Gallery for Popup Video"
+msgstr ""
+
+#: lib/gallery/class-product-gallery.php:400
+msgid "Override product Gallery"
+msgstr ""
+
+#: lib/gallery/class-product-gallery.php:408
+msgid "Replace Gallery with Shortcode"
+msgstr ""
+
+#: lib/quickview/class-quickview-rest-controller.php:71
+msgid "The product post id."
+msgstr ""
+
+#: lib/quickview/templates/kt-quickview.php:29
+msgid "couldn't find product data"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:34
+#: lib/reviews/reviews.php:172
+msgid "Review"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:35
+msgid "Author"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:36
+msgid "Date"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:37
+msgid "Votes"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:38
+#: lib/reviews/reviews.php:1097
+msgid "Rating"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:39
+msgid "Product"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:323
+#: lib/reviews/kt-admin-reviews-list.php:401
+msgid "Restore"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:324
+msgid "Move to Trash"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:326
+#: lib/reviews/kt-admin-reviews-list.php:406
+msgid "Delete permanently"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:327
+msgid "Approve reviews"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:328
+msgid "Unapprove reviews"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:335
+msgid "All"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:336
+msgid "Trashed"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:337
+msgid "Not approved"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:401
+msgid "Restore this item from the trash"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:403
+msgid "Move this item to the trash"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:403
+msgid "Trash"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:406
+msgid "Delete this item permanently"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:420
+#: lib/reviews/kt-single-review.php:69
+msgid "Rated %d out of 5"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:421
+#: lib/reviews/kt-single-review.php:70
+#: lib/reviews/reviews.php:733
+#: lib/reviews/reviews.php:1336
+msgid "out of 5"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:451
+msgid "View"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:460
+#: lib/reviews/kt-admin-reviews-list.php:465
+#: lib/reviews/kt-single-review.php:42
+msgid "Anonymous"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews-list.php:515
+msgid "No reviews found."
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews.php:14
+msgid "Product reviews"
+msgstr ""
+
+#: lib/reviews/kt-admin-reviews.php:20
+msgid "Search reviews"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews-overview.php:21
+#: lib/reviews/reviews.php:758
+msgid "out of 5 stars"
+msgstr ""
+
+#. translators: 1: reviews count 2: product name
+#: lib/reviews/kt-product-reviews.php:92
+msgid "%1$s review for %2$s"
+msgid_plural "%1$s reviews for %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/reviews/kt-product-reviews.php:95
+#: lib/reviews/reviews.php:137
+#: lib/reviews/reviews.php:138
+#: lib/reviews/reviews.php:171
+#: lib/reviews/reviews.php:183
+msgid "Reviews"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:198
+msgid "There are no reviews yet."
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:212
+msgid "Add a review"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:212
+msgid "Be the first to review &ldquo;%s&rdquo;"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:213
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:218
+msgid "Email"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:221
+msgid "Submit"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:227
+msgid "You must be <a href=\"%s\">logged in</a> to post a review."
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:231
+msgid "Your Rating"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:232
+msgid "Rate&hellip;"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:233
+msgid "Perfect"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:234
+msgid "Good"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:235
+msgid "Average"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:236
+msgid "Not that bad"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:237
+msgid "Very Poor"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:241
+msgid "Review title"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:249
+msgid "Please check to consent to our %s"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:251
+msgid "Please check to consent to our privacy policy"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:255
+msgid "Your Review"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:264
+msgid "Only logged in customers who have purchased this product may write a review."
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:275
+msgid "Login"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:283
+msgid "Don't have an account?"
+msgstr ""
+
+#: lib/reviews/kt-product-reviews.php:284
+msgid "Sign Up"
+msgstr ""
+
+#: lib/reviews/kt-rating.php:27
+msgid "out of %s5%s"
+msgstr ""
+
+#: lib/reviews/kt-rating.php:28
+msgid "based on %s customer rating"
+msgid_plural "based on %s customer ratings"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/reviews/kt-rating.php:33
+msgid "%s customer review"
+msgid_plural "%s customer reviews"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/reviews/kt-single-review.php:54
+#: lib/reviews/kt-single-review.php:56
+msgid "Reviewer profile image"
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:59
+msgid "Featured Review"
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:78
+msgid "Your comment is waiting for approval"
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:87
+msgid "verified owner"
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:107
+msgid "%d of %s found this helpful"
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:117
+msgid "Upvote if this was helpful."
+msgstr ""
+
+#: lib/reviews/kt-single-review.php:117
+msgid "Downvote if this was not helpful."
+msgstr ""
+
+#: lib/reviews/reviews.php:122
+msgid "An error occurred, please try again later"
+msgstr ""
+
+#: lib/reviews/reviews.php:123
+msgid "There are no more reviews"
+msgstr ""
+
+#: lib/reviews/reviews.php:124
+msgid "Please check required consent checkbox"
+msgstr ""
+
+#: lib/reviews/reviews.php:140
+msgid "kt_reviews"
+msgstr ""
+
+#: lib/reviews/reviews.php:173
+msgid "Add Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:174
+msgid "Add New Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:175
+msgid "Edit Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:176
+msgid "New Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:177
+msgid "All Reviews"
+msgstr ""
+
+#: lib/reviews/reviews.php:178
+msgid "View Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:179
+msgid "Search Review"
+msgstr ""
+
+#: lib/reviews/reviews.php:180
+msgid "No Review found"
+msgstr ""
+
+#: lib/reviews/reviews.php:181
+msgid "No Reviews found in Trash"
+msgstr ""
+
+#: lib/reviews/reviews.php:718
+msgid "Reviews(%d)"
+msgstr ""
+
+#: lib/reviews/reviews.php:731
+msgid "Rated %s out test of 5"
+msgstr ""
+
+#: lib/reviews/reviews.php:758
+msgid " review"
+msgid_plural " reviews"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/reviews/reviews.php:946
+msgid "Approve review"
+msgstr ""
+
+#: lib/reviews/reviews.php:946
+msgid "Approve"
+msgstr ""
+
+#: lib/reviews/reviews.php:948
+msgid "Unapprove review"
+msgstr ""
+
+#: lib/reviews/reviews.php:948
+msgid "Unapprove"
+msgstr ""
+
+#: lib/reviews/reviews.php:1084
+msgid "Review Settings"
+msgstr ""
+
+#: lib/reviews/reviews.php:1090
+msgid "Author Name (if not a site user, else shows site user display name)"
+msgstr ""
+
+#: lib/reviews/reviews.php:1101
+msgid "1 Star"
+msgstr ""
+
+#: lib/reviews/reviews.php:1102
+msgid "2 Stars"
+msgstr ""
+
+#: lib/reviews/reviews.php:1103
+msgid "3 Stars"
+msgstr ""
+
+#: lib/reviews/reviews.php:1104
+msgid "4 Stars"
+msgstr ""
+
+#: lib/reviews/reviews.php:1105
+msgid "5 Stars"
+msgstr ""
+
+#: lib/reviews/reviews.php:1111
+msgid "Review Approved"
+msgstr ""
+
+#: lib/reviews/reviews.php:1115
+msgid "Not Approved"
+msgstr ""
+
+#: lib/reviews/reviews.php:1116
+msgid "Approved"
+msgstr ""
+
+#: lib/reviews/reviews.php:1122
+msgid "Up Votes"
+msgstr ""
+
+#: lib/reviews/reviews.php:1130
+msgid "Down Votes"
+msgstr ""
+
+#: lib/reviews/reviews.php:1138
+msgid "Review is Featured"
+msgstr ""
+
+#: lib/reviews/reviews.php:1163
+msgid "Convert Reviews"
+msgstr ""
+
+#: lib/reviews/reviews.php:1176
+msgid "Converted %d Reviews"
+msgstr ""
+
+#: lib/reviews/reviews.php:1190
+msgid "Completed. %d reviews have been processed and converted."
+msgstr ""
+
+#: lib/reviews/reviews.php:1192
+msgid "Completed. No reviews needing to be converted have been found."
+msgstr ""
+
+#: lib/reviews/reviews.php:1246
+#: lib/reviews/reviews.php:1297
+msgid "%1$d of %2$s found this helpful"
+msgstr ""
+
+#: lib/reviews/reviews.php:1248
+#: lib/reviews/reviews.php:1299
+msgid "You have already voted"
+msgstr ""
+
+#: lib/sizechart/class-size-chart-widget.php:14
+msgid "Use this widget to add a size cart button"
+msgstr ""
+
+#: lib/sizechart/class-size-chart-widget.php:16
+msgid "Woo Product: Size Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:51
+#: lib/sizechart/kt-size-chart.php:63
+#: lib/sizechart/kt-size-chart.php:88
+msgid "Size Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:52
+msgid "Size Chart Item"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:53
+#: lib/sizechart/kt-size-chart.php:54
+msgid "Add New Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:55
+msgid "Edit Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:56
+msgid "New Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:57
+msgid "All Charts"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:58
+msgid "View Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:59
+msgid "Search Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:60
+msgid "No Chart found"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:61
+msgid "No Charts found in Trash"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:507
+msgid "Size Chart Settings"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:512
+msgid "Button after \"add to cart\""
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:513
+msgid "Button before \"add to cart\""
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:514
+msgid "Button after \"product short description\""
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:515
+msgid "Button before \"product short description\""
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:516
+msgid "Before Attribute Selection"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:517
+msgid "After Attribute Selection"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:518
+msgid "Button after \"product meta\""
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:519
+msgid "Add as Tab, no button"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:533
+msgid "Template builder widget"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:537
+msgid "Placement"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:545
+msgid "Chart Attribute Selection"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:546
+msgid "Select the attribute this chart should appear with"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:558
+msgid "Modal Title Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:565
+msgid "Modal Text Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:572
+msgid "Modal Background Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:579
+msgid "Modal Overlay Background Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:586
+msgid "Modal Button Text Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:593
+msgid "Modal Button Hover Text Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:600
+msgid "Modal Button Background"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:607
+msgid "Modal Button Hover Background"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:622
+msgid "Modal Button Border Radius"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:630
+msgid "Modal Button Border Width"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:638
+msgid "Modal Button Border Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:645
+msgid "Modal Button Hover Border Color"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:652
+msgid "Modal Button Text"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:659
+msgid "Modal Heading Title"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:666
+msgid "Modal \"Close\" Text"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:673
+msgid "If tab, set priority"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:674
+msgid "This determines where the tab is placed in your product tabs"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:682
+msgid "If tab, set tab label"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:683
+msgid "This sets the label for the tab."
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:690
+msgid "Chart Categories"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:691
+msgid "Select categories for chart to auto appear on"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:701
+msgid "Responsive tables?"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:703
+msgid "This adds css to attempt to make any html tables responsive."
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:716
+msgid "Product Size Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:724
+msgid "Assign Size Chart"
+msgstr ""
+
+#: lib/sizechart/kt-size-chart.php:725
+msgid "Choose a size chart to assign to product."
+msgstr ""
+
+#: lib/snackbar/class-snackbar-notices.php:65
+#: lib/snackbar/class-snackbar-notices.php:71
+msgid "Dismiss Notice"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches-output.php:644
+msgid "Choose an option"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:190
+msgid "This product is currently out of stock and unavailable."
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:242
+msgid "Add to cart"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:260
+msgid "Select terms"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:276
+msgid "Select all"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:277
+msgid "Select none"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:278
+msgid "Add new"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:288
+msgid "Dropdown Select"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:359
+msgid "Product variation attributes"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:432
+msgid "Variation Style"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:436
+msgid "Radio Box"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:437
+msgid "Color and image swatches"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:454
+msgid "Display Label"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:468
+msgid "Swatch Size"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:472
+msgid "16x16px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:473
+msgid "30x30px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:474
+msgid "40x40px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:475
+msgid "50x50px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:476
+msgid "60x60px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:477
+msgid "75x75px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:478
+msgid "90x90px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:479
+msgid "120x120px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:480
+msgid "150x150px"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:515
+msgid "Preview"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:516
+msgid "Attribute"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:517
+#: lib/templates/woo-block-editor-templates.php:2115
+msgid "Type"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:601
+msgid "Attribute Color or Image"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:625
+msgid "Upload/Add image"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:666
+msgid "The selected item variant is unavailable."
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:669
+#: build/wootemplate-blocks.js:21
+msgid "View cart"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:726
+msgid "Swatch Type"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:735
+msgid "Swatch Color"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:740
+msgid "Swatch Image"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:782
+#: lib/swatches/kt-variations-swatches.php:794
+#: lib/swatches/kt-variations-swatches.php:831
+msgid "Product Swatch Type"
+msgstr ""
+
+#: lib/swatches/kt-variations-swatches.php:783
+#: lib/swatches/kt-variations-swatches.php:795
+#: lib/swatches/kt-variations-swatches.php:832
+msgid "Product Swatch Type Options"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:162
+#: lib/tabs/class-kadence-global-tabs.php:163
+#: lib/tabs/class-kadence-global-tabs.php:247
+#: build/wootemplate-blocks.js:21
+msgid "Product Tabs"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:177
+msgid "Tab Settings"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:183
+msgid "Tab Title"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:186
+msgid "Defaults to tab post title"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:196
+msgid "Add to every product"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:197
+msgid "Add to products of a specific category"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:198
+msgid "Add only to specific products"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:234
+msgid "Choose tab priority (0 - 100 )"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:235
+msgid "10 - Description | 20 - Additional Information | 30 - Reviews"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:248
+msgid "Product Tab"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:249
+#: lib/tabs/class-kadence-global-tabs.php:250
+msgid "Add New Product Tab"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:251
+msgid "Edit Product Tab"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:252
+msgid "New Product Tab"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:253
+msgid "All Product Tabs"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:254
+msgid "View Product Tab"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:255
+msgid "Search Product Tabs"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:256
+msgid "No Product Tab found"
+msgstr ""
+
+#: lib/tabs/class-kadence-global-tabs.php:257
+msgid "No Product Tabs found in Trash"
+msgstr ""
+
+#: lib/templates/blocks/meta-block.php:40
+#: lib/templates/woo-block-editor-content-controller.php:281
+#: lib/templates/woo-block-editor-content-controller.php:283
+msgid "SKU:"
+msgstr ""
+
+#: lib/templates/blocks/meta-block.php:40
+#: lib/templates/woo-block-editor-content-controller.php:280
+#: lib/templates/woo-block-editor-content-controller.php:283
+msgid "N/A"
+msgstr ""
+
+#: lib/templates/blocks/meta-block.php:42
+#: lib/templates/woo-block-editor-content-controller.php:285
+msgid "Category:"
+msgid_plural "Categories:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/templates/blocks/meta-block.php:43
+#: lib/templates/woo-block-editor-content-controller.php:286
+msgid "Tag:"
+msgid_plural "Tags:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/templates/woo-block-editor-content-controller.php:233
+msgid "No Content"
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:353
+msgid "Home"
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:485
+msgid "Description"
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:495
+#: lib/templates/woo-block-editor-content-controller.php:504
+msgid "Additional information"
+msgstr ""
+
+#. translators: %s: reviews count
+#: lib/templates/woo-block-editor-content-controller.php:526
+msgid "Reviews (%d)"
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:662
+msgid "The source of the content."
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:666
+msgid "The content field"
+msgstr ""
+
+#: lib/templates/woo-block-editor-content-controller.php:670
+msgid "The template type"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:76
+msgid "Cloning instances of the class is Forbidden"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:86
+msgid "Unserializing instances of the class is forbidden"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:232
+#: lib/templates/woo-block-editor-templates.php:2177
+msgid "Draft"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:233
+#: lib/templates/woo-block-editor-templates.php:2177
+msgid "Published"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:259
+msgid "Error: No post information was retrieved."
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:722
+msgid "All Woo Templates Items"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:727
+#: lib/templates/woo-block-editor-templates.php:1718
+#: lib/templates/woo-block-editor-templates.php:2184
+msgid "Single Product"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:730
+msgid "Product Catalog Loop Item"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:733
+msgid "Product Archive"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:759
+#: lib/templates/woo-block-editor-templates.php:760
+#: lib/templates/woo-block-editor-templates.php:2030
+msgid "Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1560
+msgid "Latest Product"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1678
+msgid "Basic"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1682
+#: lib/templates/woo-block-editor-templates.php:2261
+#: lib/templates/woo-block-editor-templates.php:2264
+msgid "All Users"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1686
+msgid "Logged out Users"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1690
+msgid "Logged in Users"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1704
+msgid "Specific Role"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1730
+#: lib/templates/woo-block-editor-templates.php:1767
+msgid "All Product Loops"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1734
+msgid "Has Category Term"
+msgstr ""
+
+#. translators: %1$s: taxonomy singular label.
+#: lib/templates/woo-block-editor-templates.php:1776
+#: lib/templates/woo-block-editor-templates.php:1827
+msgid "%1$s Archives"
+msgstr ""
+
+#. translators: %1$s: post type plural label
+#: lib/templates/woo-block-editor-templates.php:1784
+msgid "%1$s Archive"
+msgstr ""
+
+#. translators: %1$s: post type plural label
+#: lib/templates/woo-block-editor-templates.php:1791
+msgid "%1$s Search"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1819
+msgid "All Product Archives"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1833
+msgid "Shop Page"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:1837
+msgid "Product Search"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2031
+msgid "Woo Template"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2032
+msgctxt "Admin Menu text"
+msgid "Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2033
+msgctxt "Woo Templates"
+msgid "Add New"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2034
+msgid "Add New Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2035
+msgid "New Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2036
+msgid "Edit Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2037
+msgid "View Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2038
+msgid "All Woo Templatess"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2039
+msgid "Search Woo Templatess"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2040
+msgid "Parent Woo Templates:"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2041
+msgid "No Woo Templatess found."
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2042
+msgid "No Woo Templatess found in Trash."
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2043
+msgid "Woo Templates archives"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2044
+msgid "Insert into Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2045
+msgid "Uploaded to this Woo Templates"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2046
+msgid "Filter Woo Templatess list"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2047
+msgid "Woo Templatess list navigation"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2048
+msgid "Woo Templatess list"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2053
+msgid "Woo Templates to control woocommerce content."
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2116
+msgid "Display On"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2117
+msgid "Visible To"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2118
+msgid "Status"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2245
+msgid "[UNSET]"
+msgstr ""
+
+#: lib/templates/woo-block-editor-templates.php:2257
+msgid "Visible to:"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:247
+msgid "Variation Image Gallery"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:248
+msgid "This replaces the product level gallery on selection"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:260
+msgid "Add images to product gallery"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:260
+msgid "Add to gallery"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:260
+msgid "Delete image"
+msgstr ""
+
+#: lib/variation-gallery/kadence-variation-gallery.php:260
+msgid "Add Variation Images"
+msgstr ""
+
+#. translators: %d: heading level e.g: "1", "2", "3"
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product Add to Cart"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product Add to cart can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Title"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Title can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Price"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Price can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "This product does not have a price."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Inherit"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Standard"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Thumbnails Left"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Thumbnails Right"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Two Column Grid"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tiles"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "No Thumbnails"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product gallery can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Sale!"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Image"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Image can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product Short Description"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product Short Description can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Post Content"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product Description"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product description can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "General Settings"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Alignment"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Meta Style"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Spacing Settings"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Padding"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Margin"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Meta"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Meta can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tab"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tab Priority"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Collapse Style"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tab Alignment"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Enabled Tabs"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tab Title Styles"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Tab Content Styles"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Container Spacing Settings"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product tabs can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Rating"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Rating can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "This product does not have a rating."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Related Items Limit"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product Related"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product related can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "This product does not have any linked related products."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Upsell Items Limit"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product Upsells"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product upsells can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "This product does not have any linked upsell products."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Additional Information"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Additional Information can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "This product does not have additional information."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Single Column"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Two Column"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product: Reviews"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product reviews can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product Reviews"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "This product has reviews disabled."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product Breadcrumbs"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Product breadcrumbs can only be used in a single product template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Styling"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Background"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Border"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Border Width"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Typography"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Button Styling"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "\"Example\" has been added to your cart."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Custom Actions"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Display content from custom 3rd party functions or actions."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Brand"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "Product: Brand can only be used in a single product or loop template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+#: build/wootemplate-child-blocks.js:21
+msgid "This product does not have any brand to show."
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Archive: Main Query"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "Archive: Main Query can only be used in an archive template"
+msgstr ""
+
+#: build/wootemplate-blocks.js:21
+msgid "This archive does not have any products to show."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/add-to-cart/block.json
+msgctxt "block title"
+msgid "Product: Add to cart"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/add-to-cart/block.json
+msgctxt "block description"
+msgid "Display the products add to cart button."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/additional-information/block.json
+msgctxt "block title"
+msgid "Product: Additional Information"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/additional-information/block.json
+msgctxt "block description"
+msgid "Display the products additional information."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/brands/block.json
+msgctxt "block title"
+msgid "Product: Brand"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/brands/block.json
+msgctxt "block description"
+msgid "Display the products brand."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/breadcrumbs/block.json
+msgctxt "block title"
+msgid "Product: Breadcrumbs"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/breadcrumbs/block.json
+msgctxt "block description"
+msgid "Display the products breadcrumbs."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/description/block.json
+msgctxt "block title"
+msgid "Product: Description"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/description/block.json
+msgctxt "block description"
+msgid "Display the products description."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/excerpt/block.json
+msgctxt "block title"
+msgid "Product: Short Description"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/excerpt/block.json
+msgctxt "block description"
+msgid "Display the products short description."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/gallery/block.json
+msgctxt "block title"
+msgid "Product: Gallery"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/gallery/block.json
+msgctxt "block description"
+msgid "Display the products gallery."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/hooks/block.json
+msgctxt "block title"
+msgid "Product: Custom Actions"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/hooks/block.json
+msgctxt "block description"
+msgid "Display content from custom 3rd party functions or actions."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/image/block.json
+msgctxt "block title"
+msgid "Product: Image"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/image/block.json
+msgctxt "block description"
+msgid "Display the products featured image."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/meta/block.json
+msgctxt "block title"
+msgid "Product: Meta"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/meta/block.json
+msgctxt "block description"
+msgid "Display the products meta."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/notice/block.json
+msgctxt "block title"
+msgid "Product: Notice"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/notice/block.json
+msgctxt "block description"
+msgid "Display the WooCommmerce notice if there is one."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/price/block.json
+msgctxt "block title"
+msgid "Product: Price"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/price/block.json
+msgctxt "block description"
+msgid "Display the products price."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/products/block.json
+msgctxt "block title"
+msgid "Archive: Main Query"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/products/block.json
+msgctxt "block description"
+msgid "Display the main products query."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/rating/block.json
+msgctxt "block title"
+msgid "Product: Rating"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/rating/block.json
+msgctxt "block description"
+msgid "Display the products rating."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/related/block.json
+msgctxt "block title"
+msgid "Product: Related"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/related/block.json
+msgctxt "block description"
+msgid "Display the products related."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/reviews/block.json
+msgctxt "block title"
+msgid "Product: Reviews"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/reviews/block.json
+msgctxt "block description"
+msgid "Display the products reviews."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/social/block.json
+msgctxt "block title"
+msgid "Product: Social"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/social/block.json
+msgctxt "block description"
+msgid "Display the products social."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/tabs/block.json
+msgctxt "block title"
+msgid "Product: Tabs"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/tabs/block.json
+msgctxt "block description"
+msgid "Display the products tabs."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/title/block.json
+msgctxt "block title"
+msgid "Product: Title"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/title/block.json
+msgctxt "block description"
+msgid "Display the products title."
+msgstr ""
+
+#: build/woo-template-blocks/blocks/upsell/block.json
+msgctxt "block title"
+msgid "Product: Upsell"
+msgstr ""
+
+#: build/woo-template-blocks/blocks/upsell/block.json
+msgctxt "block description"
+msgid "Display the products upsell."
+msgstr ""

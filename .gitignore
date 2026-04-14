@@ -1,0 +1,42 @@
+# ============================================================
+# CREDENCIALES - NUNCA subir al repositorio
+# ============================================================
+wp-config.php
+
+# ============================================================
+# ARCHIVOS GRANDES - uploads, backups y zips
+# ============================================================
+wp-content/uploads/
+wp-content/updraft/
+induretros.zip
+Cw Bup/
+
+# ============================================================
+# LOGS Y ARCHIVOS TEMPORALES
+# ============================================================
+error_log
+*.log
+temp-write-test-*
+
+# ============================================================
+# CACHE (generados automaticamente)
+# ============================================================
+wp-content/cache/
+wp-content/litespeed/
+wp-content/breeze-config/
+wp-content/ewww/
+wp-content/astra-local-fonts/
+wp-content/wp-rocket-config/
+
+# ============================================================
+# SEGURIDAD / CUARENTENA
+# ============================================================
+.quarantine/
+.tmb/
+
+# ============================================================
+# SISTEMA OPERATIVO
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini

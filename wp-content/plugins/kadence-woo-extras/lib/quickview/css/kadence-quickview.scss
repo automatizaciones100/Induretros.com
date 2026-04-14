@@ -1,0 +1,89 @@
+.kt-quickview-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+
+	.kwt-rating-wrap .star-rating {
+		float: initial;
+	}
+}
+.kt-quickview-content-right {
+	padding: var(--global-kb-spacing-md, 2rem);
+}
+
+.kt-woo-quickview-content,
+.kt-quickview-content {
+	height: 100%;
+}
+
+.kt-quickview-content-left {
+	height: 100%;
+	overflow: auto;
+
+	.kwt-gallery-wrap,
+	.ksk-gallery,
+	.product_image,
+	.kadence-product-gallery-main,
+	.splide__track,
+	.splide__list,
+	.splide__slide {
+		height: 100%;
+	}
+
+	.kadence-product-gallery-main[data-gallery-items="0"],
+	.kadence-product-gallery-main[data-gallery-items="1"] {
+		.splide__arrows,
+		.splide__pagination {
+			display: none;
+		}
+	}
+
+	.kt-image-slide {
+		height: 100%;
+
+		img {
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+}
+
+.quickview-lightbox {
+	.gslide-inline .ginlined-content {
+		padding: 0;
+	}
+
+	&.no-slides {
+		.gprev,
+		.gnext {
+			display: none;
+		}
+	}
+}
+
+.kt-woo-quickview-button {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+//long for specificty with kadence theme woo styles
+.kt-woo-quickview-button.kt-woo-quickview-button.kt-woo-quickview-button.kt-woo-quickview-button.kt-woo-quickview-button.kt-woo-quickview-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	transition: opacity 0.3s ease;
+
+	img {
+		filter: drop-shadow(0px 100000px 0 currentColor);
+		transform: translateY(-100000px);
+	}
+}
+
+.woocommerce
+	ul.products:not(.woo-archive-btn-button)
+	li:where(:not(.woo-archive-btn-button))
+	.kt-woo-quickview-button.has-bg-styling:not(.kb-button) {
+	padding: 0.4em 1em;
+}

@@ -1,0 +1,138 @@
+/**
+ * #.# Editor Styles
+ *
+ * CSS for just Backend enqueued after style.scss
+ * which makes it higher in priority.
+ */
+ 
+.kadence-coupone-pro-modal {
+	display:none;
+	text-align: left;
+}
+.kadence-coupone-pro-modal.is-open {
+	display:block;
+}
+.kt-coupon-modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0,0,0,0.6);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    z-index: 999999;
+}
+.kt-modal-container {
+	background-color: var( --global-palette9, #ffffff );
+	padding: 30px;
+	max-width: 600px;
+	width: 100%;
+	display: flex;
+	margin: 20px;
+	justify-content: flex-start;
+	align-items: flex-start;
+	max-height: 100vh;
+	border-radius: 0;
+	overflow-y: auto;
+	position: relative;
+	box-sizing: border-box;
+	text-align: left;
+	border: 0 solid transparent;
+}
+.kt-modal-height-full {
+	height: 100%;
+	margin: 0px;
+}
+.kt-modal-content {
+    width: 100%;
+    max-height: 100%;
+}
+.kt-coupon-modal-close {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+	padding: 0;
+	z-index: 10;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: var( --global-palette4, #444444 );
+    -webkit-appearance: none;
+    position: absolute;
+    top: 4px;
+	right: 4px;
+	box-shadow: none;
+	text-shadow: none;
+}
+.kt-coupon-modal-close:hover {
+	outline: none;
+	box-shadow: none;
+}
+.kt-coupon-modal-close:focus {
+	outline: none;
+	box-shadow: none;
+}
+.kt-coupon-modal-close svg {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+.kt-modal-linkalign-left {
+	text-align: left !important;
+}
+.kt-modal-linkalign-center {
+	text-align: center !important;
+}
+.kt-modal-linkalign-right {
+	text-align: right !important;
+}
+.coupon-modal-link {
+    cursor: pointer;
+}
+.kt_checkout_coupon .button {
+    background: var( --global-palette4, #444444 );
+    color: var( --global-palette9, #ffffff );
+    border: 0;
+}
+/**************************\
+Animation Style
+\**************************/
+@keyframes kbmfadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes kbmfadeOut {
+	from { opacity: 1; }
+	to { opacity: 0; }
+}
+// Fade in Out background.
+.kadence-coupone-pro-modal[aria-hidden="false"] .kt-coupon-modal-overlay {
+	animation: kbmfadeIn .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+.kadence-coupone-pro-modal[aria-hidden="true"] .kt-coupon-modal-overlay {
+	animation: kbmfadeOut .3s cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+// Animate In
+.kt-m-animate-in-fade[aria-hidden="false"] .kt-modal-container {
+	animation: kbmfadeIn .3s cubic-bezier(0, 0, .2, 1);
+}
+@keyframes kbmfadeInUp {
+	from { opacity: 0; transform: translateY(15%); }
+	to { opacity: 1; transform: translateY(0); }
+}
+.kt-m-animate-in-fadeup[aria-hidden="false"] .kt-modal-container {
+	animation: kbmfadeInUp .3s cubic-bezier(0, 0, .2, 1);
+}
+
+// Animate Out
+.kt-m-animate-out-fadeout[aria-hidden="true"] .kt-modal-container {
+	animation: kbmfadeOut .3s cubic-bezier(0, 0, .2, 1);
+}
+
+.kadence-coupone-pro-modal .kt-modal-container,
+.kadence-coupone-pro-modal .kt-coupon-modal-overlay {
+	will-change: transform;
+}

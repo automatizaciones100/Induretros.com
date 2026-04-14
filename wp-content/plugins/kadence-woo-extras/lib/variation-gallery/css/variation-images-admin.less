@@ -1,0 +1,117 @@
+.kwsv_gallery_list img {
+    margin-right: 8px;
+    margin-bottom: 8px;
+    max-width: 68px;
+    height: auto;
+    border: 1px solid #d5d5d5;
+}
+.kwsv-variations-images-wrapper {
+	padding: 0 0 0 9px;
+
+	ul {
+		margin: 0;
+		padding: 0;
+		&:after {
+			clear: both;
+			display: table;
+			content: '';
+		}
+		li.image,
+		li.add,
+		li.wc-metabox-sortable-placeholder {
+			width: 60px;
+			float: left;
+			cursor: move;
+			border: 1px solid #d5d5d5;
+			margin: 9px 9px 0 0;
+			background: #f7f7f7;
+
+			@include border-radius(2px);
+			position: relative;
+			box-sizing: border-box;
+
+			img {
+				width: 100%;
+				height: auto;
+				display: block;
+			}
+		}
+
+		li.wc-metabox-sortable-placeholder {
+			border: 3px dashed #ddd;
+			position: relative;
+
+			&::after {
+				font-size: 2.618em;
+				line-height: 72px;
+				color: #ddd;
+			}
+		}
+
+		ul.actions {
+			position: absolute;
+			top: -8px;
+			right: -8px;
+			padding: 2px;
+
+			@media (max-width: 768px) {
+				display: block;
+			}
+
+			li {
+				float: right;
+				margin: 0 0 0 2px;
+
+				a {
+					width: 1em;
+					height: 1em;
+					margin: 0;
+					height: 0;
+					display: block;
+					overflow: hidden;
+
+					&.tips {
+						cursor: pointer;
+					}
+				}
+
+				a.delete {
+					font-size: 1.4em;
+
+					&::before {
+						font-family: Dashicons;
+						speak: never;
+						font-weight: 400;
+						font-variant: normal;
+						text-transform: none;
+						line-height: 1;
+						-webkit-font-smoothing: antialiased;
+						margin: 0;
+						text-indent: 0;
+						position: absolute;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						text-align: center;
+						content: "\f158";
+						color: #999;
+						background: #fff;
+						border-radius: 50%;
+						height: 1em;
+						width: 1em;
+						line-height: 1em;
+					}
+
+					&:hover::before {
+						color: #ff0000;
+					}
+				}
+			}
+		}
+
+		li:hover ul.actions {
+			display: block;
+		}
+	}
+}

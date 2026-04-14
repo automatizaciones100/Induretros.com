@@ -1,0 +1,383 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "kadence-wootemplate-blocks/add-to-cart",
+  "title": "Product: Add to cart",
+  "category": "kadence-wootemplate-blocks",
+  "description": "Display the products add to cart button.",
+  "textdomain": "kadence-woo-extras",
+  "attributes": {
+    "uniqueID": {
+      "type": "string"
+    },
+    "showQuantity": {
+      "type": "boolean",
+      "default": true
+    },
+    "margin": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginType": {
+      "type": "string",
+      "default": "px"
+    },
+    "padding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "textAlign": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "fullBtn": {
+      "type": "boolean",
+      "default": false
+    },
+    "btnColor": {
+      "type": "string"
+    },
+    "btnColorHover": {
+      "type": "string"
+    },
+    "btnBackground": {
+      "type": "string"
+    },
+    "btnBackgroundHover": {
+      "type": "string"
+    },
+    "btnBorderColor": {
+      "type": "string"
+    },
+    "btnBorderColorHover": {
+      "type": "string"
+    },
+    "btnPadding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnPaddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnPaddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnPaddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "btnBorder": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderRadius": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderRadiusTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderRadiusMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "btnBorderRadiusType": {
+      "type": "string",
+      "default": "px"
+    },
+    "btnTypography": {
+      "type": "array",
+      "default": [
+        {
+          "size": [
+            "",
+            "",
+            ""
+          ],
+          "sizeType": "px",
+          "lineHeight": [
+            "",
+            "",
+            ""
+          ],
+          "lineType": "px",
+          "letterSpacing": [
+            "",
+            "",
+            ""
+          ],
+          "letterSpacingType": "px",
+          "textTransform": "",
+          "family": "",
+          "google": "",
+          "style": "",
+          "weight": "",
+          "variant": "",
+          "subset": "",
+          "loadGoogle": true
+        }
+      ]
+    },
+    "qtyColor": {
+      "type": "string"
+    },
+    "qtyColorHover": {
+      "type": "string"
+    },
+    "qtyBackground": {
+      "type": "string"
+    },
+    "qtyBackgroundHover": {
+      "type": "string"
+    },
+    "qtyBorderColor": {
+      "type": "string"
+    },
+    "qtyBorderColorHover": {
+      "type": "string"
+    },
+    "qtyPadding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyPaddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyPaddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyPaddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "qtyBorder": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderRadius": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderRadiusTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderRadiusMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "qtyBorderRadiusType": {
+      "type": "string",
+      "default": "px"
+    },
+    "qtyTypography": {
+      "type": "array",
+      "default": [
+        {
+          "size": [
+            "",
+            "",
+            ""
+          ],
+          "sizeType": "px",
+          "lineHeight": [
+            "",
+            "",
+            ""
+          ],
+          "lineType": "px",
+          "letterSpacing": [
+            "",
+            "",
+            ""
+          ],
+          "letterSpacingType": "px",
+          "textTransform": "",
+          "family": "",
+          "google": "",
+          "style": "",
+          "weight": "",
+          "variant": "",
+          "subset": "",
+          "loadGoogle": true
+        }
+      ]
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId",
+    "templateType"
+  ],
+  "supports": {
+    "html": false
+  },
+  "editorStyle": "kadence-wootemplate-blocks",
+  "style": "kadence-wootemplate-styles"
+}

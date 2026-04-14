@@ -1,0 +1,216 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "kadence-wootemplate-blocks/image",
+  "title": "Product: Image",
+  "category": "kadence-wootemplate-blocks",
+  "description": "Display the products featured image.",
+  "textdomain": "kadence-woo-extras",
+  "attributes": {
+    "uniqueID": {
+      "type": "string"
+    },
+    "isLink": {
+      "type": "boolean",
+      "default": true
+    },
+    "rel": {
+      "type": "string",
+      "default": ""
+    },
+    "linkTarget": {
+      "type": "boolean",
+      "default": false
+    },
+    "margin": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "marginType": {
+      "type": "string",
+      "default": "px"
+    },
+    "padding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "paddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "textAlign": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "isFull": {
+      "type": "boolean",
+      "default": false
+    },
+    "showSale": {
+      "type": "boolean",
+      "default": true
+    },
+    "saleColor": {
+      "type": "string"
+    },
+    "saleBackground": {
+      "type": "string"
+    },
+    "saleTypography": {
+      "type": "array",
+      "default": [
+        {
+          "size": [
+            "",
+            "",
+            ""
+          ],
+          "sizeType": "px",
+          "lineHeight": [
+            "",
+            "",
+            ""
+          ],
+          "lineType": "px",
+          "letterSpacing": [
+            "",
+            "",
+            ""
+          ],
+          "letterSpacingType": "px",
+          "textTransform": "",
+          "family": "",
+          "google": "",
+          "style": "",
+          "weight": "",
+          "variant": "",
+          "subset": "",
+          "loadGoogle": true
+        }
+      ]
+    },
+    "salePadding": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePaddingTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePaddingMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePaddingType": {
+      "type": "string",
+      "default": "px"
+    },
+    "salePosition": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePositionTablet": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePositionMobile": {
+      "type": "array",
+      "default": [
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    "salePositionType": {
+      "type": "string",
+      "default": "px"
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId",
+    "templateType"
+  ],
+  "supports": {
+    "html": false
+  },
+  "editorStyle": "kadence-wootemplate-blocks",
+  "style": "kadence-wootemplate-styles"
+}
