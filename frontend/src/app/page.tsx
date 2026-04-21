@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getProducts, getCategories } from "@/lib/api";
+import { getProductsUseCase, getCategoriesUseCase } from "@/lib/container";
 import ProductCard from "@/components/products/ProductCard";
 import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
 
@@ -16,8 +16,8 @@ const categoryIcons: Record<string, string> = {
 
 export default async function HomePage() {
   const [featuredResult, categories] = await Promise.allSettled([
-    getProducts({ featured: true, per_page: 8 }),
-    getCategories(),
+    getProductsUseCase.execute({ featured: true, per_page: 8 }),
+    getCategoriesUseCase.execute(),
   ]);
 
   const featuredProducts = featuredResult.status === "fulfilled" ? featuredResult.value.items : [];
@@ -46,7 +46,7 @@ export default async function HomePage() {
                 Ver catálogo
                 <ArrowRight size={18} />
               </Link>
-              <a href="https://wa.me/573001234567" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/576045602662" target="_blank" rel="noopener noreferrer"
                 className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark">
                 Cotizar por WhatsApp
               </a>
@@ -144,7 +144,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/573001234567"
+              href="https://wa.me/576045602662"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary text-base px-8 py-3.5"

@@ -1,14 +1,15 @@
 """Script para poblar la base de datos con datos de prueba."""
 from app.database import engine, SessionLocal, Base
-from app.models.product import Product, Category
+import app.infrastructure.database.models  # noqa: F401 — registra todos los modelos en Base.metadata
+from app.infrastructure.database.models.product_model import ProductModel, CategoryModel
 
 Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()
 
 # Limpiar datos anteriores
-db.query(Product).delete()
-db.query(Category).delete()
+db.query(ProductModel).delete()
+db.query(CategoryModel).delete()
 db.commit()
 
 # Categorías
@@ -25,7 +26,7 @@ cats_data = [
 
 cats = {}
 for c in cats_data:
-    obj = Category(**c)
+    obj = CategoryModel(**c)
     db.add(obj)
     db.flush()
     cats[c["slug"]] = obj.id
@@ -33,7 +34,7 @@ for c in cats_data:
 db.commit()
 
 # Productos de muestra
-products = [
+products_data = [
     # Filtros
     {"name": "Filtro de aceite para excavadora Komatsu PC200", "slug": "filtro-aceite-komatsu-pc200", "sku": "FLT-001", "price": 45000, "category_id": cats["filtros-para-maquinaria-pesada"], "in_stock": True, "featured": True, "short_description": "Filtro de aceite original para excavadora Komatsu PC200. Alta eficiencia de filtración."},
     {"name": "Filtro hidráulico excavadora Caterpillar 320", "slug": "filtro-hidraulico-caterpillar-320", "sku": "FLT-002", "price": 78000, "category_id": cats["filtros-para-maquinaria-pesada"], "in_stock": True, "featured": True, "short_description": "Filtro hidráulico de alta presión compatible con Caterpillar 320D y 320E."},
@@ -58,9 +59,9 @@ products = [
     {"name": "Sensor de presión hidráulica Caterpillar", "slug": "sensor-presion-hidraulica-caterpillar", "sku": "ELE-002", "price": 180000, "category_id": cats["partes-electricas"], "in_stock": True, "featured": True},
 ]
 
-for p in products:
-    db.add(Product(**p))
+for p in products_data:
+    db.add(ProductModel(**p))
 
 db.commit()
 db.close()
-print(f"OK: Base de datos creada con {len(cats_data)} categorias y {len(products)} productos.")
+print(f"OK: Base de datos creada con {len(cats_data)} categorías y {len(products_data)} productos.")

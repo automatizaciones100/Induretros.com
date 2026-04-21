@@ -1,12 +1,29 @@
-import type { Metadata } from "next";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Contáctanos",
-  description: "Comunícate con Induretros para cotizar repuestos para excavadoras hidráulicas. Medellín, Colombia.",
-};
+import { useState, useRef } from "react";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import TurnstileWidget from "@/components/ui/TurnstileWidget";
 
 export default function ContactoPage() {
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!turnstileToken) {
+      alert("Por favor espera a que se complete la verificación de seguridad.");
+      return;
+    }
+    setStatus("sending");
+    // Aquí iría la llamada al API de contacto cuando esté implementada.
+    // Por ahora simulamos éxito tras 800 ms.
+    await new Promise((r) => setTimeout(r, 800));
+    setStatus("sent");
+    formRef.current?.reset();
+    setTurnstileToken(null);
+  };
+
   return (
     <div className="py-12">
       <div className="container mx-auto">
@@ -46,7 +63,7 @@ export default function ContactoPage() {
             </div>
 
             <a
-              href="https://wa.me/573001234567"
+              href="https://wa.me/576045602662"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary w-full justify-center py-4 text-base"
@@ -61,48 +78,77 @@ export default function ContactoPage() {
           {/* Formulario */}
           <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm">
             <h2 className="font-heading text-xl font-semibold text-dark-2 uppercase mb-6">Envíanos un mensaje</h2>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
-                    Nombre
-                  </label>
-                  <input type="text" placeholder="Tu nombre" className="input-field" required />
+
+            {status === "sent" ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                  <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p className="font-sans text-dark-2 font-medium">¡Mensaje enviado!</p>
+                <p className="text-sm text-gray-mid">Te responderemos a la brevedad.</p>
+                <button onClick={() => setStatus("idle")} className="btn-secondary mt-2">
+                  Enviar otro mensaje
+                </button>
+              </div>
+            ) : (
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
+                      Nombre
+                    </label>
+                    <input type="text" name="nombre" placeholder="Tu nombre" className="input-field" required />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
+                      Teléfono
+                    </label>
+                    <input type="tel" name="telefono" placeholder="Tu teléfono" className="input-field" />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
-                    Teléfono
+                    Correo electrónico
                   </label>
-                  <input type="tel" placeholder="Tu teléfono" className="input-field" />
+                  <input type="email" name="email" placeholder="tu@correo.com" className="input-field" required />
                 </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
-                  Correo electrónico
-                </label>
-                <input type="email" placeholder="tu@correo.com" className="input-field" required />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
-                  Asunto
-                </label>
-                <input type="text" placeholder="¿En qué podemos ayudarte?" className="input-field" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
-                  Mensaje
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Describe el repuesto que necesitas, marca del equipo, modelo, etc."
-                  className="input-field resize-none"
-                  required
+                <div>
+                  <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
+                    Asunto
+                  </label>
+                  <input type="text" name="asunto" placeholder="¿En qué podemos ayudarte?" className="input-field" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-mid uppercase tracking-wide mb-1.5 font-sans">
+                    Mensaje
+                  </label>
+                  <textarea
+                    name="mensaje"
+                    rows={4}
+                    placeholder="Describe el repuesto que necesitas, marca del equipo, modelo, etc."
+                    className="input-field resize-none"
+                    required
+                  />
+                </div>
+
+                {/* Cloudflare Turnstile — verifica que es un humano antes de enviar */}
+                <TurnstileWidget
+                  onVerify={(token) => setTurnstileToken(token)}
+                  onExpire={() => setTurnstileToken(null)}
+                  onError={() => setTurnstileToken(null)}
                 />
-              </div>
-              <button type="submit" className="btn-primary w-full justify-center py-3.5">
-                Enviar mensaje
-              </button>
-            </form>
+
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="btn-primary w-full justify-center py-3.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {status === "sending" ? "Enviando…" : "Enviar mensaje"}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

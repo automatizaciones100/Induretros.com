@@ -28,6 +28,8 @@ frontend/.vercel/
 
 # Next.js generados
 frontend/next-env.d.ts
+frontend/tsconfig.tsbuildinfo
+*.tsbuildinfo
 
 # Sistema operativo
 .DS_Store

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ShoppingCart, Eye } from "lucide-react";
-import type { Product } from "@/lib/api";
+import type { Product } from "@/domain/entities/Product";
 
 interface ProductCardProps {
   product: Product;
