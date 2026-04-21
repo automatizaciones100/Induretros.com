@@ -49,3 +49,7 @@ def log_token_invalid(ip: str) -> None:
 
 def log_access_denied(user_id: int, resource: str, ip: str) -> None:
     _log("access_denied", user_id=user_id, resource=resource, ip=ip)
+
+
+def log_admin_action(user_id: int, action: str, resource: str, ip: str) -> None:
+    _log("admin_action", user_id=user_id, action=action, resource=resource, ip=ip)

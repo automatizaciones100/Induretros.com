@@ -7,6 +7,7 @@ from app.presentation.dependencies import register_user_use_case, login_user_use
 from app.presentation.rate_limiter import limiter
 from app.infrastructure.logging.security_logger import log_login_failed, log_login_success
 from app.infrastructure.security.turnstile import verify_turnstile
+from app.infrastructure.security.login_throttle import check_and_record_failure, reset_failures
 from app.config import settings
 from jose import jwt as _jwt
 
@@ -42,8 +43,13 @@ def login(
         token_dto = use_case.execute(command)
         payload = _jwt.decode(token_dto.access_token, settings.secret_key, algorithms=[settings.algorithm])
         user_id = int(payload.get("sub", 0))
+        reset_failures(command.email)
         log_login_success(user_id=user_id, email=command.email, ip=ip)
         return token_dto
     except InvalidCredentialsError as e:
         log_login_failed(email=command.email, ip=ip)
+        try:
+            check_and_record_failure(command.email)
+        except ValueError as lock_err:
+            raise HTTPException(status_code=status.HTTP_429_TOO_MANY_REQUESTS, detail=str(lock_err))
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=str(e))

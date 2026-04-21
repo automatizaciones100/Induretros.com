@@ -29,6 +29,7 @@ def create_order(
 
 
 @router.get("/{order_id}", response_model=OrderDTO)
+@limiter.limit("10/minute")
 def retrieve_order(
     order_id: int,
     request: Request,

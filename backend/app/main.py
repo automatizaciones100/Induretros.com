@@ -14,15 +14,17 @@ from app.presentation.rate_limiter import limiter
 Base.metadata.create_all(bind=engine)
 
 _is_production = settings.environment == "production"
+# Los docs solo se exponen cuando se solicita explícitamente.
+# En producción están SIEMPRE deshabilitados, aunque SHOW_DOCS=true.
+_show_docs = settings.show_docs and not _is_production
 
 app = FastAPI(
     title="Induretros API",
     description="API para la tienda de repuestos para excavadoras hidráulicas",
     version="2.0.0",
-    # En producción los endpoints de documentación quedan deshabilitados
-    docs_url=None if _is_production else "/docs",
-    redoc_url=None if _is_production else "/redoc",
-    openapi_url=None if _is_production else "/openapi.json",
+    docs_url="/docs" if _show_docs else None,
+    redoc_url="/redoc" if _show_docs else None,
+    openapi_url="/openapi.json" if _show_docs else None,
 )
 
 app.state.limiter = limiter

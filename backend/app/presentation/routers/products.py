@@ -26,6 +26,7 @@ from app.presentation.dependencies import (
     create_category_use_case,
     get_current_admin,
 )
+from app.infrastructure.logging.security_logger import log_admin_action
 
 router = APIRouter(prefix="/api/products", tags=["products"])
 
@@ -92,19 +93,35 @@ def retrieve_product(
 
 @router.post("", response_model=ProductDTO, status_code=201)
 def create_product(
+    request: Request,
     command: CreateProductCommand,
     use_case: CreateProductUseCase = Depends(create_product_use_case),
-    _admin: dict = Depends(get_current_admin),
+    admin: dict = Depends(get_current_admin),
 ):
     product = use_case.execute(command)
+    ip = request.client.host if request.client else "unknown"
+    log_admin_action(
+        user_id=int(admin.get("sub", 0)),
+        action="create_product",
+        resource=f"product:{product.slug}",
+        ip=ip,
+    )
     return ProductDTO.model_validate(product, from_attributes=True)
 
 
 @router.post("/categories", response_model=CategoryDTO, status_code=201)
 def create_category(
+    request: Request,
     command: CreateCategoryCommand,
     use_case: CreateCategoryUseCase = Depends(create_category_use_case),
-    _admin: dict = Depends(get_current_admin),
+    admin: dict = Depends(get_current_admin),
 ):
     category = use_case.execute(command)
+    ip = request.client.host if request.client else "unknown"
+    log_admin_action(
+        user_id=int(admin.get("sub", 0)),
+        action="create_category",
+        resource=f"category:{category.slug}",
+        ip=ip,
+    )
     return CategoryDTO.model_validate(category, from_attributes=True)

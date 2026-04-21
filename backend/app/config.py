@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     # En producción debe ser https://induretros.com
     frontend_url: str = "http://localhost:3000"
     environment: str = "development"  # "production" deshabilita /docs y /redoc
+    # Habilitar docs explícitamente (solo en development). En producción siempre off.
+    show_docs: bool = False
     # Cloudflare Turnstile — dejar vacío en dev para omitir verificación
     turnstile_secret_key: str = ""
 
