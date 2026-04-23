@@ -35,6 +35,26 @@ class LoginCommand(BaseModel):
     cf_turnstile_response: Optional[str] = None
 
 
+class ChangePasswordCommand(BaseModel):
+    """A.8.5 — Requiere la contraseña actual para autorizar el cambio."""
+    current_password: str
+    new_password: str = Field(..., min_length=8, max_length=128)
+
+    @field_validator("new_password")
+    @classmethod
+    def password_strength(cls, v: str) -> str:
+        if not any(c.isdigit() for c in v):
+            raise ValueError("La contraseña debe contener al menos un número")
+        if not any(c.isalpha() for c in v):
+            raise ValueError("La contraseña debe contener al menos una letra")
+        return v
+
+
+class DeleteAccountCommand(BaseModel):
+    """A.8.10 / A.5.34 — Confirmar con contraseña antes de borrar la cuenta."""
+    password: str
+
+
 class UserDTO(BaseModel):
     id: int
     email: str

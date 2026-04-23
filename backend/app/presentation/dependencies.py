@@ -40,6 +40,8 @@ from app.application.use_cases.auth.register_user import RegisterUserUseCase
 from app.application.use_cases.auth.login_user import LoginUserUseCase
 from app.application.use_cases.orders.create_order import CreateOrderUseCase
 from app.application.use_cases.orders.get_order import GetOrderUseCase
+from app.application.use_cases.auth.change_password import ChangePasswordUseCase
+from app.application.use_cases.auth.delete_user import DeleteUserUseCase
 
 
 # --- Repositorios ---
@@ -134,6 +136,20 @@ def get_order_use_case(
     repo: IOrderRepository = Depends(get_order_repository),
 ) -> GetOrderUseCase:
     return GetOrderUseCase(repo)
+
+
+def change_password_use_case(
+    repo: IUserRepository = Depends(get_user_repository),
+    hasher: IPasswordHasher = Depends(get_password_hasher),
+) -> ChangePasswordUseCase:
+    return ChangePasswordUseCase(repo, hasher)
+
+
+def delete_user_use_case(
+    repo: IUserRepository = Depends(get_user_repository),
+    hasher: IPasswordHasher = Depends(get_password_hasher),
+) -> DeleteUserUseCase:
+    return DeleteUserUseCase(repo, hasher)
 
 
 # --- Autenticación ---

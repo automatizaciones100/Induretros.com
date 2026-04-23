@@ -5,7 +5,7 @@ from app.application.use_cases.orders.get_order import GetOrderUseCase
 from app.domain.exceptions import EntityNotFoundError, OutOfStockError
 from app.presentation.dependencies import create_order_use_case, get_order_use_case, get_current_user
 from app.presentation.rate_limiter import limiter
-from app.infrastructure.logging.security_logger import log_access_denied
+from app.infrastructure.logging.security_logger import log_access_denied, log_data_accessed
 
 router = APIRouter(prefix="/api/orders", tags=["orders"])
 
@@ -49,6 +49,8 @@ def retrieve_order(
         log_access_denied(user_id=user_id, resource=f"order:{order_id}", ip=ip)
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Acceso denegado")
 
+    ip = request.client.host if request.client else "unknown"
+    log_data_accessed(user_id=user_id, resource=f"order:{order_id}", ip=ip)
     return _order_to_dto(order)
 
 

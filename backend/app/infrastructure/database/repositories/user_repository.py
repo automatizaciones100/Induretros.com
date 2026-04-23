@@ -27,6 +27,10 @@ class SQLAlchemyUserRepository(IUserRepository):
         model = self._db.query(UserModel).filter(UserModel.email == email).first()
         return _user_model_to_entity(model) if model else None
 
+    def get_by_id(self, user_id: int) -> Optional[User]:
+        model = self._db.query(UserModel).filter(UserModel.id == user_id).first()
+        return _user_model_to_entity(model) if model else None
+
     def create(self, user: User) -> User:
         model = UserModel(
             email=user.email,
@@ -40,3 +44,18 @@ class SQLAlchemyUserRepository(IUserRepository):
         self._db.commit()
         self._db.refresh(model)
         return _user_model_to_entity(model)
+
+    def update_password(self, user_id: int, hashed_password: str) -> None:
+        self._db.query(UserModel).filter(UserModel.id == user_id).update(
+            {"hashed_password": hashed_password}
+        )
+        self._db.commit()
+
+    def delete(self, user_id: int) -> None:
+        """
+        Elimina la cuenta del usuario.
+        Las órdenes vinculadas quedan con user_id=NULL (FK nullable) para
+        preservar el historial contable pero desvinculadas del titular.
+        """
+        self._db.query(UserModel).filter(UserModel.id == user_id).delete()
+        self._db.commit()
