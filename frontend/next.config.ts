@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "induretros.com" },
-      { protocol: "http", hostname: "localhost" },
+      // Backend local en dev sirve imágenes en /static/images/
+      { protocol: "http", hostname: "localhost", port: "8000", pathname: "/static/**" },
     ],
   },
 };

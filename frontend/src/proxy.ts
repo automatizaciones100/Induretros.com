@@ -23,7 +23,8 @@ export function proxy(request: NextRequest) {
     `script-src 'self' 'nonce-${nonce}' https://challenges.cloudflare.com${isDev ? " 'unsafe-eval'" : ""}`,
     // Estilos: 'unsafe-inline' necesario para Tailwind CSS
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' https://induretros.com data:",
+    // Permite imágenes del propio dominio, del backend local (dev) y del CDN de producción
+    `img-src 'self' ${apiUrl} https://induretros.com data:`,
     "font-src 'self'",
     // Turnstile hace fetch a su API desde el iframe y el script
     `connect-src 'self' ${apiUrl} https://challenges.cloudflare.com`,

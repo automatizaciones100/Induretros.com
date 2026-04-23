@@ -32,6 +32,15 @@ class IProductRepository(ABC):
         """Descuenta `quantity` unidades del stock. Marca in_stock=False si llega a 0."""
         ...
 
+    @abstractmethod
+    def get_by_sku(self, sku: str) -> Optional[Product]:
+        ...
+
+    @abstractmethod
+    def update_image_url(self, product_id: int, image_url: str) -> None:
+        """Actualiza la URL de imagen de un producto."""
+        ...
+
 
 class ICategoryRepository(ABC):
     @abstractmethod

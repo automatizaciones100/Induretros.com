@@ -1,5 +1,7 @@
+from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from app.config import settings
@@ -8,9 +10,14 @@ from app.database import Base, engine, SessionLocal
 # Importar todos los modelos para que Base.metadata los registre antes de create_all
 import app.infrastructure.database.models  # noqa: F401
 
-from app.presentation.routers import products, auth, orders, users
+from app.presentation.routers import products, auth, orders, users, images
 from app.presentation.rate_limiter import limiter
 from app.presentation.middleware.request_id import RequestIdMiddleware
+
+# Directorio de archivos estáticos (imágenes de productos)
+_STATIC_DIR = Path(__file__).resolve().parents[2] / "static"
+_STATIC_DIR.mkdir(exist_ok=True)
+((_STATIC_DIR / "images")).mkdir(exist_ok=True)
 
 Base.metadata.create_all(bind=engine)
 
@@ -46,6 +53,10 @@ app.include_router(products.router)
 app.include_router(auth.router)
 app.include_router(orders.router)
 app.include_router(users.router)
+app.include_router(images.router)
+
+# Servir imágenes subidas como archivos estáticos: GET /static/images/FLT-001.jpg
+app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
 
 
 @app.get("/")

@@ -85,6 +85,16 @@ class SQLAlchemyProductRepository(IProductRepository):
         model = self._db.query(ProductModel).filter(ProductModel.id == product_id).first()
         return _product_model_to_entity(model) if model else None
 
+    def get_by_sku(self, sku: str) -> Optional[Product]:
+        model = self._db.query(ProductModel).filter(ProductModel.sku == sku).first()
+        return _product_model_to_entity(model) if model else None
+
+    def update_image_url(self, product_id: int, image_url: str) -> None:
+        self._db.query(ProductModel).filter(ProductModel.id == product_id).update(
+            {"image_url": image_url}
+        )
+        self._db.commit()
+
     def decrement_stock(self, product_id: int, quantity: int) -> None:
         model = self._db.query(ProductModel).filter(ProductModel.id == product_id).first()
         if model:
