@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# Variables de entorno
+.env
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+
+# Base de datos local (SQLite)
+*.db
+*.sqlite
+
+# Next.js generados
+frontend/next-env.d.ts
+frontend/tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
