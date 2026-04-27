@@ -1,4 +1,8 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from jose import jwt, JWTError
+from app.config import settings
 from app.application.dtos.order_dto import CreateOrderCommand, OrderDTO, OrderItemDTO
 from app.application.use_cases.orders.create_order import CreateOrderUseCase
 from app.application.use_cases.orders.get_order import GetOrderUseCase
@@ -9,6 +13,21 @@ from app.infrastructure.logging.security_logger import log_access_denied, log_da
 
 router = APIRouter(prefix="/api/orders", tags=["orders"])
 
+# Auth opcional: si viene Bearer token, lo decodifica; si no, retorna None.
+_optional_bearer = HTTPBearer(auto_error=False)
+
+
+def get_optional_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(_optional_bearer),
+) -> Optional[dict]:
+    """Retorna el payload del JWT si viene en el header, o None si es anónimo."""
+    if not credentials:
+        return None
+    try:
+        return jwt.decode(credentials.credentials, settings.secret_key, algorithms=[settings.algorithm])
+    except (JWTError, Exception):
+        return None
+
 
 @router.post("", response_model=OrderDTO, status_code=201)
 @limiter.limit("10/minute")
@@ -16,9 +35,16 @@ def create_order(
     request: Request,
     command: CreateOrderCommand,
     use_case: CreateOrderUseCase = Depends(create_order_use_case),
-    current_user: dict = Depends(get_current_user),
+    current_user: Optional[dict] = Depends(get_optional_user),
 ):
-    user_id = int(current_user.get("sub", 0)) or None
+    """
+    Crea una orden. Auth es opcional:
+      - Con token: la orden queda vinculada al user_id (aparece en su historial)
+      - Sin token: orden anónima — el cliente accede al detalle solo en la
+        respuesta inmediata o desde la página de confirmación inmediata
+    """
+    user_id = int(current_user.get("sub", 0)) if current_user else None
+    user_id = user_id or None  # 0 → None
     try:
         order = use_case.execute(command, user_id=user_id)
         return _order_to_dto(order)
