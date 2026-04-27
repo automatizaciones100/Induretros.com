@@ -31,7 +31,7 @@ export default function Footer() {
             alt="Induretros"
             width={180}
             height={55}
-            className="h-12 w-auto object-contain mb-4 brightness-0 invert"
+            className="h-12 w-auto object-contain mb-4"
           />
           <p className="text-sm leading-relaxed mb-4 text-gray-400">
             Importadores directos de repuestos para excavadoras hidráulicas. Más de 9 años trabajando con excelencia.
