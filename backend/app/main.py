@@ -10,7 +10,7 @@ from app.database import Base, engine, SessionLocal
 # Importar todos los modelos para que Base.metadata los registre antes de create_all
 import app.infrastructure.database.models  # noqa: F401
 
-from app.presentation.routers import products, auth, orders, users, images
+from app.presentation.routers import products, auth, orders, users, images, admin
 from app.presentation.rate_limiter import limiter
 from app.presentation.middleware.request_id import RequestIdMiddleware
 
@@ -54,6 +54,7 @@ app.include_router(auth.router)
 app.include_router(orders.router)
 app.include_router(users.router)
 app.include_router(images.router)
+app.include_router(admin.router)
 
 # Servir imágenes subidas como archivos estáticos: GET /static/images/FLT-001.jpg
 app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")

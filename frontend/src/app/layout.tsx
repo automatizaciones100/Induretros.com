@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import { PublicHeader, PublicFooter, PublicWhatsAppButton } from "@/components/layout/PublicChrome";
 
 export const metadata: Metadata = {
   title: {
@@ -39,10 +37,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Header />
+        <PublicHeader />
         <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsAppButton />
+        <PublicFooter />
+        <PublicWhatsAppButton />
       </body>
     </html>
   );

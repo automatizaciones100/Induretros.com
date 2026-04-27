@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 import { Loader2, ShieldOff } from "lucide-react";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -14,7 +15,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => setHydrated(true), []);
 
-  // Redirige al login si no hay sesión válida
   useEffect(() => {
     if (!hydrated) return;
     if (!isAuthenticated()) {
@@ -24,17 +24,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!hydrated) {
     return (
-      <div className="container mx-auto py-16 text-center">
-        <Loader2 size={28} className="animate-spin text-gray-light mx-auto mb-3" />
-        <p className="text-gray-mid font-sans text-sm">Verificando sesión…</p>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 size={28} className="animate-spin text-gray-light mx-auto mb-3" />
+          <p className="text-gray-mid font-sans text-sm">Verificando sesión…</p>
+        </div>
       </div>
     );
   }
 
   if (!isAuthenticated()) {
-    // Sin sesión — el useEffect ya disparó el redirect, mostramos placeholder
     return (
-      <div className="container mx-auto py-16 text-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-gray-mid font-sans">Redirigiendo al login…</p>
       </div>
     );
@@ -42,8 +43,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!isAdmin()) {
     return (
-      <div className="container mx-auto py-16">
-        <div className="max-w-md mx-auto text-center">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center px-4">
           <div className="w-16 h-16 rounded-full bg-red-50 mx-auto flex items-center justify-center mb-4">
             <ShieldOff size={32} className="text-red-500" />
           </div>
@@ -67,5 +68,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  return <>{children}</>;
+  return (
+    <div className="flex min-h-screen bg-bg-light">
+      <AdminSidebar />
+      <main className="flex-1 overflow-x-hidden">{children}</main>
+    </div>
+  );
 }
