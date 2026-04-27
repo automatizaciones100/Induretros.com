@@ -21,9 +21,10 @@ import DOMPurify from "isomorphic-dompurify";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ShoppingCart, Phone, MessageCircle, ChevronRight } from "lucide-react";
+import { Phone, MessageCircle, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import type { Product } from "@/domain/entities/Product";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -223,13 +224,11 @@ export default async function ProductPage({ params }: PageProps) {
 
             {/* Botones de acción */}
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <button
-                disabled={!product.in_stock}
-                className="btn-primary flex-1 justify-center py-3.5 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ShoppingCart size={18} />
-                Agregar al carrito
-              </button>
+              <AddToCartButton
+                product={product}
+                size="lg"
+                className="flex-1 justify-center py-3.5"
+              />
               <a
                 href={`https://wa.me/576045602662?text=Hola, estoy interesado en: ${encodeURIComponent(product.name)}`}
                 target="_blank"

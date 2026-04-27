@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ShoppingCart, Phone } from "lucide-react";
+import { Search, Phone } from "lucide-react";
 import TopBar from "./TopBar";
 import Navbar from "./Navbar";
+import CartIcon from "@/components/cart/CartIcon";
 
 export default function Header() {
   return (
@@ -58,19 +59,7 @@ export default function Header() {
               </div>
             </a>
 
-            <Link
-              href="/carrito"
-              className="relative flex items-center gap-2 text-dark-2 hover:text-primary transition-colors"
-              aria-label="Carrito de compras"
-            >
-              <div className="relative">
-                <ShoppingCart size={24} />
-                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-semibold">
-                  0
-                </span>
-              </div>
-              <span className="hidden sm:block text-sm font-sans font-medium">Carrito</span>
-            </Link>
+            <CartIcon />
           </div>
         </div>
       </div>

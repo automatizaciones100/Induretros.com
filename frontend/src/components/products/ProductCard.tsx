@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 import type { Product } from "@/domain/entities/Product";
+import AddToCartButton from "@/components/cart/AddToCartButton";
 
 interface ProductCardProps {
   product: Product;
@@ -55,14 +56,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <Eye size={13} />
             Ver producto
           </Link>
-          <button
-            className="flex-1 bg-primary text-white text-xs font-semibold py-2 rounded flex items-center justify-center gap-1.5 hover:bg-secondary hover:text-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={!product.in_stock}
-            aria-label="Agregar al carrito"
-          >
-            <ShoppingCart size={13} />
-            Agregar
-          </button>
+          <AddToCartButton product={product} className="flex-1" />
         </div>
       </div>
 
