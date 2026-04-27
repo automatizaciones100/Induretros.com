@@ -71,9 +71,23 @@ export default function CheckoutPage() {
 
       const order = await res.json();
 
-      // Guardar la orden en sessionStorage para que la página de confirmación
-      // pueda mostrarla sin requerir auth
-      sessionStorage.setItem(`order:${order.id}`, JSON.stringify(order));
+      // Enriquecemos los items del API con datos del carrito (nombre, imagen, slug)
+      // así la página de confirmación no necesita auth ni un GET extra al backend.
+      const enrichedOrder = {
+        ...order,
+        items: order.items.map((apiItem: { product_id: number; quantity: number; unit_price: number; subtotal: number; id: number }) => {
+          const cartItem = items.find((c) => c.product_id === apiItem.product_id);
+          return {
+            ...apiItem,
+            name: cartItem?.name,
+            slug: cartItem?.slug,
+            sku: cartItem?.sku,
+            image_url: cartItem?.image_url,
+          };
+        }),
+      };
+
+      sessionStorage.setItem(`order:${order.id}`, JSON.stringify(enrichedOrder));
 
       clearCart();
       router.push(`/orden/${order.id}`);
