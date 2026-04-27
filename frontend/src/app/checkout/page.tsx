@@ -4,8 +4,9 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ShieldCheck, Loader2 } from "lucide-react";
+import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { buildOrderWhatsAppUrl } from "@/lib/whatsapp";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -45,17 +46,24 @@ export default function CheckoutPage() {
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const payload = {
+    const customer = {
       customer_name: String(formData.get("customer_name") || "").trim(),
       customer_email: String(formData.get("customer_email") || "").trim(),
       customer_phone: String(formData.get("customer_phone") || "").trim() || undefined,
       shipping_address: String(formData.get("shipping_address") || "").trim() || undefined,
       notes: String(formData.get("notes") || "").trim() || undefined,
+    };
+    const payload = {
+      ...customer,
       items: items.map((i) => ({
         product_id: i.product_id,
         quantity: i.quantity,
       })),
     };
+
+    // Abrir pestaña SINCRÓNICAMENTE (en user gesture) para evitar popup blocker.
+    // Le asignamos la URL real cuando el POST termine.
+    const wppWindow = window.open("about:blank", "_blank");
 
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -71,27 +79,51 @@ export default function CheckoutPage() {
 
       const order = await res.json();
 
-      // Enriquecemos los items del API con datos del carrito (nombre, imagen, slug)
-      // así la página de confirmación no necesita auth ni un GET extra al backend.
-      const enrichedOrder = {
-        ...order,
-        items: order.items.map((apiItem: { product_id: number; quantity: number; unit_price: number; subtotal: number; id: number }) => {
-          const cartItem = items.find((c) => c.product_id === apiItem.product_id);
-          return {
-            ...apiItem,
-            name: cartItem?.name,
-            slug: cartItem?.slug,
-            sku: cartItem?.sku,
-            image_url: cartItem?.image_url,
-          };
-        }),
-      };
-
+      // Enriquecemos los items del API con datos del carrito (nombre, imagen, slug, etc.)
+      // así la confirmación los muestra y el mensaje de WhatsApp queda detallado.
+      const enrichedItems = order.items.map((apiItem: { product_id: number; quantity: number; unit_price: number; subtotal: number; id: number }) => {
+        const cartItem = items.find((c) => c.product_id === apiItem.product_id);
+        return {
+          ...apiItem,
+          name: cartItem?.name,
+          slug: cartItem?.slug,
+          sku: cartItem?.sku,
+          image_url: cartItem?.image_url,
+        };
+      });
+      const enrichedOrder = { ...order, items: enrichedItems };
       sessionStorage.setItem(`order:${order.id}`, JSON.stringify(enrichedOrder));
+
+      // Construir mensaje de WhatsApp con todo el detalle del pedido
+      const whatsappUrl = buildOrderWhatsAppUrl({
+        id: order.id,
+        customer_name: customer.customer_name,
+        customer_email: customer.customer_email,
+        customer_phone: customer.customer_phone,
+        shipping_address: customer.shipping_address,
+        notes: customer.notes,
+        total: order.total,
+        items: items.map((i) => ({
+          product_id: i.product_id,
+          name: i.name,
+          sku: i.sku,
+          unit_price: i.unit_price,
+          quantity: i.quantity,
+        })),
+      });
+
+      // Redirigir la pestaña nueva a WhatsApp; si fue bloqueada, abrir en la actual
+      if (wppWindow && !wppWindow.closed) {
+        wppWindow.location.href = whatsappUrl;
+      } else {
+        window.open(whatsappUrl, "_blank");
+      }
 
       clearCart();
       router.push(`/orden/${order.id}`);
     } catch (err) {
+      // Si falla el POST, cerrar la ventana de WhatsApp que ya abrimos
+      if (wppWindow && !wppWindow.closed) wppWindow.close();
       setError(err instanceof Error ? err.message : "Error al procesar el pedido");
       setSubmitting(false);
     }
@@ -101,7 +133,8 @@ export default function CheckoutPage() {
     <div className="container mx-auto py-12">
       <h1 className="section-title mb-2">Confirmar pedido</h1>
       <p className="text-gray-mid font-sans mb-8">
-        Completa tus datos y nos comunicaremos para coordinar el pago y envío.
+        Completa tus datos. Al confirmar, abriremos WhatsApp con el detalle del
+        pedido para que un asesor coordine el pago y envío contigo.
       </p>
 
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -278,7 +311,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="btn-primary w-full justify-center py-3.5 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full justify-center py-3.5 rounded font-semibold flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed bg-green-600 hover:bg-green-700 text-white"
             >
               {submitting ? (
                 <>
@@ -287,13 +320,14 @@ export default function CheckoutPage() {
                 </>
               ) : (
                 <>
-                  <ShieldCheck size={16} />
-                  Confirmar pedido
+                  <MessageCircle size={16} />
+                  Confirmar y abrir WhatsApp
                 </>
               )}
             </button>
 
             <p className="text-xs text-gray-light font-sans text-center mt-4 leading-relaxed">
+              Se abrirá WhatsApp en una pestaña nueva con el detalle del pedido.
               Al confirmar aceptas nuestra{" "}
               <Link href="/privacidad" className="text-primary hover:underline">
                 política de privacidad

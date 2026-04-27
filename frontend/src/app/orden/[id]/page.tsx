@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search } from "lucide-react";
+import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 interface OrderItem {
   id: number;
@@ -30,8 +31,6 @@ interface Order {
   items: OrderItem[];
   created_at: string;
 }
-
-const WA_NUMBER = "576045602662";
 
 export default function OrdenPage() {
   const params = useParams<{ id: string }>();
@@ -79,7 +78,7 @@ export default function OrdenPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Hola, consulto por mi pedido #${id}`)}`}
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola, consulto por mi pedido #${id}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary justify-center"
@@ -97,11 +96,23 @@ export default function OrdenPage() {
     );
   }
 
-  // ─── Datos para WhatsApp ───
-  const waMessage = encodeURIComponent(
-    `Hola, acabo de hacer el pedido #${order.id} por $${order.total.toLocaleString("es-CO")}. ` +
-      `Mi nombre: ${order.customer_name}. ¿Cómo coordinamos el pago?`
-  );
+  // ─── URL de WhatsApp con detalle completo del pedido ───
+  const whatsappUrl = buildOrderWhatsAppUrl({
+    id: order.id,
+    customer_name: order.customer_name,
+    customer_email: order.customer_email,
+    customer_phone: order.customer_phone,
+    shipping_address: order.shipping_address,
+    notes: order.notes,
+    total: order.total,
+    items: order.items.map((it) => ({
+      product_id: it.product_id,
+      name: it.name || `Producto #${it.product_id}`,
+      sku: it.sku,
+      unit_price: it.unit_price,
+      quantity: it.quantity,
+    })),
+  });
 
   const formattedDate = new Date(order.created_at).toLocaleDateString("es-CO", {
     day: "2-digit",
@@ -123,9 +134,9 @@ export default function OrdenPage() {
             ¡Pedido confirmado!
           </h1>
           <p className="text-sm text-gray-mid font-sans">
-            Recibimos tu pedido <strong>#{order.id}</strong>. En breve nos
-            comunicaremos al correo y teléfono que registraste para coordinar
-            el pago y la entrega.
+            Tu pedido <strong>#{order.id}</strong> quedó registrado y se abrió
+            WhatsApp con el detalle. Si la pestaña no se abrió, usa el botón
+            verde más abajo para enviarnos la solicitud.
           </p>
         </div>
       </div>
@@ -292,7 +303,7 @@ export default function OrdenPage() {
       {/* Acciones */}
       <div className="max-w-3xl mx-auto mt-8 flex flex-col sm:flex-row gap-3 print:hidden">
         <a
-          href={`https://wa.me/${WA_NUMBER}?text=${waMessage}`}
+          href={whatsappUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="btn-primary flex-1 justify-center bg-green-600 hover:bg-green-700 border-green-600"
