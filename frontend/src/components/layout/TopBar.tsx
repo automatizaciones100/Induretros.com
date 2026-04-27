@@ -50,10 +50,10 @@ export default function TopBar() {
             <Youtube size={15} />
           </a>
           <a
-            href="/mi-cuenta"
+            href="/login"
             className="top-bar-link hover:text-primary ml-2 border-l border-gray-600 pl-3"
           >
-            Mi cuenta
+            Iniciar sesión
           </a>
         </div>
       </div>

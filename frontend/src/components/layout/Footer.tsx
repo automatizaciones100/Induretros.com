@@ -11,11 +11,11 @@ const productLinks = [
   { name: "Piezas de desgaste", href: "/repuestos?categoria=piezas-de-desgaste" },
 ];
 
+// Solo páginas implementadas — evita 404. /nosotros, /blog y /mi-cuenta
+// se reactivarán cuando existan las rutas.
 const infoLinks = [
-  { name: "Nosotros", href: "/nosotros" },
-  { name: "Blog", href: "/blog" },
+  { name: "Repuestos", href: "/repuestos" },
   { name: "Contáctanos", href: "/contacto" },
-  { name: "Mi cuenta", href: "/mi-cuenta" },
   { name: "Política de privacidad", href: "/privacidad" },
 ];
 
@@ -123,7 +123,6 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Induretros. Todos los derechos reservados.</p>
           <div className="flex gap-4">
             <Link href="/privacidad" className="hover:text-primary transition-colors">Política de privacidad</Link>
-            <Link href="/cookies" className="hover:text-primary transition-colors">Cookies</Link>
           </div>
         </div>
       </div>
