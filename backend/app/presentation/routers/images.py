@@ -1,25 +1,27 @@
 """
-Carga masiva de imágenes de productos.
+Carga masiva de imágenes para productos y categorías.
 
-Convención de nombres de archivo:
-  - Por SKU:  FLT-001.jpg  →  busca producto con sku='FLT-001'
-  - Por slug: filtro-aceite-komatsu-pc200.webp  →  busca producto con slug=...
+Convención de nombres de archivo (orden de prioridad):
+  1. Por SKU de producto:    FLT-001.jpg → producto con sku='FLT-001'
+  2. Por slug de producto:   filtro-aceite-komatsu-pc200.webp → producto
+  3. Por slug de categoría:  filtros.jpg → categoría con slug='filtros'
 
 Formatos aceptados: jpg, jpeg, png, webp, avif
 Tamaño máximo por archivo: 5 MB
 Máximo de archivos por request: 50
 """
-import os
 import re
-import uuid
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
 from fastapi.responses import JSONResponse
 
 from app.database import get_db
-from app.infrastructure.database.repositories.product_repository import SQLAlchemyProductRepository
+from app.infrastructure.database.repositories.product_repository import (
+    SQLAlchemyProductRepository,
+    SQLAlchemyCategoryRepository,
+)
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
 from app.infrastructure.logging.security_logger import log_admin_action
@@ -34,7 +36,6 @@ IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
 MAX_FILES = 50
-# URL base que el frontend usará para acceder a las imágenes
 IMAGE_BASE_URL = "/static/images"
 
 
@@ -44,31 +45,45 @@ def _safe_filename(name: str) -> str:
     return name[:200]
 
 
-def _identify_product(stem: str, repo: SQLAlchemyProductRepository):
+EntityKind = Literal["product", "category"]
+
+
+def _identify_target(
+    stem: str,
+    product_repo: SQLAlchemyProductRepository,
+    category_repo: SQLAlchemyCategoryRepository,
+) -> tuple[Optional[EntityKind], object]:
     """
-    Intenta encontrar el producto por SKU primero, luego por slug.
-    stem: nombre del archivo sin extensión (ej. 'FLT-001' o 'filtro-aceite-komatsu')
+    Busca a qué entidad enlazar la imagen, en orden de prioridad:
+    1. producto por SKU
+    2. producto por slug
+    3. categoría por slug
+    Retorna (kind, entity) o (None, None) si no encuentra.
     """
-    product = repo.get_by_sku(stem)
-    if not product:
-        product = repo.get_by_slug(stem)
-    return product
+    product = product_repo.get_by_sku(stem) or product_repo.get_by_slug(stem)
+    if product:
+        return "product", product
+
+    category = category_repo.get_by_slug(stem)
+    if category:
+        return "category", category
+
+    return None, None
 
 
 @router.post("/upload", status_code=207)
 @limiter.limit("10/minute")
 async def upload_images(
     request: Request,
-    files: Annotated[list[UploadFile], File(description="Imágenes de productos (máx. 50 archivos, 5 MB c/u)")],
+    files: Annotated[list[UploadFile], File(description="Imágenes de productos o categorías (máx. 50 archivos, 5 MB c/u)")],
     db: Session = Depends(get_db),
     admin: dict = Depends(get_current_admin),
 ):
     """
-    Subida masiva de imágenes de productos.
-
-    Cada archivo debe llamarse igual que el SKU o slug del producto:
-      - `FLT-001.jpg`   → asocia al producto con SKU 'FLT-001'
-      - `filtro-aceite-komatsu-pc200.webp` → asocia al slug correspondiente
+    Subida masiva de imágenes. El archivo se enlaza automáticamente a:
+      - el producto cuyo SKU coincida con el nombre del archivo, o
+      - el producto cuyo slug coincida, o
+      - la categoría cuyo slug coincida.
 
     Retorna un reporte con el resultado de cada archivo (207 Multi-Status).
     """
@@ -78,7 +93,8 @@ async def upload_images(
             detail=f"Máximo {MAX_FILES} archivos por request. Enviaste {len(files)}.",
         )
 
-    repo = SQLAlchemyProductRepository(db)
+    product_repo = SQLAlchemyProductRepository(db)
+    category_repo = SQLAlchemyCategoryRepository(db)
     ip = request.client.host if request.client else "unknown"
     user_id = int(admin.get("sub", 0))
 
@@ -89,7 +105,6 @@ async def upload_images(
         ext = Path(filename).suffix.lower()
         stem = Path(filename).stem
 
-        # Validar extensión
         if ext not in ALLOWED_EXTENSIONS:
             results.append({
                 "file": filename,
@@ -98,7 +113,6 @@ async def upload_images(
             })
             continue
 
-        # Validar tamaño
         content = await file.read()
         if len(content) > MAX_FILE_SIZE:
             results.append({
@@ -108,41 +122,45 @@ async def upload_images(
             })
             continue
 
-        # Buscar producto por SKU o slug
-        product = _identify_product(stem, repo)
-        if not product:
+        kind, target = _identify_target(stem, product_repo, category_repo)
+        if not target:
             results.append({
                 "file": filename,
                 "status": "not_found",
-                "detail": f"No se encontró producto con SKU o slug '{stem}'",
+                "detail": f"No se encontró producto (SKU/slug) ni categoría (slug) que matchee '{stem}'",
             })
             continue
 
-        # Guardar archivo con nombre único para evitar colisiones
+        # Guardar archivo
         safe_stem = _safe_filename(stem)
         dest_filename = f"{safe_stem}{ext}"
         dest_path = IMAGES_DIR / dest_filename
-
         dest_path.write_bytes(content)
-
-        # Actualizar imagen del producto en la BD
         image_url = f"{IMAGE_BASE_URL}/{dest_filename}"
-        repo.update_image_url(product.id, image_url)
 
-        log_admin_action(
-            user_id=user_id,
-            action="upload_image",
-            resource=f"product:{product.slug}",
-            ip=ip,
-        )
-
-        results.append({
-            "file": filename,
-            "status": "ok",
-            "product_slug": product.slug,
-            "product_name": product.name,
-            "image_url": image_url,
-        })
+        # Actualizar la entidad correspondiente
+        if kind == "product":
+            product_repo.update_image_url(target.id, image_url)
+            log_admin_action(user_id=user_id, action="upload_image", resource=f"product:{target.slug}", ip=ip)
+            results.append({
+                "file": filename,
+                "status": "ok",
+                "kind": "product",
+                "slug": target.slug,
+                "name": target.name,
+                "image_url": image_url,
+            })
+        else:  # category
+            category_repo.update(target.id, {"image_url": image_url})
+            log_admin_action(user_id=user_id, action="upload_image", resource=f"category:{target.slug}", ip=ip)
+            results.append({
+                "file": filename,
+                "status": "ok",
+                "kind": "category",
+                "slug": target.slug,
+                "name": target.name,
+                "image_url": image_url,
+            })
 
     ok_count = sum(1 for r in results if r["status"] == "ok")
     error_count = len(results) - ok_count
