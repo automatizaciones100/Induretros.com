@@ -2,9 +2,13 @@
 Carga masiva de imágenes para productos y categorías.
 
 Convención de nombres de archivo (orden de prioridad):
-  1. Por SKU de producto:    FLT-001.jpg → producto con sku='FLT-001'
-  2. Por slug de producto:   filtro-aceite-komatsu-pc200.webp → producto
-  3. Por slug de categoría:  filtros.jpg → categoría con slug='filtros'
+  1. Por SKU de producto:        FLT-001.jpg
+  2. Por slug exacto de producto
+  3. Por slug exacto de categoría:  filtros.jpg
+  4. Por matching difuso de categoría — tolera:
+       - singular/plural    (reductor → reductores, empaquetaduras → empaquetadura)
+       - prefijos           (valvulas → valvulas-solenoides-y-electrovalvulas)
+       - tokens parciales   (parte-hidraulic → partes-hidraulicas)
 
 Formatos aceptados: jpg, jpeg, png, webp, avif
 Tamaño máximo por archivo: 5 MB
@@ -29,20 +33,69 @@ from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/images", tags=["images"])
 
-# Directorio donde se guardan las imágenes servidas como estáticos
 IMAGES_DIR = Path(__file__).resolve().parents[4] / "static" / "images"
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
-MAX_FILE_SIZE = 5 * 1024 * 1024  # 5 MB
+MAX_FILE_SIZE = 5 * 1024 * 1024
 MAX_FILES = 50
 IMAGE_BASE_URL = "/static/images"
 
+# Stopwords del español que se ignoran en el matching de tokens
+_STOPWORDS = {"de", "del", "la", "las", "el", "los", "y", "o", "u", "para"}
+
 
 def _safe_filename(name: str) -> str:
-    """Elimina caracteres peligrosos del nombre de archivo."""
     name = re.sub(r"[^a-zA-Z0-9._\-]", "_", name)
     return name[:200]
+
+
+def _tokens(slug: str) -> list[str]:
+    """Divide un slug en tokens significativos (sin stopwords)."""
+    return [t for t in slug.lower().split("-") if t and t not in _STOPWORDS]
+
+
+def _tokens_compatible(a: str, b: str) -> bool:
+    """Dos tokens son compatibles si son iguales o uno es prefijo del otro (≥4 chars)."""
+    if a == b:
+        return True
+    if len(a) >= 4 and len(b) >= 4:
+        return a.startswith(b) or b.startswith(a)
+    return False
+
+
+def _category_match_score(stem: str, slug: str) -> int:
+    """
+    Puntúa qué tan bien matchea un nombre de archivo contra el slug de una categoría.
+    0 = no match. Mayor = mejor.
+    """
+    stem_l = stem.lower()
+    slug_l = slug.lower()
+
+    if stem_l == slug_l:
+        return 1000
+
+    # Prefijo (con mínimo 4 chars para evitar falsos positivos)
+    if len(stem_l) >= 4 and len(slug_l) >= 4:
+        if slug_l.startswith(stem_l):
+            return 200  # 'valvulas' → 'valvulas-...'
+        if stem_l.startswith(slug_l):
+            return 180  # 'empaquetaduras' → 'empaquetadura'
+
+    # Matching por tokens (todos los tokens del archivo deben compatibilizar con uno del slug)
+    stem_tokens = _tokens(stem_l)
+    slug_tokens = _tokens(slug_l)
+    if not stem_tokens or not slug_tokens:
+        return 0
+
+    matched = 0
+    for st in stem_tokens:
+        if any(_tokens_compatible(st, sl) for sl in slug_tokens):
+            matched += 1
+        else:
+            return 0  # un token sin compatible → descartar
+    # Bonus por tokens matcheados; penaliza si slug tiene muchos tokens extra
+    return 50 + matched * 10 - max(0, len(slug_tokens) - len(stem_tokens))
 
 
 EntityKind = Literal["product", "category"]
@@ -54,19 +107,27 @@ def _identify_target(
     category_repo: SQLAlchemyCategoryRepository,
 ) -> tuple[Optional[EntityKind], object]:
     """
-    Busca a qué entidad enlazar la imagen, en orden de prioridad:
-    1. producto por SKU
-    2. producto por slug
-    3. categoría por slug
-    Retorna (kind, entity) o (None, None) si no encuentra.
+    1. producto por SKU exacto
+    2. producto por slug exacto
+    3. categoría por slug exacto
+    4. categoría por matching difuso — best-score wins
     """
     product = product_repo.get_by_sku(stem) or product_repo.get_by_slug(stem)
     if product:
         return "product", product
 
-    category = category_repo.get_by_slug(stem)
-    if category:
-        return "category", category
+    # Exacto
+    cat = category_repo.get_by_slug(stem)
+    if cat:
+        return "category", cat
+
+    # Difuso — score contra todas las categorías
+    all_cats = category_repo.get_all()
+    scored = [(c, _category_match_score(stem, c.slug)) for c in all_cats]
+    scored = [(c, s) for c, s in scored if s > 0]
+    if scored:
+        scored.sort(key=lambda x: x[1], reverse=True)
+        return "category", scored[0][0]
 
     return None, None
 
