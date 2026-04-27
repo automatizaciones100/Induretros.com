@@ -91,23 +91,50 @@ export default async function HomePage() {
         <section className="py-14 bg-white">
           <div className="container mx-auto">
             <div className="text-center mb-10">
-              <h2 className="section-title">Nuestras Categorías</h2>
+              <h2 className="section-title">Compra por categorías</h2>
               <p className="section-subtitle">Encuentra el repuesto que necesitas</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {cats.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/repuestos?categoria=${cat.slug}`}
-                  className="group bg-bg-light hover:bg-primary rounded-xl p-5 flex flex-col items-center text-center
-                             transition-all duration-200 hover:shadow-lg hover:-translate-y-1"
-                >
-                  <span className="text-4xl mb-3">{categoryIcons[cat.slug] || "🔧"}</span>
-                  <span className="font-sans font-semibold text-dark-2 text-sm group-hover:text-white transition-colors leading-tight">
-                    {cat.name}
-                  </span>
-                </Link>
-              ))}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {cats.map((cat, i) => {
+                // Patrón asimétrico que se repite cada 13 cards: 4 normales,
+                // 1 ancha + 2 normales, 4 normales, 2 anchas. Todo suma 4 cols por fila.
+                const PATTERN = [1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 2, 2];
+                const span = PATTERN[i % PATTERN.length];
+                return (
+                  <Link
+                    key={cat.id}
+                    href={`/repuestos?categoria=${cat.slug}`}
+                    className={`group relative aspect-[4/3] overflow-hidden rounded-lg shadow-sm hover:shadow-xl transition-shadow ${
+                      span === 2 ? "lg:col-span-2" : ""
+                    }`}
+                  >
+                    {/* Fondo: imagen real si existe; si no, gradient + emoji */}
+                    {cat.image_url ? (
+                      <Image
+                        src={cat.image_url}
+                        alt={cat.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes={span === 2 ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 1024px) 50vw, 25vw"}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-dark-2 via-dark to-dark-2 flex items-center justify-center">
+                        <span className="text-6xl opacity-25">{categoryIcons[cat.slug] || "🔧"}</span>
+                      </div>
+                    )}
+
+                    {/* Overlay degradado para asegurar legibilidad del título */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                    {/* Ribbon del título — pasa a primary en hover */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-dark-2/95 group-hover:bg-primary py-3 px-4 transition-colors duration-300">
+                      <span className="font-heading font-semibold text-white text-xs sm:text-sm uppercase tracking-wide block leading-tight">
+                        {cat.name}
+                      </span>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
