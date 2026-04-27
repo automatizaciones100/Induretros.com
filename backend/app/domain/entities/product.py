@@ -11,6 +11,7 @@ class Category:
     description: Optional[str] = None
     image_url: Optional[str] = None
     parent_id: Optional[int] = None
+    display_order: int = 0
     created_at: Optional[datetime] = None
     children: list["Category"] = field(default_factory=list)
 

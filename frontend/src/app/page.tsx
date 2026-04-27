@@ -5,14 +5,19 @@ import ProductCard from "@/components/products/ProductCard";
 import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
-  "accesorios-maquinaria-pesada": "🔧",
-  "balineras-para-maquinaria-pesada": "⚙️",
-  "filtros-para-maquinaria-pesada": "🔩",
-  "partes-hidraulicas": "💧",
+  "accesorios": "🔧",
+  "balineras": "⚙️",
+  "empaquetadura": "🛡️",
+  "filtros": "🔩",
   "partes-electricas": "⚡",
+  "partes-completas-y-estructura": "🚜",
+  "lubricantes": "🛢️",
+  "partes-de-motor": "🔥",
+  "partes-hidraulicas": "💧",
+  "tren-de-rodaje": "🚂",
+  "reductores": "🔄",
   "piezas-de-desgaste": "🦾",
-  "empaquetaduras-para-maquinaria-pesada": "🛡️",
-  "lubricantes-para-maquinaria-pesada": "🛢️",
+  "valvulas-solenoides-y-electrovalvulas": "🎛️",
 };
 
 export default async function HomePage() {

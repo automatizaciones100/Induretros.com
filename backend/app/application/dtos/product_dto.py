@@ -18,6 +18,7 @@ class CategoryDTO(BaseModel):
     description: Optional[str] = None
     image_url: Optional[str] = None
     parent_id: Optional[int] = None
+    display_order: int = 0
     created_at: datetime
     children: list["CategoryDTO"] = []
 
@@ -150,6 +151,7 @@ class CreateCategoryCommand(BaseModel):
     description: Optional[str] = Field(None, max_length=1000)
     image_url: Optional[str] = Field(None, max_length=500)
     parent_id: Optional[int] = None
+    display_order: int = Field(0, ge=0, le=9999)
 
     @field_validator("image_url")
     @classmethod
@@ -168,6 +170,7 @@ class UpdateCategoryCommand(BaseModel):
     description: Optional[str] = Field(None, max_length=1000)
     image_url: Optional[str] = Field(None, max_length=500)
     parent_id: Optional[int] = None
+    display_order: Optional[int] = Field(None, ge=0, le=9999)
 
     @field_validator("image_url")
     @classmethod

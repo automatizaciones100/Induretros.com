@@ -5,6 +5,7 @@ export interface Category {
   description?: string;
   image_url?: string;
   parent_id?: number;
+  display_order?: number;
   created_at: string;
   children?: Category[];
 }

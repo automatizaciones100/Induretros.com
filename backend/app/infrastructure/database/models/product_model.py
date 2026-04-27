@@ -13,6 +13,8 @@ class CategoryModel(Base):
     description = Column(Text, nullable=True)
     image_url = Column(String(500), nullable=True)
     parent_id = Column(Integer, ForeignKey("categories.id"), nullable=True)
+    # Orden manual de visualización (menor número = aparece primero)
+    display_order = Column(Integer, default=0, nullable=False, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     parent = relationship("CategoryModel", remote_side=[id], back_populates="children")

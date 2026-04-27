@@ -14,8 +14,12 @@ def _category_model_to_entity(model: CategoryModel) -> Category:
         description=model.description,
         image_url=model.image_url,
         parent_id=model.parent_id,
+        display_order=model.display_order or 0,
         created_at=model.created_at,
-        children=[_category_model_to_entity(c) for c in model.children],
+        children=[
+            _category_model_to_entity(c)
+            for c in sorted(model.children, key=lambda c: ((c.display_order or 0), c.name))
+        ],
     )
 
 
@@ -158,12 +162,17 @@ class SQLAlchemyCategoryRepository(ICategoryRepository):
             self._db.query(CategoryModel)
             .filter(CategoryModel.parent_id == None)
             .options(selectinload(CategoryModel.children))
+            .order_by(CategoryModel.display_order, CategoryModel.name)
             .all()
         )
         return [_category_model_to_entity(m) for m in models]
 
     def get_all(self) -> list[Category]:
-        models = self._db.query(CategoryModel).order_by(CategoryModel.name).all()
+        models = (
+            self._db.query(CategoryModel)
+            .order_by(CategoryModel.display_order, CategoryModel.name)
+            .all()
+        )
         return [_category_model_to_entity(m) for m in models]
 
     def get_by_id(self, category_id: int) -> Optional[Category]:
@@ -186,6 +195,7 @@ class SQLAlchemyCategoryRepository(ICategoryRepository):
             description=category.description,
             image_url=category.image_url,
             parent_id=category.parent_id,
+            display_order=category.display_order or 0,
         )
         self._db.add(model)
         self._db.commit()

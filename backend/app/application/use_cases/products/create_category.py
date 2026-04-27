@@ -15,5 +15,6 @@ class CreateCategoryUseCase:
             description=command.description,
             image_url=command.image_url,
             parent_id=command.parent_id,
+            display_order=command.display_order,
         )
         return self._repo.create(category)

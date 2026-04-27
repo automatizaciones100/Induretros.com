@@ -3,9 +3,9 @@ import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 
 const productLinks = [
-  { name: "Accesorios para maquinaria pesada", href: "/repuestos?categoria=accesorios-maquinaria-pesada" },
-  { name: "Balineras para maquinaria pesada", href: "/repuestos?categoria=balineras-para-maquinaria-pesada" },
-  { name: "Filtros para maquinaria pesada", href: "/repuestos?categoria=filtros-para-maquinaria-pesada" },
+  { name: "Accesorios", href: "/repuestos?categoria=accesorios" },
+  { name: "Balineras", href: "/repuestos?categoria=balineras" },
+  { name: "Filtros", href: "/repuestos?categoria=filtros" },
   { name: "Partes hidráulicas", href: "/repuestos?categoria=partes-hidraulicas" },
   { name: "Partes eléctricas", href: "/repuestos?categoria=partes-electricas" },
   { name: "Piezas de desgaste", href: "/repuestos?categoria=piezas-de-desgaste" },
