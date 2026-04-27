@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Eye } from "lucide-react";
 import type { Product } from "@/domain/entities/Product";
 import AddToCartButton from "@/components/cart/AddToCartButton";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface ProductCardProps {
   product: Product;
@@ -18,7 +19,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="relative overflow-hidden bg-bg-light aspect-square">
         {product.image_url ? (
           <Image
-            src={product.image_url}
+            src={resolveImageUrl(product.image_url)!}
             alt={product.name}
             fill
             className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"

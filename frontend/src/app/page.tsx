@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getProductsUseCase, getCategoriesUseCase } from "@/lib/container";
 import ProductCard from "@/components/products/ProductCard";
+import { resolveImageUrl } from "@/lib/imageUrl";
 import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
@@ -116,7 +117,7 @@ export default async function HomePage() {
                     {/* Fondo: imagen real si existe; si no, gradient + emoji */}
                     {cat.image_url ? (
                       <Image
-                        src={cat.image_url}
+                        src={resolveImageUrl(cat.image_url)!}
                         alt={cat.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"

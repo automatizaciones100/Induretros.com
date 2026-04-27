@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search } from "lucide-react";
 import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface OrderItem {
   id: number;
@@ -215,7 +216,7 @@ export default function OrdenPage() {
                 <div className="bg-bg-light rounded w-16 h-16 relative flex-shrink-0 border border-gray-100">
                   {item.image_url ? (
                     <Image
-                      src={item.image_url}
+                      src={resolveImageUrl(item.image_url)!}
                       alt={item.name || "Producto"}
                       fill
                       className="object-contain p-1.5"

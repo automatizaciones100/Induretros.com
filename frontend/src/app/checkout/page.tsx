@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { buildOrderWhatsAppUrl } from "@/lib/whatsapp";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -257,7 +258,7 @@ export default function CheckoutPage() {
                   <div className="bg-white rounded w-14 h-14 relative flex-shrink-0 border border-gray-100">
                     {item.image_url ? (
                       <Image
-                        src={item.image_url}
+                        src={resolveImageUrl(item.image_url)!}
                         alt={item.name}
                         fill
                         className="object-contain p-1"

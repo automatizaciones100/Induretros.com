@@ -26,6 +26,7 @@ import type { Metadata } from "next";
 import type { Product } from "@/domain/entities/Product";
 import AddToCartButton from "@/components/cart/AddToCartButton";
 import ProductViewTracker from "@/components/analytics/ProductViewTracker";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -150,7 +151,7 @@ export default async function ProductPage({ params }: PageProps) {
           <div className="bg-bg-light rounded-xl overflow-hidden aspect-square relative">
             {product.image_url ? (
               <Image
-                src={product.image_url}
+                src={resolveImageUrl(product.image_url)!}
                 alt={product.name}
                 fill
                 className="object-contain p-8"

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Trash2, ShoppingBag, Minus, Plus, ArrowLeft, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { resolveImageUrl } from "@/lib/imageUrl";
 import { useState, useEffect } from "react";
 
 export default function CarritoPage() {
@@ -72,7 +73,7 @@ export default function CarritoPage() {
               >
                 {item.image_url ? (
                   <Image
-                    src={item.image_url}
+                    src={resolveImageUrl(item.image_url)!}
                     alt={item.name}
                     fill
                     className="object-contain p-2"

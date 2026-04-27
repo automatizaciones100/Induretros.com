@@ -14,6 +14,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface Product {
   id: number;
@@ -195,7 +196,7 @@ export default function AdminProductosPage() {
                             <div className="w-10 h-10 bg-bg-light rounded relative flex-shrink-0 overflow-hidden">
                               {p.image_url ? (
                                 <Image
-                                  src={p.image_url}
+                                  src={resolveImageUrl(p.image_url)!}
                                   alt={p.name}
                                   fill
                                   className="object-contain p-1"
