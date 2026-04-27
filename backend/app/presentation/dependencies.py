@@ -33,6 +33,8 @@ from app.infrastructure.security.jwt_service import JoseJwtService
 from app.application.use_cases.products.get_products import GetProductsUseCase
 from app.application.use_cases.products.get_product import GetProductUseCase
 from app.application.use_cases.products.create_product import CreateProductUseCase
+from app.application.use_cases.products.update_product import UpdateProductUseCase
+from app.application.use_cases.products.delete_product import DeleteProductUseCase
 from app.application.use_cases.products.get_categories import GetCategoriesUseCase
 from app.application.use_cases.products.get_category import GetCategoryUseCase
 from app.application.use_cases.products.create_category import CreateCategoryUseCase
@@ -90,6 +92,18 @@ def create_product_use_case(
     repo: IProductRepository = Depends(get_product_repository),
 ) -> CreateProductUseCase:
     return CreateProductUseCase(repo)
+
+
+def update_product_use_case(
+    repo: IProductRepository = Depends(get_product_repository),
+) -> UpdateProductUseCase:
+    return UpdateProductUseCase(repo)
+
+
+def delete_product_use_case(
+    repo: IProductRepository = Depends(get_product_repository),
+) -> DeleteProductUseCase:
+    return DeleteProductUseCase(repo)
 
 
 def get_categories_use_case(

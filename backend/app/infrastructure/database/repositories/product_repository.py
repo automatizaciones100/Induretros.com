@@ -124,6 +124,25 @@ class SQLAlchemyProductRepository(IProductRepository):
         self._db.refresh(model)
         return _product_model_to_entity(model)
 
+    def update(self, product_id: int, fields: dict) -> Optional[Product]:
+        model = self._db.query(ProductModel).filter(ProductModel.id == product_id).first()
+        if not model:
+            return None
+        for key, value in fields.items():
+            if hasattr(model, key):
+                setattr(model, key, value)
+        self._db.commit()
+        self._db.refresh(model)
+        return _product_model_to_entity(model)
+
+    def delete(self, product_id: int) -> bool:
+        model = self._db.query(ProductModel).filter(ProductModel.id == product_id).first()
+        if not model:
+            return False
+        self._db.delete(model)
+        self._db.commit()
+        return True
+
 
 class SQLAlchemyCategoryRepository(ICategoryRepository):
     def __init__(self, db: Session):

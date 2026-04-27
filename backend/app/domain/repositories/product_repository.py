@@ -41,6 +41,16 @@ class IProductRepository(ABC):
         """Actualiza la URL de imagen de un producto."""
         ...
 
+    @abstractmethod
+    def update(self, product_id: int, fields: dict) -> Optional[Product]:
+        """Actualiza los campos indicados y retorna el producto actualizado."""
+        ...
+
+    @abstractmethod
+    def delete(self, product_id: int) -> bool:
+        """Elimina un producto. Retorna True si existía."""
+        ...
+
 
 class ICategoryRepository(ABC):
     @abstractmethod

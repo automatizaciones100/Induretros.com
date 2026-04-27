@@ -6,7 +6,6 @@ import {
   Package,
   ShoppingBag,
   FolderTree,
-  Users,
   AlertTriangle,
   Star,
   TrendingUp,
@@ -15,6 +14,14 @@ import {
   XCircle,
   Loader2,
   ArrowRight,
+  Search,
+  Megaphone,
+  ImageOff,
+  FileText,
+  DollarSign,
+  Percent,
+  Trophy,
+  CalendarDays,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 
@@ -32,19 +39,40 @@ interface Stats {
   users: { total: number };
 }
 
+interface MarketingStats {
+  seo: {
+    score: number;
+    complete: number;
+    total: number;
+    missing: { image: number; description: number; short_description: number; sku: number; price: number };
+  };
+  marketing: {
+    on_sale: number;
+    featured_no_stock: number;
+    orders_last_7_days: number;
+    orders_last_30_days: number;
+    revenue_last_30_days: number;
+    avg_order_value: number;
+    top_products: { id: number; name: string; slug: string; units: number; revenue: number }[];
+  };
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
+  const [marketing, setMarketing] = useState<MarketingStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    authFetch("/api/admin/stats")
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        return res.json();
+    Promise.all([
+      authFetch("/api/admin/stats").then((r) => (r.ok ? r.json() : Promise.reject(`Error ${r.status}`))),
+      authFetch("/api/admin/marketing").then((r) => (r.ok ? r.json() : Promise.reject(`Error ${r.status}`))),
+    ])
+      .then(([s, m]) => {
+        setStats(s);
+        setMarketing(m);
       })
-      .then(setStats)
       .catch((err) =>
-        setError(err instanceof Error ? err.message : "Error cargando estadísticas")
+        setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Error cargando estadísticas")
       );
   }, []);
 
@@ -58,7 +86,7 @@ export default function AdminDashboard() {
     );
   }
 
-  if (!stats) {
+  if (!stats || !marketing) {
     return (
       <div className="p-8 flex items-center gap-2 text-gray-mid font-sans">
         <Loader2 size={18} className="animate-spin" />
@@ -66,6 +94,9 @@ export default function AdminDashboard() {
       </div>
     );
   }
+
+  const seoColor = marketing.seo.score >= 80 ? "text-green-600" : marketing.seo.score >= 50 ? "text-yellow-600" : "text-red-600";
+  const seoBg = marketing.seo.score >= 80 ? "bg-green-500" : marketing.seo.score >= 50 ? "bg-yellow-500" : "bg-red-500";
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto">
@@ -79,7 +110,7 @@ export default function AdminDashboard() {
         </p>
       </div>
 
-      {/* KPIs principales — Ingresos y pedidos pendientes */}
+      {/* KPIs principales */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <KpiCard
           title="Ingresos totales"
@@ -87,6 +118,13 @@ export default function AdminDashboard() {
           icon={TrendingUp}
           tone="primary"
           subtitle={`${stats.orders.total} pedidos`}
+        />
+        <KpiCard
+          title="Últimos 30 días"
+          value={`$${marketing.marketing.revenue_last_30_days.toLocaleString("es-CO")}`}
+          icon={CalendarDays}
+          tone="primary"
+          subtitle={`${marketing.marketing.orders_last_30_days} pedidos`}
         />
         <KpiCard
           title="Pedidos pendientes"
@@ -104,13 +142,126 @@ export default function AdminDashboard() {
           href="/admin/productos?stock=out"
           subtitle="Reabastecer pronto"
         />
-        <KpiCard
-          title="Usuarios"
-          value={stats.users.total}
-          icon={Users}
-          tone="muted"
-          subtitle="Cuentas registradas"
-        />
+      </div>
+
+      {/* ─────────── Marketing ─────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
+        {/* Métricas comerciales */}
+        <div className="bg-white border border-gray-100 rounded-xl p-6 lg:col-span-1">
+          <div className="flex items-center gap-2 mb-4">
+            <Megaphone size={16} className="text-primary" />
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+              Marketing
+            </h2>
+          </div>
+          <div className="space-y-3">
+            <Row icon={Percent} label="Productos en oferta" value={marketing.marketing.on_sale} valueClass="text-primary" />
+            <Row
+              icon={AlertTriangle}
+              label="Destacados sin stock"
+              value={marketing.marketing.featured_no_stock}
+              valueClass={marketing.marketing.featured_no_stock > 0 ? "text-red-600" : "text-gray-mid"}
+            />
+            <Row icon={CalendarDays} label="Pedidos últimos 7 días" value={marketing.marketing.orders_last_7_days} />
+            <Row
+              icon={DollarSign}
+              label="Ticket promedio"
+              value={Math.round(marketing.marketing.avg_order_value)}
+              valueClass="text-dark"
+            />
+          </div>
+        </div>
+
+        {/* Top productos */}
+        <div className="bg-white border border-gray-100 rounded-xl p-6 lg:col-span-2">
+          <div className="flex items-center gap-2 mb-4">
+            <Trophy size={16} className="text-primary" />
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+              Productos más vendidos
+            </h2>
+          </div>
+          {marketing.marketing.top_products.length === 0 ? (
+            <p className="text-sm text-gray-light font-sans py-4 text-center">
+              Sin datos de ventas todavía.
+            </p>
+          ) : (
+            <ol className="space-y-2">
+              {marketing.marketing.top_products.map((p, idx) => (
+                <li key={p.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <span className="w-6 h-6 rounded-full bg-bg-light flex items-center justify-center text-xs font-semibold text-gray-mid font-sans">
+                    {idx + 1}
+                  </span>
+                  <Link
+                    href={`/admin/productos/${p.id}`}
+                    className="flex-1 min-w-0 text-sm font-sans text-dark hover:text-primary line-clamp-1"
+                  >
+                    {p.name}
+                  </Link>
+                  <span className="text-xs text-gray-light font-sans whitespace-nowrap">
+                    {p.units} uds
+                  </span>
+                  <span className="text-sm font-heading font-semibold text-dark whitespace-nowrap min-w-[100px] text-right">
+                    ${p.revenue.toLocaleString("es-CO")}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </div>
+
+      {/* ─────────── Salud SEO ─────────── */}
+      <div className="bg-white border border-gray-100 rounded-xl p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Search size={16} className="text-primary" />
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+              Salud SEO del catálogo
+            </h2>
+          </div>
+          <Link
+            href="/admin/productos"
+            className="text-xs font-sans text-primary hover:underline flex items-center gap-1"
+          >
+            Completar fichas
+            <ArrowRight size={12} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Score grande */}
+          <div className="md:col-span-1 flex flex-col items-center justify-center bg-bg-light rounded-lg p-6">
+            <p className="text-xs text-gray-mid font-sans uppercase tracking-wide mb-2">
+              Productos completos
+            </p>
+            <p className={`font-heading text-5xl font-semibold ${seoColor}`}>
+              {marketing.seo.score}%
+            </p>
+            <p className="text-xs text-gray-light font-sans mt-1">
+              {marketing.seo.complete} / {marketing.seo.total} productos
+            </p>
+            <div className="w-full bg-gray-200 rounded-full h-1.5 mt-4">
+              <div
+                className={`${seoBg} h-1.5 rounded-full transition-all`}
+                style={{ width: `${marketing.seo.score}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Detalle de campos faltantes */}
+          <div className="md:col-span-2">
+            <p className="text-xs text-gray-mid font-sans mb-3">
+              Campos faltantes que afectan el posicionamiento en Google:
+            </p>
+            <div className="space-y-2">
+              <Row icon={ImageOff} label="Sin imagen" value={marketing.seo.missing.image} valueClass={marketing.seo.missing.image > 0 ? "text-red-600" : "text-green-600"} />
+              <Row icon={FileText} label="Sin descripción larga" value={marketing.seo.missing.description} valueClass={marketing.seo.missing.description > 0 ? "text-red-600" : "text-green-600"} />
+              <Row icon={FileText} label="Sin descripción corta (snippet)" value={marketing.seo.missing.short_description} valueClass={marketing.seo.missing.short_description > 0 ? "text-yellow-600" : "text-green-600"} />
+              <Row icon={Package} label="Sin SKU/referencia" value={marketing.seo.missing.sku} valueClass={marketing.seo.missing.sku > 0 ? "text-yellow-600" : "text-green-600"} />
+              <Row icon={DollarSign} label="Sin precio" value={marketing.seo.missing.price} valueClass={marketing.seo.missing.price > 0 ? "text-red-600" : "text-green-600"} />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Estado de pedidos */}

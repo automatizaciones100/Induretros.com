@@ -98,10 +98,43 @@ class CreateProductCommand(BaseModel):
     @field_validator("image_url")
     @classmethod
     def validate_image_url(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or v == "":
+            return v
+        if not (v.startswith("https://") or v.startswith("http://") or v.startswith("/")):
+            raise ValueError("image_url debe ser http/https o ruta relativa (/static/...)")
+        return v
+
+
+class UpdateProductCommand(BaseModel):
+    """Todos los campos opcionales — solo se actualizan los que vengan."""
+    name: Optional[str] = Field(None, min_length=2, max_length=200)
+    slug: Optional[str] = Field(None, min_length=2, max_length=200, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    description: Optional[str] = Field(None, max_length=50_000)
+    short_description: Optional[str] = Field(None, max_length=500)
+    price: Optional[float] = Field(None, ge=0)
+    regular_price: Optional[float] = Field(None, ge=0)
+    sale_price: Optional[float] = Field(None, ge=0)
+    sku: Optional[str] = Field(None, max_length=100)
+    stock: Optional[int] = Field(None, ge=0)
+    in_stock: Optional[bool] = None
+    image_url: Optional[str] = Field(None, max_length=500)
+    category_id: Optional[int] = None
+    featured: Optional[bool] = None
+
+    @field_validator("description")
+    @classmethod
+    def sanitize_description(cls, v: Optional[str]) -> Optional[str]:
         if v is None:
             return v
-        if not (v.startswith("https://") or v.startswith("http://")):
-            raise ValueError("image_url debe ser una URL válida (http/https)")
+        return bleach.clean(v, tags=_ALLOWED_TAGS, attributes=_ALLOWED_ATTRS, strip=True)
+
+    @field_validator("image_url")
+    @classmethod
+    def validate_image_url(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or v == "":
+            return v
+        if not (v.startswith("https://") or v.startswith("http://") or v.startswith("/")):
+            raise ValueError("image_url debe ser http/https o ruta relativa")
         return v
 
 
