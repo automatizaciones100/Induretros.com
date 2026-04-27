@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { buildOrderWhatsAppUrl } from "@/lib/whatsapp";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -45,14 +46,21 @@ export default function CheckoutPage() {
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const payload = {
+    const customer = {
       customer_name: String(formData.get("customer_name") || "").trim(),
       customer_email: String(formData.get("customer_email") || "").trim(),
       customer_phone: String(formData.get("customer_phone") || "").trim() || undefined,
       shipping_address: String(formData.get("shipping_address") || "").trim() || undefined,
       notes: String(formData.get("notes") || "").trim() || undefined,
+    };
+    const payload = {
+      ...customer,
       items: items.map((i) => ({ product_id: i.product_id, quantity: i.quantity })),
     };
+
+    // Abrir pestaña SINCRÓNICAMENTE (en user gesture) para evitar popup blocker.
+    // Si el navegador devuelve null (mobile o bloqueado), haremos same-tab redirect.
+    const wppWindow = window.open("about:blank", "_blank");
 
     try {
       const res = await fetch(`${API_URL}/api/orders`, {
@@ -82,11 +90,40 @@ export default function CheckoutPage() {
       const enrichedOrder = { ...order, items: enrichedItems };
       sessionStorage.setItem(`order:${order.id}`, JSON.stringify(enrichedOrder));
 
+      // Construir URL de WhatsApp con el detalle completo del pedido
+      const whatsappUrl = buildOrderWhatsAppUrl({
+        id: order.id,
+        customer_name: customer.customer_name,
+        customer_email: customer.customer_email,
+        customer_phone: customer.customer_phone,
+        shipping_address: customer.shipping_address,
+        notes: customer.notes,
+        total: order.total,
+        items: items.map((i) => ({
+          product_id: i.product_id,
+          name: i.name,
+          sku: i.sku,
+          unit_price: i.unit_price,
+          quantity: i.quantity,
+        })),
+      });
+
       clearCart();
-      // Mandamos al usuario a /orden/[id] con flag fresh=1 para que la página
-      // muestre el banner de "abrir WhatsApp" como CTA principal.
-      router.push(`/orden/${order.id}?fresh=1`);
+
+      if (wppWindow && !wppWindow.closed) {
+        // Desktop / browser permitió la pestaña: la mandamos a WhatsApp
+        wppWindow.location.href = whatsappUrl;
+        router.push(`/orden/${order.id}?fresh=1`);
+      } else {
+        // Mobile o popup bloqueado: redirigimos same-tab a WhatsApp.
+        // Antes hacemos push de /orden/[id] para que el back-button regrese ahí.
+        router.push(`/orden/${order.id}?fresh=1`);
+        setTimeout(() => {
+          window.location.href = whatsappUrl;
+        }, 50);
+      }
     } catch (err) {
+      if (wppWindow && !wppWindow.closed) wppWindow.close();
       setError(err instanceof Error ? err.message : "Error al procesar el pedido");
       setSubmitting(false);
     }
@@ -274,7 +311,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full justify-center py-3.5 rounded font-semibold flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed bg-green-600 hover:bg-green-700 text-white"
+              className="w-full justify-center py-3.5 rounded font-semibold flex items-center gap-2 transition-colors disabled:opacity-60 disabled:cursor-not-allowed bg-dark-2 hover:bg-dark text-white"
             >
               {submitting ? (
                 <>
