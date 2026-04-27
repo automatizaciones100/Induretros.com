@@ -27,7 +27,7 @@ export default function Footer() {
         {/* Columna 1: Empresa */}
         <div>
           <Image
-            src="/logo-white.png"
+            src="/Logo-nuevo-pagina-web.png"
             alt="Induretros"
             width={180}
             height={55}

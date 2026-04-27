@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getProductsUseCase, getCategoriesUseCase } from "@/lib/container";
 import ProductCard from "@/components/products/ProductCard";
 import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
@@ -53,9 +54,15 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="flex-1 hidden md:flex justify-center">
-            <div className="relative w-full max-w-md h-80 bg-dark rounded-2xl overflow-hidden">
-              <div className="absolute inset-0 flex items-center justify-center text-8xl opacity-20">🏗️</div>
-              <div className="absolute inset-0 bg-gradient-to-t from-dark-2/80 to-transparent" />
+            <div className="relative w-full max-w-lg aspect-[4/3]">
+              <Image
+                src="/noshadow-excabadora-768x576.webp"
+                alt="Excavadora hidráulica"
+                fill
+                className="object-contain"
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/Logo-nuevo-pagina-web.png"
               alt="Induretros - Repuestos para Excavadoras Hidráulicas"
               width={200}
               height={60}
