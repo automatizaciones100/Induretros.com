@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import {
   Package,
@@ -28,6 +28,8 @@ import {
   CalendarDays,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
+import ComparisonCard from "@/components/admin/ComparisonCard";
+import TimeSeriesChart from "@/components/admin/TimeSeriesChart";
 
 interface Stats {
   products: { total: number; in_stock: number; out_of_stock: number; featured: number };
@@ -70,11 +72,36 @@ interface MarketingStats {
   };
 }
 
+interface Comparison {
+  period_days: number;
+  current: { visitors: number; pageviews: number; add_to_cart: number; orders: number; revenue: number };
+  previous: { visitors: number; pageviews: number; add_to_cart: number; orders: number; revenue: number };
+  delta_percent: { visitors: number; pageviews: number; add_to_cart: number; orders: number; revenue: number };
+}
+
+interface TimeSeriesPoint {
+  date: string;
+  visitors: number;
+  pageviews: number;
+  orders: number;
+  revenue: number;
+}
+
+const PERIOD_OPTIONS = [
+  { days: 7, label: "7 días" },
+  { days: 30, label: "30 días" },
+  { days: 90, label: "90 días" },
+];
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [marketing, setMarketing] = useState<MarketingStats | null>(null);
+  const [comparison, setComparison] = useState<Comparison | null>(null);
+  const [timeseries, setTimeseries] = useState<TimeSeriesPoint[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [periodDays, setPeriodDays] = useState<number>(30);
 
+  // Cargar stats + marketing una sola vez
   useEffect(() => {
     Promise.all([
       authFetch("/api/admin/stats").then((r) => (r.ok ? r.json() : Promise.reject(`Error ${r.status}`))),
@@ -88,6 +115,25 @@ export default function AdminDashboard() {
         setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Error cargando estadísticas")
       );
   }, []);
+
+  // Recargar comparación + timeseries al cambiar período
+  useEffect(() => {
+    Promise.all([
+      authFetch(`/api/admin/analytics/comparison?period_days=${periodDays}`).then((r) => r.json()),
+      authFetch(`/api/admin/analytics/timeseries?days=${periodDays}`).then((r) => r.json()),
+    ])
+      .then(([c, ts]) => {
+        setComparison(c);
+        setTimeseries(ts.series || []);
+      })
+      .catch(() => {});
+  }, [periodDays]);
+
+  // Datos para gráfico de pedidos en pesos
+  const revenueChart = useMemo(
+    () => timeseries.map((p) => ({ ...p, revenue: Math.round(p.revenue) })),
+    [timeseries]
+  );
 
   if (error) {
     return (
@@ -113,105 +159,124 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto">
-      {/* Encabezado */}
-      <div className="mb-8">
-        <h1 className="font-heading text-2xl font-semibold text-dark-2 uppercase">
-          Dashboard
-        </h1>
-        <p className="text-sm text-gray-mid font-sans mt-1">
-          Resumen del estado de la tienda
-        </p>
-      </div>
-
-      {/* KPIs principales */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <KpiCard
-          title="Ingresos totales"
-          value={`$${stats.orders.revenue.toLocaleString("es-CO")}`}
-          icon={TrendingUp}
-          tone="primary"
-          subtitle={`${stats.orders.total} pedidos`}
-        />
-        <KpiCard
-          title="Últimos 30 días"
-          value={`$${marketing.marketing.revenue_last_30_days.toLocaleString("es-CO")}`}
-          icon={CalendarDays}
-          tone="primary"
-          subtitle={`${marketing.marketing.orders_last_30_days} pedidos`}
-        />
-        <KpiCard
-          title="Pedidos pendientes"
-          value={stats.orders.pending}
-          icon={Clock}
-          tone={stats.orders.pending > 0 ? "warning" : "muted"}
-          href="/admin/pedidos?status=pending"
-          subtitle="Esperando confirmación"
-        />
-        <KpiCard
-          title="Sin stock"
-          value={stats.products.out_of_stock}
-          icon={AlertTriangle}
-          tone={stats.products.out_of_stock > 0 ? "danger" : "muted"}
-          href="/admin/productos?stock=out"
-          subtitle="Reabastecer pronto"
-        />
-      </div>
-
-      {/* ─────────── Tráfico de la tienda ─────────── */}
-      <div className="bg-white border border-gray-100 rounded-xl p-6 mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <BarChart3 size={16} className="text-primary" />
-            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
-              Tráfico (últimos 30 días)
-            </h2>
-          </div>
-          <span className="text-xs text-gray-light font-sans italic">In-house · sin Google Analytics</span>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <TrafficStat icon={UsersIcon} label="Visitantes únicos" value={marketing.traffic.unique_visitors_30_days} hint={`${marketing.traffic.unique_visitors_7_days} en 7d`} />
-          <TrafficStat icon={Eye} label="Pageviews" value={marketing.traffic.pageviews_30_days} />
-          <TrafficStat icon={MousePointerClick} label="Clicks tracked" value={marketing.traffic.clicks_30_days} />
-          <TrafficStat icon={ShoppingBag} label="Adiciones al carrito" value={marketing.traffic.add_to_cart_30_days} />
-          <TrafficStat icon={TrendingUp} label="Tasa de conversión" value={`${marketing.traffic.conversion_rate}%`} hint="pedidos / visitantes" />
-        </div>
-
+      {/* Encabezado + filtro de período */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
         <div>
-          <p className="text-xs text-gray-mid font-sans uppercase tracking-wide mb-3">
-            Productos más vistos
+          <h1 className="font-heading text-2xl font-semibold text-dark-2 uppercase">Dashboard</h1>
+          <p className="text-sm text-gray-mid font-sans mt-1">
+            Resumen del estado de la tienda · comparativo con período anterior
           </p>
-          {marketing.traffic.top_viewed_products.length === 0 ? (
-            <p className="text-sm text-gray-light font-sans py-4 text-center bg-bg-light rounded">
-              Aún no hay datos. Visita algunas fichas de producto desde la tienda para empezar a recopilar.
-            </p>
+        </div>
+        <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-1">
+          {PERIOD_OPTIONS.map((opt) => (
+            <button
+              key={opt.days}
+              onClick={() => setPeriodDays(opt.days)}
+              className={`px-3 py-1.5 text-xs rounded font-sans font-semibold transition-colors ${
+                periodDays === opt.days
+                  ? "bg-primary text-white"
+                  : "text-gray-mid hover:bg-bg-light"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ─────── Comparativos vs período anterior ─────── */}
+      {comparison && (
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-8">
+          <ComparisonCard
+            label="Ingresos"
+            current={comparison.current.revenue}
+            previous={comparison.previous.revenue}
+            delta={comparison.delta_percent.revenue}
+            format="currency"
+            icon={TrendingUp}
+          />
+          <ComparisonCard
+            label="Pedidos"
+            current={comparison.current.orders}
+            previous={comparison.previous.orders}
+            delta={comparison.delta_percent.orders}
+            icon={ShoppingBag}
+          />
+          <ComparisonCard
+            label="Visitantes"
+            current={comparison.current.visitors}
+            previous={comparison.previous.visitors}
+            delta={comparison.delta_percent.visitors}
+            icon={UsersIcon}
+          />
+          <ComparisonCard
+            label="Pageviews"
+            current={comparison.current.pageviews}
+            previous={comparison.previous.pageviews}
+            delta={comparison.delta_percent.pageviews}
+            icon={Eye}
+          />
+          <ComparisonCard
+            label="Add to cart"
+            current={comparison.current.add_to_cart}
+            previous={comparison.previous.add_to_cart}
+            delta={comparison.delta_percent.add_to_cart}
+            icon={MousePointerClick}
+          />
+        </div>
+      )}
+
+      {/* ─────── Gráficos de tendencia ─────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+        <div className="bg-white border border-gray-100 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <BarChart3 size={16} className="text-primary" />
+              <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+                Tráfico por día
+              </h2>
+            </div>
+            <span className="text-xs text-gray-light font-sans">{periodDays} días</span>
+          </div>
+          {timeseries.length > 0 ? (
+            <TimeSeriesChart
+              data={timeseries}
+              metrics={[
+                { key: "visitors", label: "Visitantes únicos", color: "#0ea5e9" },
+                { key: "pageviews", label: "Pageviews", color: "#8b5cf6" },
+              ]}
+            />
           ) : (
-            <ol className="space-y-2">
-              {marketing.traffic.top_viewed_products.map((p, idx) => (
-                <li key={p.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
-                  <span className="w-6 h-6 rounded-full bg-bg-light flex items-center justify-center text-xs font-semibold text-gray-mid font-sans">
-                    {idx + 1}
-                  </span>
-                  <Link
-                    href={`/admin/productos/${p.id}`}
-                    className="flex-1 min-w-0 text-sm font-sans text-dark hover:text-primary line-clamp-1"
-                  >
-                    {p.name}
-                  </Link>
-                  <span className="flex items-center gap-1 text-xs text-gray-mid font-sans whitespace-nowrap">
-                    <Eye size={12} />
-                    {p.views.toLocaleString("es-CO")} vistas
-                  </span>
-                </li>
-              ))}
-            </ol>
+            <p className="text-sm text-gray-light text-center py-8 font-sans">Sin datos…</p>
+          )}
+        </div>
+
+        <div className="bg-white border border-gray-100 rounded-xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <ShoppingBag size={16} className="text-primary" />
+              <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+                Pedidos e ingresos por día
+              </h2>
+            </div>
+            <span className="text-xs text-gray-light font-sans">{periodDays} días</span>
+          </div>
+          {revenueChart.length > 0 ? (
+            <TimeSeriesChart
+              data={revenueChart}
+              metrics={[
+                { key: "orders", label: "Pedidos", color: "#10b981" },
+                { key: "revenue", label: "Ingresos ($)", color: "#f59e0b" },
+              ]}
+            />
+          ) : (
+            <p className="text-sm text-gray-light text-center py-8 font-sans">Sin datos…</p>
           )}
         </div>
       </div>
 
       {/* ─────────── Marketing ─────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-8">
-        {/* Métricas comerciales */}
         <div className="bg-white border border-gray-100 rounded-xl p-6 lg:col-span-1">
           <div className="flex items-center gap-2 mb-4">
             <Megaphone size={16} className="text-primary" />
@@ -228,16 +293,10 @@ export default function AdminDashboard() {
               valueClass={marketing.marketing.featured_no_stock > 0 ? "text-red-600" : "text-gray-mid"}
             />
             <Row icon={CalendarDays} label="Pedidos últimos 7 días" value={marketing.marketing.orders_last_7_days} />
-            <Row
-              icon={DollarSign}
-              label="Ticket promedio"
-              value={Math.round(marketing.marketing.avg_order_value)}
-              valueClass="text-dark"
-            />
+            <Row icon={DollarSign} label="Ticket promedio" value={Math.round(marketing.marketing.avg_order_value)} valueClass="text-dark" />
           </div>
         </div>
 
-        {/* Top productos */}
         <div className="bg-white border border-gray-100 rounded-xl p-6 lg:col-span-2">
           <div className="flex items-center gap-2 mb-4">
             <Trophy size={16} className="text-primary" />
@@ -262,9 +321,7 @@ export default function AdminDashboard() {
                   >
                     {p.name}
                   </Link>
-                  <span className="text-xs text-gray-light font-sans whitespace-nowrap">
-                    {p.units} uds
-                  </span>
+                  <span className="text-xs text-gray-light font-sans whitespace-nowrap">{p.units} uds</span>
                   <span className="text-sm font-heading font-semibold text-dark whitespace-nowrap min-w-[100px] text-right">
                     ${p.revenue.toLocaleString("es-CO")}
                   </span>
@@ -273,6 +330,41 @@ export default function AdminDashboard() {
             </ol>
           )}
         </div>
+      </div>
+
+      {/* ─────────── Productos más vistos ─────────── */}
+      <div className="bg-white border border-gray-100 rounded-xl p-6 mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Eye size={16} className="text-primary" />
+          <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+            Productos más vistos (30 días)
+          </h2>
+        </div>
+        {marketing.traffic.top_viewed_products.length === 0 ? (
+          <p className="text-sm text-gray-light font-sans py-4 text-center bg-bg-light rounded">
+            Aún no hay datos. Visita algunas fichas de producto desde la tienda para empezar a recopilar.
+          </p>
+        ) : (
+          <ol className="space-y-2">
+            {marketing.traffic.top_viewed_products.map((p, idx) => (
+              <li key={p.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                <span className="w-6 h-6 rounded-full bg-bg-light flex items-center justify-center text-xs font-semibold text-gray-mid font-sans">
+                  {idx + 1}
+                </span>
+                <Link
+                  href={`/admin/productos/${p.id}`}
+                  className="flex-1 min-w-0 text-sm font-sans text-dark hover:text-primary line-clamp-1"
+                >
+                  {p.name}
+                </Link>
+                <span className="flex items-center gap-1 text-xs text-gray-mid font-sans whitespace-nowrap">
+                  <Eye size={12} />
+                  {p.views.toLocaleString("es-CO")} vistas
+                </span>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
 
       {/* ─────────── Salud SEO ─────────── */}
@@ -294,7 +386,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Score grande */}
           <div className="md:col-span-1 flex flex-col items-center justify-center bg-bg-light rounded-lg p-6">
             <p className="text-xs text-gray-mid font-sans uppercase tracking-wide mb-2">
               Productos completos
@@ -313,7 +404,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Detalle de campos faltantes */}
           <div className="md:col-span-2">
             <p className="text-xs text-gray-mid font-sans mb-3">
               Campos faltantes que afectan el posicionamiento en Google:
@@ -329,7 +419,7 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Estado de pedidos */}
+      {/* ─────── Estado de pedidos ─────── */}
       <div className="bg-white border border-gray-100 rounded-xl p-6 mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
@@ -351,17 +441,12 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Inventario */}
+      {/* ─────── Inventario y categorías ─────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="bg-white border border-gray-100 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
-              Catálogo
-            </h2>
-            <Link
-              href="/admin/productos"
-              className="text-xs font-sans text-primary hover:underline flex items-center gap-1"
-            >
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">Catálogo</h2>
+            <Link href="/admin/productos" className="text-xs font-sans text-primary hover:underline flex items-center gap-1">
               Gestionar
               <ArrowRight size={12} />
             </Link>
@@ -376,13 +461,8 @@ export default function AdminDashboard() {
 
         <div className="bg-white border border-gray-100 rounded-xl p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
-              Categorías
-            </h2>
-            <Link
-              href="/admin/categorias"
-              className="text-xs font-sans text-primary hover:underline flex items-center gap-1"
-            >
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">Categorías</h2>
+            <Link href="/admin/categorias" className="text-xs font-sans text-primary hover:underline flex items-center gap-1">
               Gestionar
               <ArrowRight size={12} />
             </Link>
@@ -404,68 +484,6 @@ export default function AdminDashboard() {
 
 // ────────────── Subcomponentes ──────────────
 
-interface KpiCardProps {
-  title: string;
-  value: string | number;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  tone: "primary" | "warning" | "danger" | "muted";
-  subtitle?: string;
-  href?: string;
-}
-
-function KpiCard({ title, value, icon: Icon, tone, subtitle, href }: KpiCardProps) {
-  const toneClass = {
-    primary: "bg-primary text-white",
-    warning: "bg-yellow-500 text-white",
-    danger: "bg-red-500 text-white",
-    muted: "bg-gray-100 text-gray-700",
-  }[tone];
-
-  const card = (
-    <div className="bg-white border border-gray-100 rounded-xl p-5 h-full hover:shadow-sm transition-shadow">
-      <div className="flex items-start justify-between mb-3">
-        <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${toneClass}`}>
-          <Icon size={18} />
-        </div>
-      </div>
-      <p className="text-xs text-gray-mid font-sans uppercase tracking-wide mb-1">
-        {title}
-      </p>
-      <p className="font-heading text-2xl font-semibold text-dark-2">{value}</p>
-      {subtitle && (
-        <p className="text-xs text-gray-light font-sans mt-1">{subtitle}</p>
-      )}
-    </div>
-  );
-
-  return href ? <Link href={href}>{card}</Link> : card;
-}
-
-function TrafficStat({
-  icon: Icon,
-  label,
-  value,
-  hint,
-}: {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
-  label: string;
-  value: number | string;
-  hint?: string;
-}) {
-  return (
-    <div className="bg-bg-light rounded-lg p-4">
-      <div className="flex items-center gap-2 mb-1.5">
-        <Icon size={14} className="text-gray-mid" />
-        <span className="text-xs font-sans text-gray-mid uppercase tracking-wide">{label}</span>
-      </div>
-      <p className="font-heading text-2xl font-semibold text-dark-2">
-        {typeof value === "number" ? value.toLocaleString("es-CO") : value}
-      </p>
-      {hint && <p className="text-xs text-gray-light font-sans mt-1">{hint}</p>}
-    </div>
-  );
-}
-
 function StatusPill({
   icon: Icon,
   label,
@@ -481,9 +499,7 @@ function StatusPill({
     <div className={`rounded-lg p-3 ${color}`}>
       <div className="flex items-center gap-2 mb-1">
         <Icon size={14} />
-        <span className="text-xs font-sans font-semibold uppercase tracking-wide">
-          {label}
-        </span>
+        <span className="text-xs font-sans font-semibold uppercase tracking-wide">{label}</span>
       </div>
       <p className="font-heading text-xl font-semibold">{count}</p>
     </div>
@@ -507,9 +523,7 @@ function Row({
         <Icon size={15} className="text-gray-light" />
         {label}
       </span>
-      <span className={`font-heading font-semibold ${valueClass}`}>
-        {value.toLocaleString("es-CO")}
-      </span>
+      <span className={`font-heading font-semibold ${valueClass}`}>{value.toLocaleString("es-CO")}</span>
     </div>
   );
 }

@@ -286,6 +286,169 @@ def get_marketing_stats(
     }
 
 
+# ───────────────────────── ANALYTICS HISTÓRICAS ─────────────────────────
+
+@router.get("/analytics/timeseries")
+@limiter.limit("60/minute")
+def get_timeseries(
+    request: Request,
+    days: int = 30,
+    db: Session = Depends(get_db),
+    _admin: dict = Depends(get_current_admin),
+):
+    """
+    Serie temporal diaria de tráfico y pedidos.
+    Retorna [{ date, visitors, pageviews, orders, revenue }] día por día.
+    Días sin actividad incluyen ceros para que el gráfico no tenga huecos.
+    """
+    days = min(max(days, 1), 365)
+    now = datetime.now(timezone.utc)
+    start = (now - timedelta(days=days - 1)).replace(hour=0, minute=0, second=0, microsecond=0)
+
+    # Visitantes únicos por día
+    visitors_rows = (
+        db.query(
+            func.date(AnalyticsEventModel.created_at).label("d"),
+            func.count(func.distinct(AnalyticsEventModel.session_id)).label("v"),
+        )
+        .filter(AnalyticsEventModel.created_at >= start)
+        .group_by(func.date(AnalyticsEventModel.created_at))
+        .all()
+    )
+    visitors_by_day = {str(r.d): int(r.v) for r in visitors_rows}
+
+    # Pageviews por día
+    pv_rows = (
+        db.query(
+            func.date(AnalyticsEventModel.created_at).label("d"),
+            func.count(AnalyticsEventModel.id).label("c"),
+        )
+        .filter(
+            and_(
+                AnalyticsEventModel.event_type == "pageview",
+                AnalyticsEventModel.created_at >= start,
+            )
+        )
+        .group_by(func.date(AnalyticsEventModel.created_at))
+        .all()
+    )
+    pv_by_day = {str(r.d): int(r.c) for r in pv_rows}
+
+    # Pedidos y revenue por día (excluye cancelados)
+    orders_rows = (
+        db.query(
+            func.date(OrderModel.created_at).label("d"),
+            func.count(OrderModel.id).label("c"),
+            func.coalesce(func.sum(OrderModel.total), 0).label("r"),
+        )
+        .filter(
+            and_(
+                OrderModel.status != OrderStatus.cancelled,
+                OrderModel.created_at >= start,
+            )
+        )
+        .group_by(func.date(OrderModel.created_at))
+        .all()
+    )
+    orders_by_day = {str(r.d): {"orders": int(r.c), "revenue": float(r.r)} for r in orders_rows}
+
+    # Construir serie completa rellenando días sin datos
+    series = []
+    for i in range(days):
+        d = (start + timedelta(days=i)).date()
+        key = str(d)
+        ord_data = orders_by_day.get(key, {"orders": 0, "revenue": 0.0})
+        series.append({
+            "date": key,
+            "visitors": visitors_by_day.get(key, 0),
+            "pageviews": pv_by_day.get(key, 0),
+            "orders": ord_data["orders"],
+            "revenue": ord_data["revenue"],
+        })
+
+    return {"days": days, "series": series}
+
+
+@router.get("/analytics/comparison")
+@limiter.limit("60/minute")
+def get_comparison(
+    request: Request,
+    period_days: int = 30,
+    db: Session = Depends(get_db),
+    _admin: dict = Depends(get_current_admin),
+):
+    """
+    Compara las métricas del período actual contra el período anterior de igual longitud.
+    Útil para mostrar delta % en cards del dashboard.
+    """
+    period_days = min(max(period_days, 1), 365)
+    now = datetime.now(timezone.utc)
+    current_start = now - timedelta(days=period_days)
+    previous_start = now - timedelta(days=period_days * 2)
+
+    def _aggregate(start: datetime, end: datetime) -> dict:
+        visitors = db.query(func.count(func.distinct(AnalyticsEventModel.session_id))).filter(
+            and_(AnalyticsEventModel.created_at >= start, AnalyticsEventModel.created_at < end)
+        ).scalar() or 0
+
+        pageviews = db.query(func.count(AnalyticsEventModel.id)).filter(
+            and_(
+                AnalyticsEventModel.event_type == "pageview",
+                AnalyticsEventModel.created_at >= start,
+                AnalyticsEventModel.created_at < end,
+            )
+        ).scalar() or 0
+
+        add_to_cart = db.query(func.count(AnalyticsEventModel.id)).filter(
+            and_(
+                AnalyticsEventModel.event_type == "add_to_cart",
+                AnalyticsEventModel.created_at >= start,
+                AnalyticsEventModel.created_at < end,
+            )
+        ).scalar() or 0
+
+        orders = db.query(func.count(OrderModel.id)).filter(
+            and_(
+                OrderModel.status != OrderStatus.cancelled,
+                OrderModel.created_at >= start,
+                OrderModel.created_at < end,
+            )
+        ).scalar() or 0
+
+        revenue = db.query(func.coalesce(func.sum(OrderModel.total), 0)).filter(
+            and_(
+                OrderModel.status != OrderStatus.cancelled,
+                OrderModel.created_at >= start,
+                OrderModel.created_at < end,
+            )
+        ).scalar() or 0
+
+        return {
+            "visitors": int(visitors),
+            "pageviews": int(pageviews),
+            "add_to_cart": int(add_to_cart),
+            "orders": int(orders),
+            "revenue": float(revenue),
+        }
+
+    current = _aggregate(current_start, now)
+    previous = _aggregate(previous_start, current_start)
+
+    def _delta(curr: float, prev: float) -> float:
+        if prev == 0:
+            return 100.0 if curr > 0 else 0.0
+        return round(((curr - prev) / prev) * 100, 1)
+
+    delta = {key: _delta(current[key], previous[key]) for key in current}
+
+    return {
+        "period_days": period_days,
+        "current": current,
+        "previous": previous,
+        "delta_percent": delta,
+    }
+
+
 # ───────────────────────── ÓRDENES ─────────────────────────
 
 class UpdateStatusBody(BaseModel):
