@@ -1,6 +1,8 @@
 /**
  * Construye la URL de wa.me con un mensaje pre-llenado que detalla el pedido.
  * El cliente abre WhatsApp y solo tiene que enviar — el vendedor recibe todo el contexto.
+ *
+ * Usa formato markdown de WhatsApp: *negrita* para resaltar secciones.
  */
 
 export const WHATSAPP_NUMBER = "576045602662";
@@ -33,35 +35,37 @@ export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
   lines.push("");
 
   if (order.id) {
-    lines.push(`PEDIDO #${order.id}`);
+    lines.push(`*PEDIDO #${order.id}*`);
+    lines.push("━━━━━━━━━━━━━━━━");
     lines.push("");
   }
 
-  lines.push("PRODUCTOS:");
+  lines.push("*Productos:*");
   for (const item of order.items) {
-    const ref = item.sku ? ` (${item.sku})` : "";
-    lines.push(`- ${item.name}${ref}`);
-    lines.push(`  ${item.quantity} x ${fmtCOP(item.unit_price)} = ${fmtCOP(item.unit_price * item.quantity)}`);
+    const ref = item.sku ? ` _(${item.sku})_` : "";
+    lines.push(`• ${item.name}${ref}`);
+    lines.push(`   ${item.quantity} × ${fmtCOP(item.unit_price)} = *${fmtCOP(item.unit_price * item.quantity)}*`);
   }
   lines.push("");
 
-  lines.push(`TOTAL: ${fmtCOP(order.total)}`);
+  lines.push(`*Total:* ${fmtCOP(order.total)}`);
+  lines.push("━━━━━━━━━━━━━━━━");
   lines.push("");
 
-  lines.push("CONTACTO:");
-  lines.push(`Nombre: ${order.customer_name}`);
-  if (order.customer_email) lines.push(`Email: ${order.customer_email}`);
-  if (order.customer_phone) lines.push(`Teléfono: ${order.customer_phone}`);
+  lines.push("*Contacto:*");
+  lines.push(`• ${order.customer_name}`);
+  if (order.customer_email) lines.push(`• ${order.customer_email}`);
+  if (order.customer_phone) lines.push(`• ${order.customer_phone}`);
   lines.push("");
 
   if (order.shipping_address) {
-    lines.push("ENVIO:");
+    lines.push("*Dirección de envío:*");
     lines.push(order.shipping_address);
     lines.push("");
   }
 
   if (order.notes) {
-    lines.push("NOTAS:");
+    lines.push("*Notas:*");
     lines.push(order.notes);
     lines.push("");
   }

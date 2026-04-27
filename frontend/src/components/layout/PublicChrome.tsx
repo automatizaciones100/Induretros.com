@@ -23,8 +23,12 @@ export function PublicFooter() {
   return <Footer />;
 }
 
+// El botón flotante de WhatsApp se oculta también en /checkout y /orden/* porque
+// esas páginas ya tienen sus propios CTAs hacia WhatsApp con detalle del pedido.
+const NO_FLOATING_WPP_PREFIXES = [...HIDDEN_PREFIXES, "/checkout", "/orden"];
+
 export function PublicWhatsAppButton() {
   const pathname = usePathname();
-  if (HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) return null;
+  if (NO_FLOATING_WPP_PREFIXES.some((p) => pathname.startsWith(p))) return null;
   return <WhatsAppButton />;
 }

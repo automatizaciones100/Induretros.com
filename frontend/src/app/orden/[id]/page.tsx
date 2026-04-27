@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search } from "lucide-react";
@@ -34,7 +34,9 @@ interface Order {
 
 export default function OrdenPage() {
   const params = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
   const id = params.id;
+  const isFresh = searchParams.get("fresh") === "1";
 
   const [order, setOrder] = useState<Order | null>(null);
   const [hydrated, setHydrated] = useState(false);
@@ -123,23 +125,51 @@ export default function OrdenPage() {
   });
 
   return (
-    <div className="container mx-auto py-12 print:py-4">
-      {/* ───── Banner de éxito ───── */}
-      <div className="max-w-3xl mx-auto bg-green-50 border border-green-200 rounded-xl p-6 mb-8 flex items-start gap-4 print:hidden">
-        <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-          <CheckCircle2 size={28} className="text-white" />
-        </div>
-        <div>
-          <h1 className="font-heading text-xl font-semibold text-dark-2 uppercase mb-1">
-            ¡Pedido confirmado!
-          </h1>
-          <p className="text-sm text-gray-mid font-sans">
-            Tu pedido <strong>#{order.id}</strong> quedó registrado y se abrió
-            WhatsApp con el detalle. Si la pestaña no se abrió, usa el botón
-            verde más abajo para enviarnos la solicitud.
+    <div className="container mx-auto py-6 sm:py-12 print:py-4 pb-24 sm:pb-12">
+      {/* ───── CTA principal: WhatsApp ───── */}
+      {isFresh ? (
+        <div className="max-w-3xl mx-auto bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 sm:p-8 mb-6 text-white shadow-md print:hidden">
+          <div className="flex items-start gap-3 mb-4">
+            <CheckCircle2 size={28} className="flex-shrink-0 mt-1" />
+            <div>
+              <h1 className="font-heading text-xl sm:text-2xl font-semibold uppercase mb-1">
+                ¡Pedido registrado!
+              </h1>
+              <p className="text-sm text-white/90 font-sans">
+                Pedido <strong>#{order.id}</strong> guardado. Para finalizar y
+                coordinar el pago, envíanos el detalle por WhatsApp.
+              </p>
+            </div>
+          </div>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block w-full bg-white text-green-700 font-heading font-semibold uppercase text-center py-4 rounded-lg hover:bg-green-50 transition-colors text-base sm:text-lg flex items-center justify-center gap-2"
+          >
+            <MessageCircle size={20} />
+            Continuar a WhatsApp
+          </a>
+          <p className="text-xs text-white/80 text-center mt-3 font-sans">
+            Se abrirá WhatsApp con todos los datos pre-llenados
           </p>
         </div>
-      </div>
+      ) : (
+        <div className="max-w-3xl mx-auto bg-green-50 border border-green-200 rounded-xl p-6 mb-8 flex items-start gap-4 print:hidden">
+          <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+            <CheckCircle2 size={28} className="text-white" />
+          </div>
+          <div>
+            <h1 className="font-heading text-xl font-semibold text-dark-2 uppercase mb-1">
+              Pedido #{order.id}
+            </h1>
+            <p className="text-sm text-gray-mid font-sans">
+              Tu pedido está registrado. Si quieres reenviar el detalle por
+              WhatsApp, usa el botón verde abajo.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* ───── Encabezado print-friendly ───── */}
       <div className="hidden print:block mb-6 border-b pb-4">
@@ -335,6 +365,20 @@ export default function OrdenPage() {
           (604) 560-2662
         </a>
       </p>
+
+      {/* Botón sticky en mobile — siempre visible al hacer scroll en celular */}
+      {isFresh && (
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="sm:hidden fixed bottom-0 left-0 right-0 bg-green-600 hover:bg-green-700 text-white font-heading font-semibold uppercase py-4 text-center flex items-center justify-center gap-2 shadow-lg z-50 print:hidden"
+          style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom))" }}
+        >
+          <MessageCircle size={18} />
+          Enviar por WhatsApp
+        </a>
+      )}
     </div>
   );
 }
