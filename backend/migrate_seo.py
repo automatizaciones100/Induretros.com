@@ -51,7 +51,7 @@ if not existing:
         default_og_image=None,
         twitter_handle=None,
         organization_name="Induretros S.A.S.",
-        organization_phone="(604) 560-2662",
+        organization_phone="300 719 2973",
     )
     db.add(defaults)
     db.commit()

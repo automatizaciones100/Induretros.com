@@ -5,7 +5,7 @@ import { trackClick } from "@/lib/analytics";
 export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/576045602662"
+      href="https://wa.me/573007192973"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"

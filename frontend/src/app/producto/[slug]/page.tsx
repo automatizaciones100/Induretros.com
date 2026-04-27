@@ -238,7 +238,7 @@ export default async function ProductPage({ params }: PageProps) {
                 className="flex-1 justify-center py-3.5"
               />
               <a
-                href={`https://wa.me/576045602662?text=Hola, estoy interesado en: ${encodeURIComponent(product.name)}`}
+                href={`https://wa.me/573007192973?text=Hola, estoy interesado en: ${encodeURIComponent(product.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-secondary flex-1 justify-center py-3.5 bg-green text-white border-green hover:bg-green/90 hover:text-white"
@@ -249,11 +249,11 @@ export default async function ProductPage({ params }: PageProps) {
             </div>
 
             <a
-              href="tel:+576045602662"
+              href="tel:+573007192973"
               className="flex items-center gap-2 text-gray-mid hover:text-primary transition-colors text-sm font-sans"
             >
               <Phone size={15} />
-              ¿Dudas? Llámanos: (604) 560-2662
+              ¿Dudas? Llámanos: 300 719 2973
             </a>
 
             {/* Descripción completa */}

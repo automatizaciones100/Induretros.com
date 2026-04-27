@@ -46,7 +46,7 @@ export default async function HomePage() {
                 Ver catálogo
                 <ArrowRight size={18} />
               </Link>
-              <a href="https://wa.me/576045602662" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/573007192973" target="_blank" rel="noopener noreferrer"
                 className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark">
                 Cotizar por WhatsApp
               </a>
@@ -144,7 +144,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/576045602662"
+              href="https://wa.me/573007192973"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary text-base px-8 py-3.5"
@@ -152,8 +152,8 @@ export default async function HomePage() {
               Escribir por WhatsApp
               <ArrowRight size={18} />
             </a>
-            <a href="tel:+576045602662" className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark">
-              Llamar ahora: (604) 560-2662
+            <a href="tel:+573007192973" className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark">
+              Llamar ahora: 300 719 2973
             </a>
           </div>
         </div>

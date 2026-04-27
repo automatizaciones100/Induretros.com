@@ -5,7 +5,7 @@
  * Usa formato markdown de WhatsApp: *negrita* para resaltar secciones.
  */
 
-export const WHATSAPP_NUMBER = "576045602662";
+export const WHATSAPP_NUMBER = "573007192973";
 
 interface CartLikeItem {
   product_id: number;

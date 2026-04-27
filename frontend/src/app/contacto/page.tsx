@@ -39,7 +39,7 @@ export default function ContactoPage() {
 
             <div className="space-y-5 mb-8">
               {[
-                { icon: <Phone size={20} />, label: "Teléfono", value: "(604) 560-2662", href: "tel:+576045602662" },
+                { icon: <Phone size={20} />, label: "Teléfono", value: "300 719 2973", href: "tel:+573007192973" },
                 { icon: <Mail size={20} />, label: "Correo", value: "ventas@induretros.com", href: "mailto:ventas@induretros.com" },
                 { icon: <MapPin size={20} />, label: "Dirección", value: "Centro Empresarial Promisión, Medellín, Colombia", href: null },
                 { icon: <Clock size={20} />, label: "Horario", value: "Lunes a Viernes: 7:00 am - 5:00 pm", href: null },
@@ -63,7 +63,7 @@ export default function ContactoPage() {
             </div>
 
             <a
-              href="https://wa.me/576045602662"
+              href="https://wa.me/573007192973"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary w-full justify-center py-4 text-base"

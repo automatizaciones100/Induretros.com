@@ -6,9 +6,9 @@ export default function TopBar() {
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
         {/* Contacto */}
         <div className="flex flex-wrap items-center gap-4">
-          <a href="tel:+576045602662" className="top-bar-link flex items-center gap-1.5">
+          <a href="tel:+573007192973" className="top-bar-link flex items-center gap-1.5">
             <Phone size={13} />
-            <span>(604) 560-2662</span>
+            <span>300 719 2973</span>
           </a>
           <a href="mailto:ventas@induretros.com" className="top-bar-link flex items-center gap-1.5">
             <Mail size={13} />

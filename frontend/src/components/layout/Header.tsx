@@ -47,7 +47,7 @@ export default function Header() {
           {/* Teléfono + Carrito */}
           <div className="flex items-center gap-4">
             <a
-              href="tel:+576045602662"
+              href="tel:+573007192973"
               className="hidden xl:flex items-center gap-2 text-dark-2 hover:text-primary transition-colors"
             >
               <div className="bg-primary rounded-full p-2">
@@ -55,7 +55,7 @@ export default function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-gray-light font-sans leading-tight">Llámanos</span>
-                <span className="text-sm font-semibold font-sans leading-tight">(604) 560-2662</span>
+                <span className="text-sm font-semibold font-sans leading-tight">300 719 2973</span>
               </div>
             </a>
 

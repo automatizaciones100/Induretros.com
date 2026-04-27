@@ -358,11 +358,11 @@ export default function OrdenPage() {
       <p className="max-w-3xl mx-auto mt-6 text-center text-sm text-gray-mid font-sans print:hidden">
         ¿Dudas?{" "}
         <a
-          href="tel:+576045602662"
+          href="tel:+573007192973"
           className="text-primary hover:underline inline-flex items-center gap-1"
         >
           <Phone size={13} />
-          (604) 560-2662
+          300 719 2973
         </a>
       </p>
 
