@@ -3,7 +3,10 @@ Endpoints internos para el panel de administración.
 Requieren JWT con is_admin=True.
 """
 from fastapi import APIRouter, Depends, Request
+from typing import Optional, Literal
 from datetime import datetime, timedelta, timezone
+from fastapi import HTTPException, status as http_status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
 
@@ -11,7 +14,10 @@ from app.database import get_db
 from app.infrastructure.database.models.product_model import ProductModel, CategoryModel
 from app.infrastructure.database.models.order_model import OrderModel, OrderItemModel
 from app.infrastructure.database.models.user_model import UserModel
+from app.infrastructure.database.models.analytics_model import AnalyticsEventModel
 from app.domain.entities.order import OrderStatus
+from app.infrastructure.database.repositories.order_repository import SQLAlchemyOrderRepository
+from app.infrastructure.logging.security_logger import log_admin_action
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
 
@@ -189,6 +195,63 @@ def get_marketing_stats(
         for p in top_products_query
     ]
 
+    # ─── Analítica de tráfico (in-house) ───
+    now = datetime.now(timezone.utc)
+    last_30 = now - timedelta(days=30)
+    last_7 = now - timedelta(days=7)
+
+    # Visitantes únicos (session_id distintos)
+    unique_visitors_30d = db.query(func.count(func.distinct(AnalyticsEventModel.session_id))).filter(
+        AnalyticsEventModel.created_at >= last_30
+    ).scalar() or 0
+
+    unique_visitors_7d = db.query(func.count(func.distinct(AnalyticsEventModel.session_id))).filter(
+        AnalyticsEventModel.created_at >= last_7
+    ).scalar() or 0
+
+    # Pageviews y clicks
+    pageviews_30d = db.query(func.count(AnalyticsEventModel.id)).filter(
+        and_(AnalyticsEventModel.event_type == "pageview", AnalyticsEventModel.created_at >= last_30)
+    ).scalar() or 0
+
+    clicks_30d = db.query(func.count(AnalyticsEventModel.id)).filter(
+        and_(AnalyticsEventModel.event_type == "click", AnalyticsEventModel.created_at >= last_30)
+    ).scalar() or 0
+
+    add_to_cart_30d = db.query(func.count(AnalyticsEventModel.id)).filter(
+        and_(AnalyticsEventModel.event_type == "add_to_cart", AnalyticsEventModel.created_at >= last_30)
+    ).scalar() or 0
+
+    # Top 5 productos más vistos (últimos 30 días)
+    top_viewed_query = (
+        db.query(
+            ProductModel.id,
+            ProductModel.name,
+            ProductModel.slug,
+            func.count(AnalyticsEventModel.id).label("views"),
+        )
+        .join(AnalyticsEventModel, AnalyticsEventModel.product_id == ProductModel.id)
+        .filter(
+            and_(
+                AnalyticsEventModel.event_type == "product_view",
+                AnalyticsEventModel.created_at >= last_30,
+            )
+        )
+        .group_by(ProductModel.id, ProductModel.name, ProductModel.slug)
+        .order_by(func.count(AnalyticsEventModel.id).desc())
+        .limit(5)
+        .all()
+    )
+    top_viewed = [
+        {"id": p.id, "name": p.name, "slug": p.slug, "views": int(p.views)}
+        for p in top_viewed_query
+    ]
+
+    # Tasa de conversión: pedidos / visitantes únicos
+    conversion_rate = (
+        round((orders_30d / unique_visitors_30d) * 100, 2) if unique_visitors_30d else 0.0
+    )
+
     return {
         "seo": {
             "score": seo_score,
@@ -211,4 +274,112 @@ def get_marketing_stats(
             "avg_order_value": float(avg_order),
             "top_products": top_products,
         },
+        "traffic": {
+            "unique_visitors_7_days": unique_visitors_7d,
+            "unique_visitors_30_days": unique_visitors_30d,
+            "pageviews_30_days": pageviews_30d,
+            "clicks_30_days": clicks_30d,
+            "add_to_cart_30_days": add_to_cart_30d,
+            "conversion_rate": conversion_rate,
+            "top_viewed_products": top_viewed,
+        },
     }
+
+
+# ───────────────────────── ÓRDENES ─────────────────────────
+
+class UpdateStatusBody(BaseModel):
+    status: Literal["pending", "processing", "completed", "cancelled"]
+
+
+def _order_to_dict(order) -> dict:
+    return {
+        "id": order.id,
+        "status": order.status.value if hasattr(order.status, "value") else str(order.status),
+        "total": order.total,
+        "customer_name": order.customer_name,
+        "customer_email": order.customer_email,
+        "customer_phone": order.customer_phone,
+        "shipping_address": order.shipping_address,
+        "notes": order.notes,
+        "created_at": order.created_at.isoformat() if order.created_at else None,
+        "items_count": len(order.items),
+        "items": [
+            {
+                "id": i.id,
+                "product_id": i.product_id,
+                "quantity": i.quantity,
+                "unit_price": i.unit_price,
+                "subtotal": i.subtotal,
+            }
+            for i in order.items
+        ],
+    }
+
+
+@router.get("/orders")
+@limiter.limit("60/minute")
+def list_orders(
+    request: Request,
+    page: int = 1,
+    per_page: int = 20,
+    status: Optional[str] = None,
+    search: Optional[str] = None,
+    db: Session = Depends(get_db),
+    _admin: dict = Depends(get_current_admin),
+):
+    """Lista todas las órdenes con filtros y paginación."""
+    if status not in (None, "pending", "processing", "completed", "cancelled"):
+        status = None
+    page = max(1, page)
+    per_page = min(max(1, per_page), 100)
+
+    repo = SQLAlchemyOrderRepository(db)
+    items, total = repo.list_paginated(page=page, per_page=per_page, status=status, search=search)
+    pages = (total + per_page - 1) // per_page if total else 1
+
+    return {
+        "items": [_order_to_dict(o) for o in items],
+        "total": total,
+        "page": page,
+        "pages": pages,
+    }
+
+
+@router.get("/orders/{order_id}")
+@limiter.limit("60/minute")
+def get_order(
+    request: Request,
+    order_id: int,
+    db: Session = Depends(get_db),
+    _admin: dict = Depends(get_current_admin),
+):
+    repo = SQLAlchemyOrderRepository(db)
+    order = repo.get_by_id(order_id)
+    if not order:
+        raise HTTPException(status_code=404, detail="Pedido no encontrado")
+    return _order_to_dict(order)
+
+
+@router.patch("/orders/{order_id}/status")
+@limiter.limit("30/minute")
+def update_order_status(
+    request: Request,
+    order_id: int,
+    body: UpdateStatusBody,
+    db: Session = Depends(get_db),
+    admin: dict = Depends(get_current_admin),
+):
+    repo = SQLAlchemyOrderRepository(db)
+    updated = repo.update_status(order_id, body.status)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Pedido no encontrado")
+
+    ip = request.client.host if request.client else "unknown"
+    log_admin_action(
+        user_id=int(admin.get("sub", 0)),
+        action=f"order_status:{body.status}",
+        resource=f"order:{order_id}",
+        ip=ip,
+    )
+    return _order_to_dict(updated)

@@ -25,6 +25,7 @@ import { Phone, MessageCircle, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import type { Product } from "@/domain/entities/Product";
 import AddToCartButton from "@/components/cart/AddToCartButton";
+import ProductViewTracker from "@/components/analytics/ProductViewTracker";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -115,6 +116,8 @@ export default async function ProductPage({ params }: PageProps) {
         nonce={nonce}
         dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(product)) }}
       />
+
+      <ProductViewTracker productId={product.id} slug={product.slug} />
 
       <div className="container mx-auto py-8">
         {/* Breadcrumb */}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 import { PublicHeader, PublicFooter, PublicWhatsAppButton } from "@/components/layout/PublicChrome";
+import PageViewTracker from "@/components/analytics/PageViewTracker";
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className="min-h-screen flex flex-col">
+        <PageViewTracker />
         <PublicHeader />
         <main className="flex-1">{children}</main>
         <PublicFooter />

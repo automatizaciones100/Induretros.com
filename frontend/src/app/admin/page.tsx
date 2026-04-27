@@ -16,6 +16,10 @@ import {
   ArrowRight,
   Search,
   Megaphone,
+  Eye,
+  MousePointerClick,
+  Users as UsersIcon,
+  BarChart3,
   ImageOff,
   FileText,
   DollarSign,
@@ -54,6 +58,15 @@ interface MarketingStats {
     revenue_last_30_days: number;
     avg_order_value: number;
     top_products: { id: number; name: string; slug: string; units: number; revenue: number }[];
+  };
+  traffic: {
+    unique_visitors_7_days: number;
+    unique_visitors_30_days: number;
+    pageviews_30_days: number;
+    clicks_30_days: number;
+    add_to_cart_30_days: number;
+    conversion_rate: number;
+    top_viewed_products: { id: number; name: string; slug: string; views: number }[];
   };
 }
 
@@ -142,6 +155,58 @@ export default function AdminDashboard() {
           href="/admin/productos?stock=out"
           subtitle="Reabastecer pronto"
         />
+      </div>
+
+      {/* ─────────── Tráfico de la tienda ─────────── */}
+      <div className="bg-white border border-gray-100 rounded-xl p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <BarChart3 size={16} className="text-primary" />
+            <h2 className="font-heading text-base font-semibold text-dark-2 uppercase">
+              Tráfico (últimos 30 días)
+            </h2>
+          </div>
+          <span className="text-xs text-gray-light font-sans italic">In-house · sin Google Analytics</span>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+          <TrafficStat icon={UsersIcon} label="Visitantes únicos" value={marketing.traffic.unique_visitors_30_days} hint={`${marketing.traffic.unique_visitors_7_days} en 7d`} />
+          <TrafficStat icon={Eye} label="Pageviews" value={marketing.traffic.pageviews_30_days} />
+          <TrafficStat icon={MousePointerClick} label="Clicks tracked" value={marketing.traffic.clicks_30_days} />
+          <TrafficStat icon={ShoppingBag} label="Adiciones al carrito" value={marketing.traffic.add_to_cart_30_days} />
+          <TrafficStat icon={TrendingUp} label="Tasa de conversión" value={`${marketing.traffic.conversion_rate}%`} hint="pedidos / visitantes" />
+        </div>
+
+        <div>
+          <p className="text-xs text-gray-mid font-sans uppercase tracking-wide mb-3">
+            Productos más vistos
+          </p>
+          {marketing.traffic.top_viewed_products.length === 0 ? (
+            <p className="text-sm text-gray-light font-sans py-4 text-center bg-bg-light rounded">
+              Aún no hay datos. Visita algunas fichas de producto desde la tienda para empezar a recopilar.
+            </p>
+          ) : (
+            <ol className="space-y-2">
+              {marketing.traffic.top_viewed_products.map((p, idx) => (
+                <li key={p.id} className="flex items-center gap-3 py-2 border-b border-gray-50 last:border-0">
+                  <span className="w-6 h-6 rounded-full bg-bg-light flex items-center justify-center text-xs font-semibold text-gray-mid font-sans">
+                    {idx + 1}
+                  </span>
+                  <Link
+                    href={`/admin/productos/${p.id}`}
+                    className="flex-1 min-w-0 text-sm font-sans text-dark hover:text-primary line-clamp-1"
+                  >
+                    {p.name}
+                  </Link>
+                  <span className="flex items-center gap-1 text-xs text-gray-mid font-sans whitespace-nowrap">
+                    <Eye size={12} />
+                    {p.views.toLocaleString("es-CO")} vistas
+                  </span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
       </div>
 
       {/* ─────────── Marketing ─────────── */}
@@ -374,6 +439,31 @@ function KpiCard({ title, value, icon: Icon, tone, subtitle, href }: KpiCardProp
   );
 
   return href ? <Link href={href}>{card}</Link> : card;
+}
+
+function TrafficStat({
+  icon: Icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  label: string;
+  value: number | string;
+  hint?: string;
+}) {
+  return (
+    <div className="bg-bg-light rounded-lg p-4">
+      <div className="flex items-center gap-2 mb-1.5">
+        <Icon size={14} className="text-gray-mid" />
+        <span className="text-xs font-sans text-gray-mid uppercase tracking-wide">{label}</span>
+      </div>
+      <p className="font-heading text-2xl font-semibold text-dark-2">
+        {typeof value === "number" ? value.toLocaleString("es-CO") : value}
+      </p>
+      {hint && <p className="text-xs text-gray-light font-sans mt-1">{hint}</p>}
+    </div>
+  );
 }
 
 function StatusPill({

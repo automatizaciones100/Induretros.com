@@ -11,3 +11,17 @@ class IOrderRepository(ABC):
     @abstractmethod
     def get_by_id(self, order_id: int) -> Optional[Order]:
         ...
+
+    @abstractmethod
+    def list_paginated(
+        self,
+        page: int,
+        per_page: int,
+        status: Optional[str] = None,
+        search: Optional[str] = None,
+    ) -> tuple[list[Order], int]:
+        ...
+
+    @abstractmethod
+    def update_status(self, order_id: int, new_status: str) -> Optional[Order]:
+        ...

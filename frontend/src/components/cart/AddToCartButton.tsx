@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ShoppingCart, Check } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
+import { trackAddToCart } from "@/lib/analytics";
 import type { Product } from "@/domain/entities/Product";
 
 interface Props {
@@ -34,6 +35,7 @@ export default function AddToCartButton({
     e.stopPropagation();
     if (disabled) return;
     addItem(product, quantity);
+    trackAddToCart(product.id);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1200);
   };

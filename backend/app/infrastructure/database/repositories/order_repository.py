@@ -1,6 +1,7 @@
 from typing import Optional
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
-from app.domain.entities.order import Order, OrderItem
+from app.domain.entities.order import Order, OrderItem, OrderStatus
 from app.domain.repositories.order_repository import IOrderRepository
 from app.infrastructure.database.models.order_model import OrderModel, OrderItemModel
 
@@ -65,3 +66,43 @@ class SQLAlchemyOrderRepository(IOrderRepository):
     def get_by_id(self, order_id: int) -> Optional[Order]:
         model = self._db.query(OrderModel).filter(OrderModel.id == order_id).first()
         return _order_model_to_entity(model) if model else None
+
+    def list_paginated(
+        self,
+        page: int,
+        per_page: int,
+        status: Optional[str] = None,
+        search: Optional[str] = None,
+    ) -> tuple[list[Order], int]:
+        query = self._db.query(OrderModel)
+        if status:
+            query = query.filter(OrderModel.status == status)
+        if search:
+            like = f"%{search}%"
+            query = query.filter(
+                or_(
+                    OrderModel.customer_name.ilike(like),
+                    OrderModel.customer_email.ilike(like),
+                )
+            )
+        total = query.count()
+        models = (
+            query.order_by(OrderModel.created_at.desc())
+            .offset((page - 1) * per_page)
+            .limit(per_page)
+            .all()
+        )
+        return [_order_model_to_entity(m) for m in models], total
+
+    def update_status(self, order_id: int, new_status: str) -> Optional[Order]:
+        model = self._db.query(OrderModel).filter(OrderModel.id == order_id).first()
+        if not model:
+            return None
+        # Validar que el status sea uno de los permitidos
+        try:
+            model.status = OrderStatus(new_status)
+        except ValueError:
+            return None
+        self._db.commit()
+        self._db.refresh(model)
+        return _order_model_to_entity(model)
