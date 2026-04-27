@@ -39,6 +39,8 @@ class ProductDTO(BaseModel):
     image_url: Optional[str] = None
     category_id: Optional[int] = None
     featured: bool = False
+    meta_title: Optional[str] = None
+    meta_description: Optional[str] = None
     created_at: datetime
     category: Optional[CategoryDTO] = None
 
@@ -87,6 +89,8 @@ class CreateProductCommand(BaseModel):
     image_url: Optional[str] = Field(None, max_length=500)
     category_id: Optional[int] = None
     featured: bool = False
+    meta_title: Optional[str] = Field(None, max_length=70)
+    meta_description: Optional[str] = Field(None, max_length=200)
 
     @field_validator("description")
     @classmethod
@@ -120,6 +124,8 @@ class UpdateProductCommand(BaseModel):
     image_url: Optional[str] = Field(None, max_length=500)
     category_id: Optional[int] = None
     featured: Optional[bool] = None
+    meta_title: Optional[str] = Field(None, max_length=70)
+    meta_description: Optional[str] = Field(None, max_length=200)
 
     @field_validator("description")
     @classmethod

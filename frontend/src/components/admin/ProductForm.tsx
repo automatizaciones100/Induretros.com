@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Save, AlertCircle } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
+import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
 
 interface Category {
   id: number;
@@ -27,6 +30,8 @@ export interface ProductFormData {
   image_url?: string | null;
   category_id?: number | null;
   featured?: boolean;
+  meta_title?: string | null;
+  meta_description?: string | null;
 }
 
 interface Props {
@@ -57,6 +62,8 @@ export default function ProductForm({ initial, mode }: Props) {
     image_url: "",
     category_id: null,
     featured: false,
+    meta_title: "",
+    meta_description: "",
     ...initial,
   });
 
@@ -101,6 +108,8 @@ export default function ProductForm({ initial, mode }: Props) {
       price: form.price === null || form.price === undefined ? null : Number(form.price),
       regular_price: form.regular_price === null || form.regular_price === undefined ? null : Number(form.regular_price),
       sale_price: form.sale_price === null || form.sale_price === undefined ? null : Number(form.sale_price),
+      meta_title: form.meta_title?.trim() || null,
+      meta_description: form.meta_description?.trim() || null,
     };
 
     try {
@@ -291,8 +300,52 @@ export default function ProductForm({ initial, mode }: Props) {
           </Field>
         </Section>
 
+        {/* SEO */}
+        <Section title="5. SEO (cómo se ve en Google)">
+          <p className="text-xs text-gray-light font-sans -mt-2">
+            Si dejas estos campos vacíos, Google usará el nombre y la descripción corta automáticamente.
+          </p>
+
+          <Field
+            label={`Meta título (${form.meta_title?.length ?? 0}/70)`}
+            hint="Lo que Google muestra como título azul. Recomendado entre 50-60 caracteres."
+          >
+            <input
+              type="text"
+              maxLength={70}
+              value={form.meta_title ?? ""}
+              onChange={(e) => update("meta_title", e.target.value)}
+              placeholder={form.name || "Se usará el nombre del producto"}
+              className="input-field"
+            />
+          </Field>
+
+          <Field
+            label={`Meta descripción (${form.meta_description?.length ?? 0}/160)`}
+            hint="Lo que Google muestra debajo del título. Recomendado entre 120-155 caracteres."
+          >
+            <textarea
+              rows={3}
+              maxLength={200}
+              value={form.meta_description ?? ""}
+              onChange={(e) => update("meta_description", e.target.value)}
+              placeholder={form.short_description || "Se usará la descripción corta"}
+              className="input-field resize-none"
+            />
+          </Field>
+
+          {/* Preview en vivo de cómo se verá en Google */}
+          <div className="pt-2">
+            <GoogleSerpPreview
+              url={`${SITE_URL}/producto/${form.slug || "ejemplo"}`}
+              title={form.meta_title?.trim() || form.name || ""}
+              description={form.meta_description?.trim() || form.short_description || ""}
+            />
+          </div>
+        </Section>
+
         {/* Visibilidad */}
-        <Section title="5. Visibilidad">
+        <Section title="6. Visibilidad">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"

@@ -24,6 +24,8 @@ export interface Product {
   image_url?: string;
   category?: Category;
   featured: boolean;
+  meta_title?: string | null;
+  meta_description?: string | null;
   created_at: string;
 }
 

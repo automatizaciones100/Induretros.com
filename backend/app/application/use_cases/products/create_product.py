@@ -23,5 +23,7 @@ class CreateProductUseCase:
             image_url=command.image_url,
             category_id=command.category_id,
             featured=command.featured,
+            meta_title=command.meta_title,
+            meta_description=command.meta_description,
         )
         return self._repo.create(product)

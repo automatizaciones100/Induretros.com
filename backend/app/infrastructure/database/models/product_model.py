@@ -37,6 +37,9 @@ class ProductModel(Base):
     image_url = Column(String(500), nullable=True)
     category_id = Column(Integer, ForeignKey("categories.id"), nullable=True, index=True)
     featured = Column(Boolean, default=False)
+    # SEO — si meta_title/meta_description están vacíos, se auto-generan desde name/short_description
+    meta_title = Column(String(70), nullable=True)
+    meta_description = Column(String(200), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

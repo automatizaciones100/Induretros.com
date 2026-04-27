@@ -15,6 +15,7 @@ from app.infrastructure.database.models.product_model import ProductModel, Categ
 from app.infrastructure.database.models.order_model import OrderModel, OrderItemModel
 from app.infrastructure.database.models.user_model import UserModel
 from app.infrastructure.database.models.analytics_model import AnalyticsEventModel
+from app.infrastructure.database.models.site_settings_model import SiteSettingsModel
 from app.domain.entities.order import OrderStatus
 from app.infrastructure.database.repositories.order_repository import SQLAlchemyOrderRepository
 from app.infrastructure.logging.security_logger import log_admin_action
@@ -546,3 +547,86 @@ def update_order_status(
         ip=ip,
     )
     return _order_to_dict(updated)
+
+
+# ───────────────────────── SITE SETTINGS (SEO global) ─────────────────────────
+
+class SiteSettingsBody(BaseModel):
+    site_title: Optional[str] = None
+    title_template: Optional[str] = None
+    default_description: Optional[str] = None
+    default_keywords: Optional[str] = None
+    default_og_image: Optional[str] = None
+    twitter_handle: Optional[str] = None
+    organization_name: Optional[str] = None
+    organization_phone: Optional[str] = None
+
+
+def _settings_to_dict(s: SiteSettingsModel) -> dict:
+    return {
+        "site_title": s.site_title,
+        "title_template": s.title_template,
+        "default_description": s.default_description,
+        "default_keywords": s.default_keywords,
+        "default_og_image": s.default_og_image,
+        "twitter_handle": s.twitter_handle,
+        "organization_name": s.organization_name,
+        "organization_phone": s.organization_phone,
+        "updated_at": s.updated_at.isoformat() if s.updated_at else None,
+    }
+
+
+@router.get("/site-settings")
+@limiter.limit("60/minute")
+def get_site_settings(
+    request: Request,
+    db: Session = Depends(get_db),
+    _admin: dict = Depends(get_current_admin),
+):
+    s = db.query(SiteSettingsModel).filter(SiteSettingsModel.id == 1).first()
+    if not s:
+        # Fila por defecto si no existe (debería haber sido creada por migrate_seo.py)
+        s = SiteSettingsModel(id=1)
+        db.add(s)
+        db.commit()
+        db.refresh(s)
+    return _settings_to_dict(s)
+
+
+@router.put("/site-settings")
+@limiter.limit("30/minute")
+def update_site_settings(
+    request: Request,
+    body: SiteSettingsBody,
+    db: Session = Depends(get_db),
+    admin: dict = Depends(get_current_admin),
+):
+    s = db.query(SiteSettingsModel).filter(SiteSettingsModel.id == 1).first()
+    if not s:
+        s = SiteSettingsModel(id=1)
+        db.add(s)
+
+    fields = body.model_dump(exclude_unset=True)
+    for key, value in fields.items():
+        setattr(s, key, value)
+
+    db.commit()
+    db.refresh(s)
+
+    ip = request.client.host if request.client else "unknown"
+    log_admin_action(
+        user_id=int(admin.get("sub", 0)),
+        action="update_site_settings",
+        resource="site_settings:1",
+        ip=ip,
+    )
+    return _settings_to_dict(s)
+
+
+# Endpoint público (sin auth) para que el frontend lea los settings al renderizar metadata
+@router.get("/site-settings/public")
+def get_site_settings_public(db: Session = Depends(get_db)):
+    s = db.query(SiteSettingsModel).filter(SiteSettingsModel.id == 1).first()
+    if not s:
+        return {}
+    return _settings_to_dict(s)

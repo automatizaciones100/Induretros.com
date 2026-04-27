@@ -3,6 +3,7 @@ from app.infrastructure.database.models.product_model import ProductModel, Categ
 from app.infrastructure.database.models.user_model import UserModel
 from app.infrastructure.database.models.order_model import OrderModel, OrderItemModel
 from app.infrastructure.database.models.analytics_model import AnalyticsEventModel
+from app.infrastructure.database.models.site_settings_model import SiteSettingsModel
 
 __all__ = [
     "ProductModel",
@@ -11,4 +12,5 @@ __all__ = [
     "OrderModel",
     "OrderItemModel",
     "AnalyticsEventModel",
+    "SiteSettingsModel",
 ]

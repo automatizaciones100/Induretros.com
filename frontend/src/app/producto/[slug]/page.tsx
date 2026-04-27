@@ -52,14 +52,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 function buildMetadata(product: Product): Metadata {
+  // Priorizar meta_title/meta_description editables en el admin sobre los auto-generados
+  const title = product.meta_title?.trim() || product.name;
+  const description =
+    product.meta_description?.trim() ||
+    product.short_description ||
+    `Repuesto ${product.name} — Disponible en Induretros. Importadores directos de maquinaria pesada.`;
+
   return {
-    title: product.name,
-    description:
-      product.short_description ||
-      `Repuesto ${product.name} — Disponible en Induretros. Importadores directos de maquinaria pesada.`,
+    title,
+    description,
     openGraph: {
-      title: product.name,
-      description: product.short_description ?? undefined,
+      title,
+      description,
       images: product.image_url ? [{ url: product.image_url }] : [],
       type: "website",
     },

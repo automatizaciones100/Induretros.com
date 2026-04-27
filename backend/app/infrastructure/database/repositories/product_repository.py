@@ -35,6 +35,8 @@ def _product_model_to_entity(model: ProductModel) -> Product:
         image_url=model.image_url,
         category_id=model.category_id,
         featured=model.featured,
+        meta_title=model.meta_title,
+        meta_description=model.meta_description,
         created_at=model.created_at,
         updated_at=model.updated_at,
         category=_category_model_to_entity(model.category) if model.category else None,
@@ -118,6 +120,8 @@ class SQLAlchemyProductRepository(IProductRepository):
             image_url=product.image_url,
             category_id=product.category_id,
             featured=product.featured,
+            meta_title=product.meta_title,
+            meta_description=product.meta_description,
         )
         self._db.add(model)
         self._db.commit()

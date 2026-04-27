@@ -8,6 +8,7 @@ import {
   ShoppingBag,
   FolderTree,
   ImageIcon,
+  Settings,
   LogOut,
   Home,
 } from "lucide-react";
@@ -19,6 +20,7 @@ const NAV = [
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingBag },
   { href: "/admin/categorias", label: "Categorías", icon: FolderTree },
   { href: "/admin/imagenes", label: "Imágenes", icon: ImageIcon },
+  { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 
 export default function AdminSidebar() {
