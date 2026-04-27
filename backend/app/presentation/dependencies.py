@@ -38,6 +38,8 @@ from app.application.use_cases.products.delete_product import DeleteProductUseCa
 from app.application.use_cases.products.get_categories import GetCategoriesUseCase
 from app.application.use_cases.products.get_category import GetCategoryUseCase
 from app.application.use_cases.products.create_category import CreateCategoryUseCase
+from app.application.use_cases.products.update_category import UpdateCategoryUseCase
+from app.application.use_cases.products.delete_category import DeleteCategoryUseCase
 from app.application.use_cases.auth.register_user import RegisterUserUseCase
 from app.application.use_cases.auth.login_user import LoginUserUseCase
 from app.application.use_cases.orders.create_order import CreateOrderUseCase
@@ -122,6 +124,18 @@ def create_category_use_case(
     repo: ICategoryRepository = Depends(get_category_repository),
 ) -> CreateCategoryUseCase:
     return CreateCategoryUseCase(repo)
+
+
+def update_category_use_case(
+    repo: ICategoryRepository = Depends(get_category_repository),
+) -> UpdateCategoryUseCase:
+    return UpdateCategoryUseCase(repo)
+
+
+def delete_category_use_case(
+    repo: ICategoryRepository = Depends(get_category_repository),
+) -> DeleteCategoryUseCase:
+    return DeleteCategoryUseCase(repo)
 
 
 def register_user_use_case(

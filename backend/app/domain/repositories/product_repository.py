@@ -58,9 +58,27 @@ class ICategoryRepository(ABC):
         ...
 
     @abstractmethod
+    def get_all(self) -> list[Category]:
+        """Lista todas las categorías (raíz + hijas) en plano para administración."""
+        ...
+
+    @abstractmethod
+    def get_by_id(self, category_id: int) -> Optional[Category]:
+        ...
+
+    @abstractmethod
     def get_by_slug(self, slug: str) -> Optional[Category]:
         ...
 
     @abstractmethod
     def create(self, category: Category) -> Category:
+        ...
+
+    @abstractmethod
+    def update(self, category_id: int, fields: dict) -> Optional[Category]:
+        ...
+
+    @abstractmethod
+    def delete(self, category_id: int) -> bool:
+        """Retorna False si tiene productos asociados o subcategorías."""
         ...

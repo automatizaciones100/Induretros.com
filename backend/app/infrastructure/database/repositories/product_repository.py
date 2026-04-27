@@ -158,6 +158,14 @@ class SQLAlchemyCategoryRepository(ICategoryRepository):
         )
         return [_category_model_to_entity(m) for m in models]
 
+    def get_all(self) -> list[Category]:
+        models = self._db.query(CategoryModel).order_by(CategoryModel.name).all()
+        return [_category_model_to_entity(m) for m in models]
+
+    def get_by_id(self, category_id: int) -> Optional[Category]:
+        model = self._db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+        return _category_model_to_entity(model) if model else None
+
     def get_by_slug(self, slug: str) -> Optional[Category]:
         model = (
             self._db.query(CategoryModel)
@@ -179,3 +187,25 @@ class SQLAlchemyCategoryRepository(ICategoryRepository):
         self._db.commit()
         self._db.refresh(model)
         return _category_model_to_entity(model)
+
+    def update(self, category_id: int, fields: dict) -> Optional[Category]:
+        model = self._db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+        if not model:
+            return None
+        for key, value in fields.items():
+            if hasattr(model, key):
+                setattr(model, key, value)
+        self._db.commit()
+        self._db.refresh(model)
+        return _category_model_to_entity(model)
+
+    def delete(self, category_id: int) -> bool:
+        model = self._db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+        if not model:
+            return False
+        # Verificar que no tenga productos asociados ni subcategorías
+        if model.products or model.children:
+            return False
+        self._db.delete(model)
+        self._db.commit()
+        return True

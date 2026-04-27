@@ -155,6 +155,24 @@ class CreateCategoryCommand(BaseModel):
         return v
 
 
+class UpdateCategoryCommand(BaseModel):
+    """Todos los campos opcionales — solo los provistos se actualizan."""
+    name: Optional[str] = Field(None, min_length=2, max_length=100)
+    slug: Optional[str] = Field(None, min_length=2, max_length=100, pattern=r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+    description: Optional[str] = Field(None, max_length=1000)
+    image_url: Optional[str] = Field(None, max_length=500)
+    parent_id: Optional[int] = None
+
+    @field_validator("image_url")
+    @classmethod
+    def validate_image_url(cls, v: Optional[str]) -> Optional[str]:
+        if v is None or v == "":
+            return v
+        if not (v.startswith("https://") or v.startswith("http://") or v.startswith("/")):
+            raise ValueError("image_url debe ser http/https o ruta relativa (/static/...)")
+        return v
+
+
 class GetProductsQuery(BaseModel):
     page: int = 1
     per_page: int = 12
