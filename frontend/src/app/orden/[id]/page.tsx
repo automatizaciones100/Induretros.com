@@ -8,14 +8,6 @@ import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search } from "lucid
 import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { resolveImageUrl } from "@/lib/imageUrl";
 
-/** Enmascara el email para evitar fuga de PII si la página se imprime/comparte. */
-function maskEmail(email?: string): string {
-  if (!email || !email.includes("@")) return email || "";
-  const [local, domain] = email.split("@");
-  const visible = local.length >= 2 ? local.slice(0, 2) : local.slice(0, 1);
-  return `${visible}***@${domain}`;
-}
-
 interface OrderItem {
   id: number;
   product_id: number;
@@ -290,7 +282,7 @@ export default function OrdenPage() {
             </div>
             <div>
               <dt className="text-xs text-gray-light uppercase tracking-wide">Correo</dt>
-              <dd className="text-dark" title="Email enmascarado por privacidad">{maskEmail(order.customer_email)}</dd>
+              <dd className="text-dark">{order.customer_email}</dd>
             </div>
             {order.customer_phone && (
               <div>

@@ -102,18 +102,12 @@ class SQLAlchemyProductRepository(IProductRepository):
         self._db.commit()
 
     def decrement_stock(self, product_id: int, quantity: int) -> None:
-        """
-        Solo decrementa cuando el producto tiene stock rastreado (>0).
-        stock=0 se interpreta como 'sin rastreo' (típico al crear sin inventario).
-        Solo marca in_stock=False cuando un stock que estaba rastreado llega a 0.
-        """
         model = self._db.query(ProductModel).filter(ProductModel.id == product_id).first()
-        if not model or not model.stock or model.stock <= 0:
-            return  # no rastreado — no tocar in_stock
-        model.stock = max(0, model.stock - quantity)
-        if model.stock == 0:
-            model.in_stock = False
-        self._db.commit()
+        if model:
+            model.stock = max(0, model.stock - quantity)
+            if model.stock == 0:
+                model.in_stock = False
+            self._db.commit()
 
     def create(self, product: Product) -> Product:
         model = ProductModel(

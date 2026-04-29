@@ -1,43 +1,35 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
-import { ConditionalChrome } from "@/components/layout/PublicChrome";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import { PublicHeader, PublicFooter, PublicWhatsAppButton } from "@/components/layout/PublicChrome";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
-import { getSiteSettings } from "@/lib/siteSettings";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const s = await getSiteSettings();
-  const title = s.site_title || "Induretros - Repuestos para Excavadoras Hidráulicas";
-  const template = s.title_template || "%s | Induretros";
-  return {
-    title: { default: title, template },
-    description: s.default_description || "Importadores directos de repuestos para excavadoras hidráulicas. Más de 9 años de experiencia. Medellín, Colombia.",
-    keywords: (s.default_keywords || "repuestos excavadoras, hidráulica, maquinaria pesada, Colombia, Medellín").split(",").map((k) => k.trim()),
-    openGraph: {
-      siteName: s.site_title || "Induretros",
-      locale: "es_CO",
-      type: "website",
-      ...(s.default_og_image ? { images: [{ url: s.default_og_image }] } : {}),
-    },
-    ...(s.twitter_handle ? { twitter: { card: "summary_large_image", site: `@${s.twitter_handle}` } } : {}),
-  };
-}
+export const metadata: Metadata = {
+  title: {
+    default: "Induretros - Repuestos para Excavadoras Hidráulicas",
+    template: "%s | Induretros",
+  },
+  description:
+    "Importadores directos de repuestos para excavadoras hidráulicas. Más de 9 años de experiencia. Medellín, Colombia.",
+  keywords: ["repuestos excavadoras", "hidráulica", "maquinaria pesada", "Colombia", "Medellín"],
+  openGraph: {
+    siteName: "Induretros",
+    locale: "es_CO",
+    type: "website",
+  },
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // El middleware inyecta el nonce en x-nonce para que Next.js lo aplique
+  // a sus propios scripts de hidratación (eliminando la necesidad de 'unsafe-inline')
   const nonce = (await headers()).get("x-nonce") ?? "";
-  const settings = await getSiteSettings();
-
-  // Header y Footer son async server components; los pre-renderizamos aquí
-  // y se los pasamos a ConditionalChrome (cliente) como ReactNode.
-  const headerNode = <Header />;
-  const footerNode = <Footer />;
 
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
+        {/* Next.js usa este meta-nonce para firmar sus scripts inline de hidratación */}
         {nonce && <meta property="csp-nonce" content={nonce} />}
+        {/* Cloudflare Turnstile — se carga con el nonce para pasar CSP */}
         <script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           async
@@ -47,13 +39,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="min-h-screen flex flex-col">
         <PageViewTracker />
-        <ConditionalChrome
-          header={headerNode}
-          footer={footerNode}
-          whatsappNumber={settings.whatsapp_number}
-        >
-          {children}
-        </ConditionalChrome>
+        <PublicHeader />
+        <main className="flex-1">{children}</main>
+        <PublicFooter />
+        <PublicWhatsAppButton />
       </body>
     </html>
   );

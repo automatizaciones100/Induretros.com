@@ -26,7 +26,7 @@ class AnalyticsEventInput(BaseModel):
 
 
 @router.post("/event", status_code=204)
-@limiter.limit("60/minute")
+@limiter.limit("120/minute")
 def track_event(
     request: Request,
     event: AnalyticsEventInput,

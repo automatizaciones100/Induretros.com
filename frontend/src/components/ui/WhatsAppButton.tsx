@@ -2,18 +2,10 @@
 
 import { trackClick } from "@/lib/analytics";
 
-interface Props {
-  /** Número en formato internacional sin '+', ej. '573007192973'. */
-  number: string;
-}
-
-export default function WhatsAppButton({ number }: Props) {
-  if (!number) return null;
-  const href = `https://wa.me/${number.replace(/\D/g, "")}`;
-
+export default function WhatsAppButton() {
   return (
     <a
-      href={href}
+      href="https://wa.me/573007192973"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"

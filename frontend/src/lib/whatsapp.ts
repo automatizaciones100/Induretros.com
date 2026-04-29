@@ -28,13 +28,6 @@ interface OrderForWhatsApp {
 
 const fmtCOP = (n: number) => `$${n.toLocaleString("es-CO")}`;
 
-/**
- * Escapa los caracteres que WhatsApp interpreta como markdown (*, _, ~)
- * para que no rompan el formato cuando aparecen en valores ingresados por el usuario.
- * WhatsApp soporta el escape con barra invertida.
- */
-const escapeMarkdown = (s: string): string => s.replace(/([*_~`])/g, "\\$1");
-
 export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
   const lines: string[] = [];
 
@@ -49,8 +42,8 @@ export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
 
   lines.push("*Productos:*");
   for (const item of order.items) {
-    const ref = item.sku ? ` _(${escapeMarkdown(item.sku)})_` : "";
-    lines.push(`• ${escapeMarkdown(item.name)}${ref}`);
+    const ref = item.sku ? ` _(${item.sku})_` : "";
+    lines.push(`• ${item.name}${ref}`);
     lines.push(`   ${item.quantity} × ${fmtCOP(item.unit_price)} = *${fmtCOP(item.unit_price * item.quantity)}*`);
   }
   lines.push("");
@@ -60,20 +53,20 @@ export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
   lines.push("");
 
   lines.push("*Contacto:*");
-  lines.push(`• ${escapeMarkdown(order.customer_name)}`);
-  if (order.customer_email) lines.push(`• ${escapeMarkdown(order.customer_email)}`);
-  if (order.customer_phone) lines.push(`• ${escapeMarkdown(order.customer_phone)}`);
+  lines.push(`• ${order.customer_name}`);
+  if (order.customer_email) lines.push(`• ${order.customer_email}`);
+  if (order.customer_phone) lines.push(`• ${order.customer_phone}`);
   lines.push("");
 
   if (order.shipping_address) {
     lines.push("*Dirección de envío:*");
-    lines.push(escapeMarkdown(order.shipping_address));
+    lines.push(order.shipping_address);
     lines.push("");
   }
 
   if (order.notes) {
     lines.push("*Notas:*");
-    lines.push(escapeMarkdown(order.notes));
+    lines.push(order.notes);
     lines.push("");
   }
 

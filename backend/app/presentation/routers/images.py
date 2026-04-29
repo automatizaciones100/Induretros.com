@@ -46,34 +46,8 @@ _STOPWORDS = {"de", "del", "la", "las", "el", "los", "y", "o", "u", "para"}
 
 
 def _safe_filename(name: str) -> str:
-    """Sanitiza el nombre para evitar path traversal y caracteres peligrosos."""
-    # Eliminar cualquier carácter que no sea alfanumérico, punto, guion o underscore
     name = re.sub(r"[^a-zA-Z0-9._\-]", "_", name)
-    # Colapsar múltiples puntos consecutivos a uno solo (evita '..', '...', etc.)
-    name = re.sub(r"\.{2,}", "_", name)
-    # Rechazar nombres vacíos o que sean solo puntos
-    if not name or name.replace(".", "") == "":
-        return "img"
     return name[:200]
-
-
-def _validate_magic_bytes(content: bytes, ext: str) -> bool:
-    """
-    Verifica que los primeros bytes del archivo coincidan con la extensión declarada.
-    Previene que se suba un EXE renombrado como .jpg.
-    """
-    if len(content) < 12:
-        return False
-    if ext in (".jpg", ".jpeg"):
-        return content[:3] == b"\xff\xd8\xff"
-    if ext == ".png":
-        return content[:8] == b"\x89PNG\r\n\x1a\n"
-    if ext == ".webp":
-        return content[:4] == b"RIFF" and content[8:12] == b"WEBP"
-    if ext == ".avif":
-        # AVIF: ISO BMFF con 'ftyp' en offset 4 + brand 'avif'/'avis'/'mif1'
-        return content[4:8] == b"ftyp" and content[8:12] in (b"avif", b"avis", b"mif1")
-    return False
 
 
 def _tokens(slug: str) -> list[str]:
@@ -206,16 +180,6 @@ async def upload_images(
                 "file": filename,
                 "status": "error",
                 "detail": f"Archivo demasiado grande ({len(content) // 1024} KB). Máximo 5 MB.",
-            })
-            continue
-
-        # Validación de magic bytes: el contenido debe corresponder a la extensión declarada.
-        # Previene subida de ejecutables/scripts renombrados.
-        if not _validate_magic_bytes(content, ext):
-            results.append({
-                "file": filename,
-                "status": "error",
-                "detail": "El contenido del archivo no corresponde a una imagen válida del tipo declarado.",
             })
             continue
 

@@ -3,7 +3,6 @@ import Image from "next/image";
 import { getProductsUseCase, getCategoriesUseCase } from "@/lib/container";
 import ProductCard from "@/components/products/ProductCard";
 import { resolveImageUrl } from "@/lib/imageUrl";
-import { getSiteSettings, whatsappLink } from "@/lib/siteSettings";
 import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
@@ -23,29 +22,13 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [featuredResult, categories, settings] = await Promise.allSettled([
+  const [featuredResult, categories] = await Promise.allSettled([
     getProductsUseCase.execute({ featured: true, per_page: 8 }),
     getCategoriesUseCase.execute(),
-    getSiteSettings(),
   ]);
 
   const featuredProducts = featuredResult.status === "fulfilled" ? featuredResult.value.items : [];
   const cats = categories.status === "fulfilled" ? categories.value : [];
-  const s = settings.status === "fulfilled" ? settings.value : {};
-
-  // Hero — todos los textos editables desde /admin/configuracion
-  const heroLabel = s.hero_label || "Importadores directos";
-  const heroTitle = s.hero_title || "Repuestos para Excavadoras Hidráulicas";
-  const heroSubtitle = s.hero_subtitle || "Más de 9 años importando directamente los mejores repuestos para maquinaria pesada. Disponibilidad inmediata y atención personalizada.";
-  const heroCtaText = s.hero_cta_text || "Ver catálogo";
-  const heroCtaUrl = s.hero_cta_url || "/repuestos";
-  const heroCta2Text = s.hero_cta2_text || "Cotizar por WhatsApp";
-  // 'whatsapp:default' se resuelve al wa.me con el número de la organización
-  const heroCta2Url = s.hero_cta2_url === "whatsapp:default"
-    ? whatsappLink(s.whatsapp_number)
-    : (s.hero_cta2_url || whatsappLink(s.whatsapp_number));
-  const heroImage = s.hero_image_url || "/noshadow-excabadora-768x576.webp";
-  const heroCta2IsWhatsApp = heroCta2Url.startsWith("https://wa.me/") || s.hero_cta2_url === "whatsapp:default";
 
   return (
     <>
@@ -53,42 +36,34 @@ export default async function HomePage() {
       <section className="bg-gradient-to-br from-dark-2 to-dark text-white py-16 md:py-24">
         <div className="container mx-auto flex flex-col md:flex-row items-center gap-10">
           <div className="flex-1 text-center md:text-left">
-            {heroLabel && (
-              <p className="text-primary font-semibold font-sans text-sm uppercase tracking-widest mb-3">
-                {heroLabel}
-              </p>
-            )}
+            <p className="text-primary font-semibold font-sans text-sm uppercase tracking-widest mb-3">
+              Importadores directos
+            </p>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-white uppercase leading-tight mb-6">
-              {heroTitle}
+              Repuestos para<br />
+              <span className="text-primary">Excavadoras</span><br />
+              Hidráulicas
             </h1>
-            {heroSubtitle && (
-              <p className="font-sans text-gray-400 text-lg mb-8 max-w-lg">
-                {heroSubtitle}
-              </p>
-            )}
+            <p className="font-sans text-gray-400 text-lg mb-8 max-w-lg">
+              Más de 9 años importando directamente los mejores repuestos para maquinaria pesada.
+              Disponibilidad inmediata y atención personalizada.
+            </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-              {heroCtaText && (
-                <Link href={heroCtaUrl} className="btn-primary text-base px-8 py-3.5">
-                  {heroCtaText}
-                  <ArrowRight size={18} />
-                </Link>
-              )}
-              {heroCta2Text && (
-                <a
-                  href={heroCta2Url}
-                  {...(heroCta2IsWhatsApp ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                  className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark"
-                >
-                  {heroCta2Text}
-                </a>
-              )}
+              <Link href="/repuestos" className="btn-primary text-base px-8 py-3.5">
+                Ver catálogo
+                <ArrowRight size={18} />
+              </Link>
+              <a href="https://wa.me/573007192973" target="_blank" rel="noopener noreferrer"
+                className="btn-secondary text-base px-8 py-3.5 border-gray-600 text-gray-300 hover:text-dark">
+                Cotizar por WhatsApp
+              </a>
             </div>
           </div>
           <div className="flex-1 hidden md:flex justify-center">
             <div className="relative w-full max-w-lg aspect-[4/3]">
               <Image
-                src={resolveImageUrl(heroImage) || "/noshadow-excabadora-768x576.webp"}
-                alt={heroTitle}
+                src="/noshadow-excabadora-768x576.webp"
+                alt="Excavadora hidráulica"
                 fill
                 className="object-contain"
                 priority
