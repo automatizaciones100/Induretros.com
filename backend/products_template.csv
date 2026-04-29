@@ -1,0 +1,6 @@
+sku,name,slug,category_slug,price,regular_price,sale_price,stock,in_stock,short_description,description,featured,image_url,meta_title,meta_description
+FLT-100,Filtro de aceite Komatsu PC500,filtro-aceite-pc500,filtros,95000,,,10,true,Filtro de aceite original PC500-7,"Compatible con Komatsu PC500-7 y PC500-8. Garantía de fábrica.",false,/static/images/FLT-100.jpg,Filtro de aceite Komatsu PC500-7 - Original,Filtro de aceite original Komatsu PC500. Compatible PC500-7 PC500-8. Envío a Colombia.
+HID-100,Bomba hidráulica Cat 336,bomba-hidraulica-cat-336,partes-hidraulicas,5200000,,,3,true,Bomba de pistones para Caterpillar 336,"Bomba hidráulica de pistones axiales para Caterpillar 336D y 336E.",true,,,
+RED-001,Reductor giro Komatsu PC200,reductor-giro-komatsu-pc200,reductores,3800000,4200000,3800000,2,true,Reductor de giro para Komatsu PC200,"Reductor de giro completo. Incluye motor y planetarios.",true,,,
+VAL-001,Válvula solenoide 24V Cat,valvula-solenoide-24v-cat,valvulas-solenoides-y-electrovalvulas,250000,,,15,true,Válvula solenoide 24V para Caterpillar,,false,,,
+TRD-001,Cadena de oruga 47L Komatsu,cadena-oruga-47l-komatsu,tren-de-rodaje,2900000,,,1,true,Cadena de oruga 47 eslabones,"Cadena de oruga sellada y lubricada para PC200-7. 47 eslabones.",false,,,
