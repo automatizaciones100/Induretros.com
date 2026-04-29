@@ -30,6 +30,15 @@ export interface SiteSettings {
   youtube_url?: string | null;
   tiktok_url?: string | null;
   linkedin_url?: string | null;
+  // Hero del home
+  hero_label?: string | null;
+  hero_title?: string | null;
+  hero_subtitle?: string | null;
+  hero_cta_text?: string | null;
+  hero_cta_url?: string | null;
+  hero_cta2_text?: string | null;
+  hero_cta2_url?: string | null;
+  hero_image_url?: string | null;
 }
 
 const FALLBACK: SiteSettings = {

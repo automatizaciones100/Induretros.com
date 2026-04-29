@@ -573,6 +573,15 @@ class SiteSettingsBody(BaseModel):
     youtube_url: Optional[str] = None
     tiktok_url: Optional[str] = None
     linkedin_url: Optional[str] = None
+    # Hero del home
+    hero_label: Optional[str] = None
+    hero_title: Optional[str] = None
+    hero_subtitle: Optional[str] = None
+    hero_cta_text: Optional[str] = None
+    hero_cta_url: Optional[str] = None
+    hero_cta2_text: Optional[str] = None
+    hero_cta2_url: Optional[str] = None
+    hero_image_url: Optional[str] = None
 
     @field_validator(
         "site_title",
@@ -586,6 +595,11 @@ class SiteSettingsBody(BaseModel):
         "contact_address",
         "contact_business_hours",
         "whatsapp_number",
+        "hero_label",
+        "hero_title",
+        "hero_subtitle",
+        "hero_cta_text",
+        "hero_cta2_text",
         mode="before",
     )
     @classmethod
@@ -631,6 +645,15 @@ def _settings_to_dict(s: SiteSettingsModel) -> dict:
         "youtube_url": s.youtube_url,
         "tiktok_url": s.tiktok_url,
         "linkedin_url": s.linkedin_url,
+        # Hero
+        "hero_label": s.hero_label,
+        "hero_title": s.hero_title,
+        "hero_subtitle": s.hero_subtitle,
+        "hero_cta_text": s.hero_cta_text,
+        "hero_cta_url": s.hero_cta_url,
+        "hero_cta2_text": s.hero_cta2_text,
+        "hero_cta2_url": s.hero_cta2_url,
+        "hero_image_url": s.hero_image_url,
         "updated_at": s.updated_at.isoformat() if s.updated_at else None,
     }
 

@@ -38,4 +38,14 @@ class SiteSettingsModel(Base):
     tiktok_url = Column(String(300), nullable=True)
     linkedin_url = Column(String(300), nullable=True)
 
+    # Hero del home — editable por marketing
+    hero_label = Column(String(80), nullable=True)        # mini-tag superior, ej. "Importadores directos"
+    hero_title = Column(String(150), nullable=True)       # título principal
+    hero_subtitle = Column(String(400), nullable=True)    # párrafo descriptivo
+    hero_cta_text = Column(String(50), nullable=True)     # texto del botón principal
+    hero_cta_url = Column(String(200), nullable=True)     # destino del botón principal
+    hero_cta2_text = Column(String(50), nullable=True)    # texto del botón secundario
+    hero_cta2_url = Column(String(200), nullable=True)    # destino del botón secundario
+    hero_image_url = Column(String(500), nullable=True)   # imagen lateral del hero
+
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

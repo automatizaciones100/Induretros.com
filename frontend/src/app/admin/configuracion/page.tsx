@@ -18,6 +18,7 @@ import {
   Facebook,
   Instagram,
   Youtube,
+  Sparkles,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
@@ -40,6 +41,14 @@ interface SiteSettings {
   youtube_url?: string | null;
   tiktok_url?: string | null;
   linkedin_url?: string | null;
+  hero_label?: string | null;
+  hero_title?: string | null;
+  hero_subtitle?: string | null;
+  hero_cta_text?: string | null;
+  hero_cta_url?: string | null;
+  hero_cta2_text?: string | null;
+  hero_cta2_url?: string | null;
+  hero_image_url?: string | null;
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
@@ -88,6 +97,14 @@ export default function AdminConfiguracionPage() {
       youtube_url: form.youtube_url?.trim() || null,
       tiktok_url: form.tiktok_url?.trim() || null,
       linkedin_url: form.linkedin_url?.trim() || null,
+      hero_label: form.hero_label?.trim() || null,
+      hero_title: form.hero_title?.trim() || null,
+      hero_subtitle: form.hero_subtitle?.trim() || null,
+      hero_cta_text: form.hero_cta_text?.trim() || null,
+      hero_cta_url: form.hero_cta_url?.trim() || null,
+      hero_cta2_text: form.hero_cta2_text?.trim() || null,
+      hero_cta2_url: form.hero_cta2_url?.trim() || null,
+      hero_image_url: form.hero_image_url?.trim() || null,
     };
 
     try {
@@ -136,6 +153,106 @@ export default function AdminConfiguracionPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Hero del home */}
+        <Section title="Hero del home (lo primero que ve el visitante)" icon={Sparkles}>
+          <p className="text-xs text-gray-light font-sans -mt-2">
+            Es la sección grande que aparece al entrar a induretros.com. Cambias acá → cambia el home.
+          </p>
+
+          <Field label="Etiqueta superior" hint="Mini-tag pequeño en mayúsculas. Ej. 'Importadores directos'">
+            <input
+              type="text"
+              maxLength={80}
+              value={form.hero_label ?? ""}
+              onChange={(e) => update("hero_label", e.target.value)}
+              placeholder="Importadores directos"
+              className="input-field"
+            />
+          </Field>
+
+          <Field label="Título principal" hint="El título grande del hero. Hasta 150 caracteres.">
+            <textarea
+              rows={2}
+              maxLength={150}
+              value={form.hero_title ?? ""}
+              onChange={(e) => update("hero_title", e.target.value)}
+              placeholder="Repuestos para Excavadoras Hidráulicas"
+              className="input-field resize-none"
+            />
+          </Field>
+
+          <Field label="Subtítulo / descripción" hint="Párrafo descriptivo bajo el título. Hasta 400 caracteres.">
+            <textarea
+              rows={3}
+              maxLength={400}
+              value={form.hero_subtitle ?? ""}
+              onChange={(e) => update("hero_subtitle", e.target.value)}
+              placeholder="Más de 9 años importando..."
+              className="input-field resize-none"
+            />
+          </Field>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Botón principal — texto" hint="Ej. 'Ver catálogo'">
+              <input
+                type="text"
+                maxLength={50}
+                value={form.hero_cta_text ?? ""}
+                onChange={(e) => update("hero_cta_text", e.target.value)}
+                placeholder="Ver catálogo"
+                className="input-field"
+              />
+            </Field>
+            <Field label="Botón principal — destino" hint="Ruta interna ('/repuestos') o URL completa">
+              <input
+                type="text"
+                maxLength={200}
+                value={form.hero_cta_url ?? ""}
+                onChange={(e) => update("hero_cta_url", e.target.value)}
+                placeholder="/repuestos"
+                className="input-field font-mono text-xs"
+              />
+            </Field>
+            <Field label="Botón secundario — texto" hint="Ej. 'Cotizar por WhatsApp'">
+              <input
+                type="text"
+                maxLength={50}
+                value={form.hero_cta2_text ?? ""}
+                onChange={(e) => update("hero_cta2_text", e.target.value)}
+                placeholder="Cotizar por WhatsApp"
+                className="input-field"
+              />
+            </Field>
+            <Field
+              label="Botón secundario — destino"
+              hint="Usa 'whatsapp:default' para abrir el WhatsApp configurado en la sección Contacto"
+            >
+              <input
+                type="text"
+                maxLength={200}
+                value={form.hero_cta2_url ?? ""}
+                onChange={(e) => update("hero_cta2_url", e.target.value)}
+                placeholder="whatsapp:default"
+                className="input-field font-mono text-xs"
+              />
+            </Field>
+          </div>
+
+          <Field label="Imagen lateral del hero" hint="URL relativa (/imagen.webp) o absoluta (https://...)">
+            <div className="relative">
+              <ImageIcon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+              <input
+                type="text"
+                maxLength={500}
+                value={form.hero_image_url ?? ""}
+                onChange={(e) => update("hero_image_url", e.target.value)}
+                placeholder="/noshadow-excabadora-768x576.webp"
+                className="input-field pl-9 font-mono text-xs"
+              />
+            </div>
+          </Field>
+        </Section>
+
         {/* SEO Global */}
         <Section title="SEO global" icon={Globe}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
