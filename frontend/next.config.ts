@@ -6,10 +6,14 @@ import type { NextConfig } from "next";
  */
 const nextConfig: NextConfig = {
   images: {
+    // En dev el optimizador se omite porque el backend está en localhost:8000
+    // y Next.js 16 bloquea por seguridad las imágenes que resuelven a IPs privadas.
+    // En producción el backend estará en un dominio público y el optimizador funciona normal.
+    unoptimized: process.env.NODE_ENV === "development",
     remotePatterns: [
       { protocol: "https", hostname: "induretros.com" },
-      // Backend local en dev sirve imágenes en /static/images/
-      { protocol: "http", hostname: "localhost", port: "8000", pathname: "/static/**" },
+      { protocol: "http", hostname: "localhost", port: "8000" },
+      { protocol: "http", hostname: "127.0.0.1", port: "8000" },
     ],
   },
 };
