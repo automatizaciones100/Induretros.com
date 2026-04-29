@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Paleta de colores exacta extraída del sitio WordPress original */
+  --color-primary: #f08215;
+  --color-secondary: #fecc00;
+  --color-dark: #1A202C;
+  --color-dark-2: #2D3748;
+  --color-gray-mid: #4A5568;
+  --color-gray-light: #718096;
+  --color-bg-light: #EDF2F7;
+  --color-bg-soft: #F7FAFC;
+  --color-white: #ffffff;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-soft text-dark font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading text-dark-2;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-sans font-semibold px-6 py-3 rounded
+           hover:bg-secondary hover:text-dark transition-all duration-200
+           inline-flex items-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-bg-light text-dark font-sans font-semibold px-6 py-3 rounded
+           hover:bg-secondary hover:text-dark transition-all duration-200
+           inline-flex items-center gap-2 border border-gray-200;
+  }
+
+  .btn-outline {
+    @apply border-2 border-primary text-primary font-sans font-semibold px-6 py-3 rounded
+           hover:bg-primary hover:text-white transition-all duration-200
+           inline-flex items-center gap-2;
+  }
+
+  .section-title {
+    @apply font-heading text-3xl md:text-4xl font-semibold text-dark-2 uppercase tracking-wide;
+  }
+
+  .section-subtitle {
+    @apply font-sans text-gray-mid text-lg mt-2;
+  }
+
+  .product-card {
+    @apply bg-white rounded-lg shadow-sm border border-gray-100
+           hover:shadow-md hover:-translate-y-1 transition-all duration-200 overflow-hidden;
+  }
+
+  .input-field {
+    @apply w-full border border-gray-300 rounded px-4 py-2.5 font-sans text-dark
+           focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary
+           placeholder:text-gray-light;
+  }
+
+  .top-bar-link {
+    @apply text-sm text-gray-light hover:text-primary transition-colors duration-150;
+  }
+}
