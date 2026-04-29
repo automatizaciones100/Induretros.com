@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Request
 from typing import Optional, Literal
 from datetime import datetime, timedelta, timezone
 from fastapi import HTTPException, status as http_status
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
 
@@ -560,6 +560,24 @@ class SiteSettingsBody(BaseModel):
     twitter_handle: Optional[str] = None
     organization_name: Optional[str] = None
     organization_phone: Optional[str] = None
+
+    @field_validator(
+        "site_title",
+        "title_template",
+        "default_description",
+        "default_keywords",
+        "twitter_handle",
+        "organization_name",
+        "organization_phone",
+        mode="before",
+    )
+    @classmethod
+    def strip_html(cls, v):
+        """A.8.28 — Sanitiza HTML inyectado por admin para evitar XSS en metadata."""
+        if v is None:
+            return v
+        import bleach
+        return bleach.clean(str(v), tags=[], attributes={}, strip=True)
 
 
 def _settings_to_dict(s: SiteSettingsModel) -> dict:
