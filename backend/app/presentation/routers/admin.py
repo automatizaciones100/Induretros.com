@@ -552,14 +552,27 @@ def update_order_status(
 # ───────────────────────── SITE SETTINGS (SEO global) ─────────────────────────
 
 class SiteSettingsBody(BaseModel):
+    # SEO
     site_title: Optional[str] = None
     title_template: Optional[str] = None
     default_description: Optional[str] = None
     default_keywords: Optional[str] = None
     default_og_image: Optional[str] = None
     twitter_handle: Optional[str] = None
+    # Organización
     organization_name: Optional[str] = None
     organization_phone: Optional[str] = None
+    # Contacto público
+    contact_email: Optional[str] = None
+    contact_address: Optional[str] = None
+    contact_business_hours: Optional[str] = None
+    whatsapp_number: Optional[str] = None
+    # Redes sociales
+    facebook_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    youtube_url: Optional[str] = None
+    tiktok_url: Optional[str] = None
+    linkedin_url: Optional[str] = None
 
     @field_validator(
         "site_title",
@@ -569,6 +582,10 @@ class SiteSettingsBody(BaseModel):
         "twitter_handle",
         "organization_name",
         "organization_phone",
+        "contact_email",
+        "contact_address",
+        "contact_business_hours",
+        "whatsapp_number",
         mode="before",
     )
     @classmethod
@@ -579,17 +596,41 @@ class SiteSettingsBody(BaseModel):
         import bleach
         return bleach.clean(str(v), tags=[], attributes={}, strip=True)
 
+    @field_validator("facebook_url", "instagram_url", "youtube_url", "tiktok_url", "linkedin_url", mode="before")
+    @classmethod
+    def validate_url(cls, v):
+        """Acepta URL absolutas o vacías. Las URLs no se sanitizan con bleach (no son HTML)."""
+        if v is None or v == "":
+            return None
+        v = str(v).strip()
+        if not (v.startswith("https://") or v.startswith("http://")):
+            raise ValueError("La URL debe empezar con https:// o http://")
+        return v
+
 
 def _settings_to_dict(s: SiteSettingsModel) -> dict:
     return {
+        # SEO
         "site_title": s.site_title,
         "title_template": s.title_template,
         "default_description": s.default_description,
         "default_keywords": s.default_keywords,
         "default_og_image": s.default_og_image,
         "twitter_handle": s.twitter_handle,
+        # Organización
         "organization_name": s.organization_name,
         "organization_phone": s.organization_phone,
+        # Contacto
+        "contact_email": s.contact_email,
+        "contact_address": s.contact_address,
+        "contact_business_hours": s.contact_business_hours,
+        "whatsapp_number": s.whatsapp_number,
+        # Redes
+        "facebook_url": s.facebook_url,
+        "instagram_url": s.instagram_url,
+        "youtube_url": s.youtube_url,
+        "tiktok_url": s.tiktok_url,
+        "linkedin_url": s.linkedin_url,
         "updated_at": s.updated_at.isoformat() if s.updated_at else None,
     }
 

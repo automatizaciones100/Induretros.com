@@ -11,6 +11,13 @@ import {
   Phone,
   Twitter,
   Image as ImageIcon,
+  Mail,
+  MapPin,
+  Clock,
+  MessageCircle,
+  Facebook,
+  Instagram,
+  Youtube,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
@@ -24,6 +31,15 @@ interface SiteSettings {
   twitter_handle?: string | null;
   organization_name?: string | null;
   organization_phone?: string | null;
+  contact_email?: string | null;
+  contact_address?: string | null;
+  contact_business_hours?: string | null;
+  whatsapp_number?: string | null;
+  facebook_url?: string | null;
+  instagram_url?: string | null;
+  youtube_url?: string | null;
+  tiktok_url?: string | null;
+  linkedin_url?: string | null;
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
@@ -63,6 +79,15 @@ export default function AdminConfiguracionPage() {
       twitter_handle: form.twitter_handle?.trim() || null,
       organization_name: form.organization_name?.trim() || null,
       organization_phone: form.organization_phone?.trim() || null,
+      contact_email: form.contact_email?.trim() || null,
+      contact_address: form.contact_address?.trim() || null,
+      contact_business_hours: form.contact_business_hours?.trim() || null,
+      whatsapp_number: form.whatsapp_number?.replace(/\D/g, "") || null,
+      facebook_url: form.facebook_url?.trim() || null,
+      instagram_url: form.instagram_url?.trim() || null,
+      youtube_url: form.youtube_url?.trim() || null,
+      tiktok_url: form.tiktok_url?.trim() || null,
+      linkedin_url: form.linkedin_url?.trim() || null,
     };
 
     try {
@@ -224,6 +249,135 @@ export default function AdminConfiguracionPage() {
                   className="input-field pl-9"
                 />
               </div>
+            </Field>
+          </div>
+        </Section>
+
+        {/* Contacto público */}
+        <Section title="Contacto público (toda la web)" icon={Phone}>
+          <p className="text-xs text-gray-light font-sans -mt-2">
+            Estos datos aparecen en el header, footer, página de contacto y página de producto. Cambias acá → cambia en todo el sitio.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Email de contacto" hint="Aparece en footer y /contacto">
+              <div className="relative">
+                <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+                <input
+                  type="email"
+                  maxLength={120}
+                  value={form.contact_email ?? ""}
+                  onChange={(e) => update("contact_email", e.target.value)}
+                  placeholder="ventas@induretros.com"
+                  className="input-field pl-9"
+                />
+              </div>
+            </Field>
+            <Field label="Número de WhatsApp" hint="Solo dígitos con código país. Ej. 573007192973">
+              <div className="relative">
+                <MessageCircle size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+                <input
+                  type="tel"
+                  maxLength={30}
+                  value={form.whatsapp_number ?? ""}
+                  onChange={(e) => update("whatsapp_number", e.target.value.replace(/\D/g, ""))}
+                  placeholder="573007192973"
+                  className="input-field pl-9 font-mono text-xs"
+                />
+              </div>
+            </Field>
+          </div>
+          <Field label="Dirección física" hint="Aparece en footer y /contacto">
+            <div className="relative">
+              <MapPin size={14} className="absolute left-3 top-3 text-gray-light pointer-events-none" />
+              <input
+                type="text"
+                maxLength={300}
+                value={form.contact_address ?? ""}
+                onChange={(e) => update("contact_address", e.target.value)}
+                placeholder="Centro Empresarial Promisión, Medellín, Colombia"
+                className="input-field pl-9"
+              />
+            </div>
+          </Field>
+          <Field label="Horario de atención" hint="Aparece en /contacto">
+            <div className="relative">
+              <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+              <input
+                type="text"
+                maxLength={150}
+                value={form.contact_business_hours ?? ""}
+                onChange={(e) => update("contact_business_hours", e.target.value)}
+                placeholder="Lunes a Viernes: 7:00 am - 5:00 pm"
+                className="input-field pl-9"
+              />
+            </div>
+          </Field>
+        </Section>
+
+        {/* Redes sociales */}
+        <Section title="Redes sociales" icon={Facebook}>
+          <p className="text-xs text-gray-light font-sans -mt-2">
+            URLs completas con https://. Si dejas vacío un campo, el ícono no aparece en el sitio.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Field label="Facebook">
+              <div className="relative">
+                <Facebook size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+                <input
+                  type="url"
+                  maxLength={300}
+                  value={form.facebook_url ?? ""}
+                  onChange={(e) => update("facebook_url", e.target.value)}
+                  placeholder="https://www.facebook.com/induretros"
+                  className="input-field pl-9 text-xs"
+                />
+              </div>
+            </Field>
+            <Field label="Instagram">
+              <div className="relative">
+                <Instagram size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+                <input
+                  type="url"
+                  maxLength={300}
+                  value={form.instagram_url ?? ""}
+                  onChange={(e) => update("instagram_url", e.target.value)}
+                  placeholder="https://www.instagram.com/induretros"
+                  className="input-field pl-9 text-xs"
+                />
+              </div>
+            </Field>
+            <Field label="YouTube">
+              <div className="relative">
+                <Youtube size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-light pointer-events-none" />
+                <input
+                  type="url"
+                  maxLength={300}
+                  value={form.youtube_url ?? ""}
+                  onChange={(e) => update("youtube_url", e.target.value)}
+                  placeholder="https://www.youtube.com/@induretros"
+                  className="input-field pl-9 text-xs"
+                />
+              </div>
+            </Field>
+            <Field label="TikTok">
+              <input
+                type="url"
+                maxLength={300}
+                value={form.tiktok_url ?? ""}
+                onChange={(e) => update("tiktok_url", e.target.value)}
+                placeholder="https://www.tiktok.com/@induretros"
+                className="input-field text-xs"
+              />
+            </Field>
+            <Field label="LinkedIn">
+              <input
+                type="url"
+                maxLength={300}
+                value={form.linkedin_url ?? ""}
+                onChange={(e) => update("linkedin_url", e.target.value)}
+                placeholder="https://www.linkedin.com/company/induretros"
+                className="input-field text-xs"
+              />
             </Field>
           </div>
         </Section>
