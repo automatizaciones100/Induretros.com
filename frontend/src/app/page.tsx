@@ -4,7 +4,9 @@ import { getProductsUseCase, getCategoriesUseCase } from "@/lib/container";
 import ProductCard from "@/components/products/ProductCard";
 import { resolveImageUrl } from "@/lib/imageUrl";
 import { getSiteSettings, whatsappLink } from "@/lib/siteSettings";
-import { ArrowRight, Award, Clock, Users, Package } from "lucide-react";
+import { getHomeStats } from "@/lib/homeStats";
+import { getStatIcon } from "@/lib/statIcon";
+import { ArrowRight } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
   "accesorios": "🔧",
@@ -23,15 +25,17 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [featuredResult, categories, settings] = await Promise.allSettled([
+  const [featuredResult, categories, settings, statsResult] = await Promise.allSettled([
     getProductsUseCase.execute({ featured: true, per_page: 8 }),
     getCategoriesUseCase.execute(),
     getSiteSettings(),
+    getHomeStats(),
   ]);
 
   const featuredProducts = featuredResult.status === "fulfilled" ? featuredResult.value.items : [];
   const cats = categories.status === "fulfilled" ? categories.value : [];
   const s = settings.status === "fulfilled" ? settings.value : {};
+  const stats = statsResult.status === "fulfilled" ? statsResult.value : [];
 
   // Hero — todos los textos editables desde /admin/configuracion
   const heroLabel = s.hero_label || "Importadores directos";
@@ -100,22 +104,27 @@ export default async function HomePage() {
       </section>
 
       {/* ESTADÍSTICAS */}
-      <section className="bg-primary py-10">
-        <div className="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            { icon: <Clock size={28} />, value: "+9", label: "Años de experiencia" },
-            { icon: <Package size={28} />, value: "+1200", label: "Referencias disponibles" },
-            { icon: <Users size={28} />, value: "+500", label: "Clientes satisfechos" },
-            { icon: <Award size={28} />, value: "100%", label: "Garantía de calidad" },
-          ].map((stat) => (
-            <div key={stat.label} className="text-white">
-              <div className="flex justify-center mb-2 opacity-80">{stat.icon}</div>
-              <div className="font-heading text-3xl font-semibold">{stat.value}</div>
-              <div className="font-sans text-sm opacity-80 mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {stats.length > 0 && (
+        <section className="bg-primary py-10">
+          <div
+            className="container mx-auto grid gap-6 text-center"
+            style={{ gridTemplateColumns: `repeat(auto-fit, minmax(180px, 1fr))` }}
+          >
+            {stats.map((stat) => {
+              const Icon = getStatIcon(stat.icon);
+              return (
+                <div key={stat.id || stat.label} className="text-white">
+                  <div className="flex justify-center mb-2 opacity-80">
+                    <Icon size={28} />
+                  </div>
+                  <div className="font-heading text-3xl font-semibold">{stat.value}</div>
+                  <div className="font-sans text-sm opacity-80 mt-1">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* CATEGORÍAS */}
       {cats.length > 0 && (

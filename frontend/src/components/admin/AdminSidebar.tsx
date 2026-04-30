@@ -9,6 +9,7 @@ import {
   FolderTree,
   ImageIcon,
   Settings,
+  BarChart3,
   LogOut,
   Home,
 } from "lucide-react";
@@ -20,6 +21,7 @@ const NAV = [
   { href: "/admin/pedidos", label: "Pedidos", icon: ShoppingBag },
   { href: "/admin/categorias", label: "Categorías", icon: FolderTree },
   { href: "/admin/imagenes", label: "Imágenes", icon: ImageIcon },
+  { href: "/admin/estadisticas", label: "Estadísticas home", icon: BarChart3 },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 
