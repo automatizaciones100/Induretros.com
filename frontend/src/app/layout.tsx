@@ -4,8 +4,10 @@ import "./globals.css";
 import { ConditionalChrome } from "@/components/layout/PublicChrome";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
 import { getSiteSettings } from "@/lib/siteSettings";
+import { getActiveAnnouncements } from "@/lib/announcements";
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();
@@ -27,10 +29,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const nonce = (await headers()).get("x-nonce") ?? "";
-  const settings = await getSiteSettings();
+  const [settings, announcements] = await Promise.all([getSiteSettings(), getActiveAnnouncements()]);
 
-  // Header y Footer son async server components; los pre-renderizamos aquí
-  // y se los pasamos a ConditionalChrome (cliente) como ReactNode.
+  // Pre-renderizamos los server components y los pasamos a ConditionalChrome
+  // (cliente) como ReactNode para que decida visibilidad por ruta.
+  const announcementNode = announcements.length > 0
+    ? <AnnouncementBar announcements={announcements} />
+    : null;
   const headerNode = <Header />;
   const footerNode = <Footer />;
 
@@ -48,6 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-screen flex flex-col">
         <PageViewTracker />
         <ConditionalChrome
+          announcement={announcementNode}
           header={headerNode}
           footer={footerNode}
           whatsappNumber={settings.whatsapp_number}

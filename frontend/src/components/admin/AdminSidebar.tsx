@@ -10,6 +10,7 @@ import {
   ImageIcon,
   Settings,
   BarChart3,
+  Megaphone,
   LogOut,
   Home,
 } from "lucide-react";
@@ -22,6 +23,7 @@ const NAV = [
   { href: "/admin/categorias", label: "Categorías", icon: FolderTree },
   { href: "/admin/imagenes", label: "Imágenes", icon: ImageIcon },
   { href: "/admin/estadisticas", label: "Estadísticas home", icon: BarChart3 },
+  { href: "/admin/anuncios", label: "Anuncios", icon: Megaphone },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 
