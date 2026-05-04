@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import TopBar from "./TopBar";
 import Navbar from "./Navbar";
+import HeaderSearch from "./HeaderSearch";
 import CartIcon from "@/components/cart/CartIcon";
 import { getSiteSettings, telLink } from "@/lib/siteSettings";
 
@@ -28,21 +29,7 @@ export default async function Header() {
           </Link>
 
           <div className="flex-1 max-w-2xl hidden md:flex">
-            <div className="flex w-full">
-              <input
-                type="search"
-                placeholder="Buscar repuestos, referencias, marcas..."
-                className="flex-1 border border-r-0 border-gray-300 rounded-l px-4 py-2.5 text-sm font-sans text-dark
-                           focus:outline-none focus:border-primary placeholder:text-gray-light"
-              />
-              <button
-                className="bg-primary hover:bg-secondary text-white px-5 py-2.5 rounded-r transition-colors duration-200 flex items-center gap-2"
-                aria-label="Buscar"
-              >
-                <Search size={18} />
-                <span className="text-sm font-semibold hidden lg:inline">Buscar</span>
-              </button>
-            </div>
+            <HeaderSearch />
           </div>
 
           <div className="flex items-center gap-4">
@@ -63,6 +50,11 @@ export default async function Header() {
 
             <CartIcon />
           </div>
+        </div>
+
+        {/* Búsqueda en móvil — se muestra debajo del logo en pantallas pequeñas */}
+        <div className="container mx-auto md:hidden mt-3 px-4">
+          <HeaderSearch />
         </div>
       </div>
 

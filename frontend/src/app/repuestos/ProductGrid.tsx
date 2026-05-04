@@ -27,14 +27,25 @@ export default async function ProductGrid({ page, categoria, buscar }: ProductGr
       <div className="text-center py-20">
         <div className="text-6xl mb-4">🔍</div>
         <h3 className="font-heading text-xl font-semibold text-dark-2 mb-2">
-          No encontramos productos
+          {buscar
+            ? `No hay resultados para “${buscar}”`
+            : "No encontramos productos"}
         </h3>
-        <p className="font-sans text-gray-mid mb-6">
-          Intenta con otra categoría o contáctanos directamente.
+        <p className="font-sans text-gray-mid mb-6 max-w-md mx-auto">
+          {buscar
+            ? "Revisa la ortografía o prueba con menos palabras. También puedes escribirnos por WhatsApp y un asesor cotiza el repuesto que necesitas."
+            : "Intenta con otra categoría o contáctanos directamente."}
         </p>
-        <Link href="/contacto" className="btn-primary">
-          Contactar asesor
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          {buscar && (
+            <Link href="/repuestos" className="btn-secondary">
+              Ver todo el catálogo
+            </Link>
+          )}
+          <Link href="/contacto" className="btn-primary">
+            Contactar asesor
+          </Link>
+        </div>
       </div>
     );
   }

@@ -40,13 +40,19 @@ export default async function RepuestosPage({ searchParams }: PageProps) {
       <nav className="text-sm text-gray-light mb-6 font-sans">
         <Link href="/" className="hover:text-primary">Inicio</Link>
         <span className="mx-2">/</span>
-        <span className="text-dark">Repuestos</span>
+        <Link href="/repuestos" className={params.categoria || params.buscar ? "hover:text-primary" : "text-dark"}>Repuestos</Link>
         {params.categoria && (
           <>
             <span className="mx-2">/</span>
             <span className="text-dark capitalize">
               {params.categoria.replace(/-/g, " ")}
             </span>
+          </>
+        )}
+        {params.buscar && (
+          <>
+            <span className="mx-2">/</span>
+            <span className="text-dark">Búsqueda: &ldquo;{params.buscar}&rdquo;</span>
           </>
         )}
       </nav>
@@ -91,12 +97,30 @@ export default async function RepuestosPage({ searchParams }: PageProps) {
 
         {/* Grid — hace streaming mientras el sidebar ya está visible */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="font-heading text-2xl font-semibold text-dark-2 uppercase">
-              {params.categoria
-                ? params.categoria.replace(/-/g, " ")
-                : "Todos los repuestos"}
-            </h1>
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <div>
+              <h1 className="font-heading text-2xl font-semibold text-dark-2 uppercase">
+                {params.buscar
+                  ? `Resultados para “${params.buscar}”`
+                  : params.categoria
+                    ? params.categoria.replace(/-/g, " ")
+                    : "Todos los repuestos"}
+              </h1>
+              {params.buscar && params.categoria && (
+                <p className="text-xs text-gray-mid font-sans mt-1">
+                  En categoría:{" "}
+                  <span className="capitalize">{params.categoria.replace(/-/g, " ")}</span>
+                </p>
+              )}
+            </div>
+            {params.buscar && (
+              <Link
+                href="/repuestos"
+                className="text-xs font-sans text-primary hover:underline"
+              >
+                Limpiar búsqueda
+              </Link>
+            )}
           </div>
 
           <Suspense fallback={<ProductGridSkeleton />}>
