@@ -11,6 +11,7 @@ import {
   Settings,
   BarChart3,
   Megaphone,
+  MessageSquareQuote,
   LogOut,
   Home,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const NAV = [
   { href: "/admin/imagenes", label: "Imágenes", icon: ImageIcon },
   { href: "/admin/estadisticas", label: "Estadísticas home", icon: BarChart3 },
   { href: "/admin/anuncios", label: "Anuncios", icon: Megaphone },
+  { href: "/admin/testimonios", label: "Testimonios", icon: MessageSquareQuote },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 

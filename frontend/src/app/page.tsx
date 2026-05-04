@@ -6,6 +6,8 @@ import { resolveImageUrl } from "@/lib/imageUrl";
 import { getSiteSettings, whatsappLink } from "@/lib/siteSettings";
 import { getHomeStats } from "@/lib/homeStats";
 import { getStatIcon } from "@/lib/statIcon";
+import { getActiveTestimonials } from "@/lib/testimonials";
+import TestimonialsSection from "@/components/home/TestimonialsSection";
 import { ArrowRight } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
@@ -25,17 +27,19 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [featuredResult, categories, settings, statsResult] = await Promise.allSettled([
+  const [featuredResult, categories, settings, statsResult, testimonialsResult] = await Promise.allSettled([
     getProductsUseCase.execute({ featured: true, per_page: 8 }),
     getCategoriesUseCase.execute(),
     getSiteSettings(),
     getHomeStats(),
+    getActiveTestimonials(),
   ]);
 
   const featuredProducts = featuredResult.status === "fulfilled" ? featuredResult.value.items : [];
   const cats = categories.status === "fulfilled" ? categories.value : [];
   const s = settings.status === "fulfilled" ? settings.value : {};
   const stats = statsResult.status === "fulfilled" ? statsResult.value : [];
+  const testimonials = testimonialsResult.status === "fulfilled" ? testimonialsResult.value : [];
 
   // Hero — todos los textos editables desde /admin/configuracion
   const heroLabel = s.hero_label || "Importadores directos";
@@ -206,6 +210,9 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* TESTIMONIOS */}
+      <TestimonialsSection testimonials={testimonials} />
 
       {/* CTA WHATSAPP */}
       <section className="bg-dark-2 py-14">
