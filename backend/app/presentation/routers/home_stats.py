@@ -12,7 +12,7 @@ from app.database import get_db
 from app.infrastructure.database.models.home_stat_model import HomeStatModel
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
-from app.infrastructure.logging.security_logger import log_admin_action
+from app.infrastructure.audit.change_log import record_change
 
 router = APIRouter(prefix="/api/home-stats", tags=["home-stats"])
 
@@ -89,14 +89,9 @@ def create_stat(
     db.add(stat)
     db.commit()
     db.refresh(stat)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="create_home_stat",
-        resource=f"stat:{stat.id}",
-        ip=ip,
-    )
-    return _to_dict(stat)
+    after = _to_dict(stat)
+    record_change(db, "home_stat", str(stat.id), "create", None, after, admin, request)
+    return after
 
 
 @router.put("/{stat_id}")
@@ -111,6 +106,7 @@ def update_stat(
     stat = db.query(HomeStatModel).filter(HomeStatModel.id == stat_id).first()
     if not stat:
         raise HTTPException(status_code=404, detail="Estadística no encontrada")
+    before = _to_dict(stat)
     stat.position = body.position
     stat.value = body.value
     stat.label = body.label
@@ -118,14 +114,9 @@ def update_stat(
     stat.active = body.active
     db.commit()
     db.refresh(stat)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="update_home_stat",
-        resource=f"stat:{stat.id}",
-        ip=ip,
-    )
-    return _to_dict(stat)
+    after = _to_dict(stat)
+    record_change(db, "home_stat", str(stat.id), "update", before, after, admin, request)
+    return after
 
 
 @router.delete("/{stat_id}", status_code=204)
@@ -139,12 +130,7 @@ def delete_stat(
     stat = db.query(HomeStatModel).filter(HomeStatModel.id == stat_id).first()
     if not stat:
         raise HTTPException(status_code=404, detail="Estadística no encontrada")
+    before = _to_dict(stat)
     db.delete(stat)
     db.commit()
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="delete_home_stat",
-        resource=f"stat:{stat_id}",
-        ip=ip,
-    )
+    record_change(db, "home_stat", str(stat_id), "delete", before, None, admin, request)

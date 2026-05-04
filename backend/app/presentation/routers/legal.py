@@ -15,7 +15,7 @@ from app.database import get_db
 from app.infrastructure.database.models.legal_page_model import LegalPageModel
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
-from app.infrastructure.logging.security_logger import log_admin_action
+from app.infrastructure.audit.change_log import record_change
 
 router = APIRouter(prefix="/api/legal", tags=["legal"])
 
@@ -110,14 +110,9 @@ def create_page(
     db.add(page)
     db.commit()
     db.refresh(page)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="create_legal_page",
-        resource=f"legal:{page.slug}",
-        ip=ip,
-    )
-    return _to_dict(page)
+    after = _to_dict(page)
+    record_change(db, "legal_page", page.slug, "create", None, after, admin, request)
+    return after
 
 
 @router.put("/{slug}")
@@ -132,20 +127,16 @@ def update_page(
     page = db.query(LegalPageModel).filter(LegalPageModel.slug == slug).first()
     if not page:
         raise HTTPException(status_code=404, detail="Página no encontrada")
+    before = _to_dict(page)
     page.title = body.title
     page.content = body.content
     # SQLite no dispara onupdate sin un cambio explícito en algunos drivers
     page.updated_at = datetime.utcnow()
     db.commit()
     db.refresh(page)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="update_legal_page",
-        resource=f"legal:{page.slug}",
-        ip=ip,
-    )
-    return _to_dict(page)
+    after = _to_dict(page)
+    record_change(db, "legal_page", page.slug, "update", before, after, admin, request)
+    return after
 
 
 @router.delete("/{slug}", status_code=204)
@@ -159,12 +150,7 @@ def delete_page(
     page = db.query(LegalPageModel).filter(LegalPageModel.slug == slug).first()
     if not page:
         raise HTTPException(status_code=404, detail="Página no encontrada")
+    before = _to_dict(page)
     db.delete(page)
     db.commit()
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="delete_legal_page",
-        resource=f"legal:{slug}",
-        ip=ip,
-    )
+    record_change(db, "legal_page", slug, "delete", before, None, admin, request)

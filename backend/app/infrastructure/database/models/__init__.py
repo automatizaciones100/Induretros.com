@@ -10,6 +10,7 @@ from app.infrastructure.database.models.testimonial_model import TestimonialMode
 from app.infrastructure.database.models.faq_model import FaqItemModel
 from app.infrastructure.database.models.why_us_model import WhyUsItemModel
 from app.infrastructure.database.models.legal_page_model import LegalPageModel
+from app.infrastructure.database.models.change_log_model import ChangeLogModel
 
 __all__ = [
     "ProductModel",
@@ -25,4 +26,5 @@ __all__ = [
     "FaqItemModel",
     "WhyUsItemModel",
     "LegalPageModel",
+    "ChangeLogModel",
 ]

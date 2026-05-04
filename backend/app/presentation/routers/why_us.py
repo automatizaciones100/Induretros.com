@@ -11,7 +11,7 @@ from app.database import get_db
 from app.infrastructure.database.models.why_us_model import WhyUsItemModel
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
-from app.infrastructure.logging.security_logger import log_admin_action
+from app.infrastructure.audit.change_log import record_change
 
 router = APIRouter(prefix="/api/why-us", tags=["why-us"])
 
@@ -80,14 +80,9 @@ def create_item(
     db.add(item)
     db.commit()
     db.refresh(item)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="create_why_us",
-        resource=f"why_us:{item.id}",
-        ip=ip,
-    )
-    return _to_dict(item)
+    after = _to_dict(item)
+    record_change(db, "why_us", str(item.id), "create", None, after, admin, request)
+    return after
 
 
 @router.put("/{item_id}")
@@ -102,18 +97,14 @@ def update_item(
     item = db.query(WhyUsItemModel).filter(WhyUsItemModel.id == item_id).first()
     if not item:
         raise HTTPException(status_code=404, detail="Bloque no encontrado")
+    before = _to_dict(item)
     for key, value in body.model_dump().items():
         setattr(item, key, value)
     db.commit()
     db.refresh(item)
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="update_why_us",
-        resource=f"why_us:{item.id}",
-        ip=ip,
-    )
-    return _to_dict(item)
+    after = _to_dict(item)
+    record_change(db, "why_us", str(item.id), "update", before, after, admin, request)
+    return after
 
 
 @router.delete("/{item_id}", status_code=204)
@@ -127,12 +118,7 @@ def delete_item(
     item = db.query(WhyUsItemModel).filter(WhyUsItemModel.id == item_id).first()
     if not item:
         raise HTTPException(status_code=404, detail="Bloque no encontrado")
+    before = _to_dict(item)
     db.delete(item)
     db.commit()
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="delete_why_us",
-        resource=f"why_us:{item_id}",
-        ip=ip,
-    )
+    record_change(db, "why_us", str(item_id), "delete", before, None, admin, request)

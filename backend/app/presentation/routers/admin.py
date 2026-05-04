@@ -19,6 +19,7 @@ from app.infrastructure.database.models.site_settings_model import SiteSettingsM
 from app.domain.entities.order import OrderStatus
 from app.infrastructure.database.repositories.order_repository import SQLAlchemyOrderRepository
 from app.infrastructure.logging.security_logger import log_admin_action
+from app.infrastructure.audit.change_log import record_change
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
 
@@ -684,7 +685,9 @@ def update_site_settings(
     admin: dict = Depends(get_current_admin),
 ):
     s = db.query(SiteSettingsModel).filter(SiteSettingsModel.id == 1).first()
-    if not s:
+    is_new = s is None
+    before = None if is_new else _settings_to_dict(s)
+    if is_new:
         s = SiteSettingsModel(id=1)
         db.add(s)
 
@@ -694,15 +697,18 @@ def update_site_settings(
 
     db.commit()
     db.refresh(s)
-
-    ip = request.client.host if request.client else "unknown"
-    log_admin_action(
-        user_id=int(admin.get("sub", 0)),
-        action="update_site_settings",
-        resource="site_settings:1",
-        ip=ip,
+    after = _settings_to_dict(s)
+    record_change(
+        db,
+        "site_settings",
+        "1",
+        "create" if is_new else "update",
+        before,
+        after,
+        admin,
+        request,
     )
-    return _settings_to_dict(s)
+    return after
 
 
 # Endpoint público (sin auth) para que el frontend lea los settings al renderizar metadata

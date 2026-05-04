@@ -15,6 +15,7 @@ import {
   HelpCircle,
   Sparkles,
   ShieldCheck,
+  History,
   LogOut,
   Home,
 } from "lucide-react";
@@ -33,6 +34,7 @@ const NAV = [
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
   { href: "/admin/garantia", label: "Garantía", icon: ShieldCheck },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
+  { href: "/admin/historial", label: "Historial", icon: History },
 ];
 
 export default function AdminSidebar() {
