@@ -14,6 +14,7 @@ const productLinks = [
 
 const infoLinks = [
   { name: "Repuestos", href: "/repuestos" },
+  { name: "Preguntas frecuentes", href: "/faq" },
   { name: "Contáctanos", href: "/contacto" },
   { name: "Política de privacidad", href: "/privacidad" },
 ];

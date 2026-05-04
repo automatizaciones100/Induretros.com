@@ -7,6 +7,7 @@ from app.infrastructure.database.models.site_settings_model import SiteSettingsM
 from app.infrastructure.database.models.home_stat_model import HomeStatModel
 from app.infrastructure.database.models.announcement_model import AnnouncementModel
 from app.infrastructure.database.models.testimonial_model import TestimonialModel
+from app.infrastructure.database.models.faq_model import FaqItemModel
 
 __all__ = [
     "ProductModel",
@@ -19,4 +20,5 @@ __all__ = [
     "HomeStatModel",
     "AnnouncementModel",
     "TestimonialModel",
+    "FaqItemModel",
 ]
