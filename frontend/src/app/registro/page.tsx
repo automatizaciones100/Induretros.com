@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, User, Phone, Loader2, AlertCircle, UserPlus } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -79,6 +80,15 @@ export default function RegistroPage() {
     }
   };
 
+  const handleGoogleSuccess = useCallback(
+    (accessToken: string) => {
+      setToken(accessToken);
+      const next = searchParams.get("next") ?? "/mi-cuenta";
+      router.replace(next);
+    },
+    [router, searchParams, setToken],
+  );
+
   return (
     <div className="container mx-auto py-12">
       <div className="max-w-md mx-auto">
@@ -92,6 +102,25 @@ export default function RegistroPage() {
           <p className="text-sm text-gray-mid font-sans mt-2">
             Para ver el historial de tus pedidos y agilizar futuras compras
           </p>
+        </div>
+
+        {/* Google Sign-In — recomendado, sin contraseña que recordar */}
+        <div className="bg-white border border-gray-100 rounded-xl p-6 mb-4 flex flex-col items-center">
+          <GoogleSignInButton
+            text="signup_with"
+            onSuccess={handleGoogleSuccess}
+            onError={(msg) => setError(msg)}
+          />
+          <p className="text-xs text-gray-light font-sans mt-3 text-center">
+            La forma más rápida — sin formulario ni contraseñas
+          </p>
+        </div>
+
+        {/* Separador "ó con tu correo" */}
+        <div className="flex items-center gap-3 my-3 text-xs text-gray-light font-sans uppercase tracking-wide">
+          <span className="flex-1 h-px bg-gray-200" />
+          <span>ó con tu correo</span>
+          <span className="flex-1 h-px bg-gray-200" />
         </div>
 
         <form

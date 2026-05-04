@@ -42,6 +42,7 @@ from app.application.use_cases.products.update_category import UpdateCategoryUse
 from app.application.use_cases.products.delete_category import DeleteCategoryUseCase
 from app.application.use_cases.auth.register_user import RegisterUserUseCase
 from app.application.use_cases.auth.login_user import LoginUserUseCase
+from app.application.use_cases.auth.google_login import GoogleLoginUseCase
 from app.application.use_cases.orders.create_order import CreateOrderUseCase
 from app.application.use_cases.orders.get_order import GetOrderUseCase
 from app.application.use_cases.auth.change_password import ChangePasswordUseCase
@@ -151,6 +152,14 @@ def login_user_use_case(
     jwt: IJwtService = Depends(get_jwt_service),
 ) -> LoginUserUseCase:
     return LoginUserUseCase(repo, hasher, jwt)
+
+
+def google_login_use_case(
+    repo: IUserRepository = Depends(get_user_repository),
+    hasher: IPasswordHasher = Depends(get_password_hasher),
+    jwt: IJwtService = Depends(get_jwt_service),
+) -> GoogleLoginUseCase:
+    return GoogleLoginUseCase(repo, hasher, jwt, settings.google_client_id)
 
 
 def create_order_use_case(

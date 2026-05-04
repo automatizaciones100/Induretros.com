@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, Mail, Loader2, AlertCircle, ShieldCheck } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -76,6 +77,25 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleSuccess = useCallback(
+    (accessToken: string) => {
+      setToken(accessToken);
+      let isAdminToken = false;
+      try {
+        const parts = accessToken.split(".");
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+          isAdminToken = payload?.is_admin ?? false;
+        }
+      } catch {
+        /* ignore */
+      }
+      const next = searchParams.get("next") ?? (isAdminToken ? "/admin" : "/mi-cuenta");
+      router.replace(next);
+    },
+    [router, searchParams, setToken],
+  );
+
   return (
     <div className="container mx-auto py-16">
       <div className="max-w-md mx-auto">
@@ -89,6 +109,22 @@ export default function LoginPage() {
           <p className="text-sm text-gray-mid font-sans mt-2">
             Accede a tu cuenta para ver tus pedidos
           </p>
+        </div>
+
+        {/* Google Sign-In — preferido para clientes nuevos */}
+        <div className="bg-white border border-gray-100 rounded-xl p-6 mb-4 flex flex-col items-center">
+          <GoogleSignInButton
+            text="signin_with"
+            onSuccess={handleGoogleSuccess}
+            onError={(msg) => setError(msg)}
+          />
+        </div>
+
+        {/* Separador "ó con tu correo" */}
+        <div className="flex items-center gap-3 my-3 text-xs text-gray-light font-sans uppercase tracking-wide">
+          <span className="flex-1 h-px bg-gray-200" />
+          <span>ó con tu correo</span>
+          <span className="flex-1 h-px bg-gray-200" />
         </div>
 
         <form

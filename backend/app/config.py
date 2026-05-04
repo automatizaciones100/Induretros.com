@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     show_docs: bool = False
     # Cloudflare Turnstile — dejar vacío en dev para omitir verificación
     turnstile_secret_key: str = ""
+    # Google Sign-In — Client ID OAuth (no es secreto). Vacío = endpoint deshabilitado.
+    google_client_id: str = ""
 
     @model_validator(mode="after")
     def validate_production_settings(self) -> "Settings":
