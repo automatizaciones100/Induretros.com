@@ -21,31 +21,10 @@ import {
   ShieldCheck,
   RefreshCw,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
+import { listChanges, restoreChange } from "@/lib/api/changes";
+import type { ChangeLogEntry } from "@/lib/api/types";
 
-interface Change {
-  id: number;
-  entity_type: string;
-  entity_id: string;
-  entity_label: string;
-  action: "create" | "update" | "delete" | "restore";
-  before: Record<string, unknown> | null;
-  after: Record<string, unknown> | null;
-  user_id: number | null;
-  user_email: string | null;
-  ip: string | null;
-  restored: boolean;
-  restored_at: string | null;
-  created_at: string | null;
-  restorable: boolean;
-}
-
-interface ListResponse {
-  total: number;
-  limit: number;
-  offset: number;
-  items: Change[];
-}
+type Change = ChangeLogEntry;
 
 const ENTITY_LABEL: Record<string, { label: string; icon: React.ComponentType<{ size?: number; className?: string }> }> = {
   why_us: { label: "Por qué elegirnos", icon: Sparkles },
@@ -82,11 +61,11 @@ export default function AdminHistorialPage() {
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ limit: String(PAGE_SIZE), offset: String(newOffset) });
-      if (newEntity) params.set("entity_type", newEntity);
-      const res = await authFetch(`/api/admin/changes?${params}`);
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      const data: ListResponse = await res.json();
+      const data = await listChanges({
+        limit: PAGE_SIZE,
+        offset: newOffset,
+        entity_type: newEntity || undefined,
+      });
       setList(data.items);
       setTotal(data.total);
       setOffset(data.offset);
@@ -120,11 +99,7 @@ export default function AdminHistorialPage() {
     setRestoring(c.id);
     setActionMsg(null);
     try {
-      const res = await authFetch(`/api/admin/changes/${c.id}/restore`, { method: "POST" });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
+      await restoreChange(c.id);
       setActionMsg({ kind: "ok", text: "Cambio restaurado correctamente." });
       fetchList(offset, filterEntity);
     } catch (err) {

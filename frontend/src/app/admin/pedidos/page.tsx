@@ -14,7 +14,7 @@ import {
   XCircle,
   RefreshCcw,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
+import { listOrdersAdmin } from "@/lib/api/orders";
 
 type Status = "pending" | "processing" | "completed" | "cancelled";
 
@@ -67,19 +67,14 @@ export default function AdminPedidosPage() {
     () => async () => {
       setLoading(true);
       setError(null);
-
-      const params = new URLSearchParams({
-        page: String(page),
-        per_page: "20",
-      });
-      if (statusFilter) params.set("status", statusFilter);
-      if (search.trim()) params.set("search", search.trim());
-
       try {
-        const res = await authFetch(`/api/admin/orders?${params.toString()}`);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const json = await res.json();
-        setData(json);
+        const json = await listOrdersAdmin({
+          page,
+          per_page: 20,
+          status: statusFilter || undefined,
+          search: search.trim() || undefined,
+        });
+        setData(json as unknown as OrderListResponse);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Error cargando pedidos");
       } finally {

@@ -17,6 +17,7 @@ import type {
   WhyUsItem,
   HomeStat,
   Announcement,
+  Category,
 } from "./types";
 
 interface ValidationDetail {
@@ -92,7 +93,8 @@ export function makeAdminCrudApi<T extends { id: number }>(
     async remove(id) {
       const res = await authFetch(`${endpoint}/${id}`, { method: "DELETE" });
       if (!res.ok && res.status !== 204) {
-        throw new Error(`Error ${res.status}`);
+        const body = await readJsonOrEmpty(res);
+        throw new Error(extractErrorMessage(body, `Error ${res.status}`));
       }
     },
   };
@@ -105,3 +107,4 @@ export const faqApi = makeAdminCrudApi<FaqItem>("/api/faq");
 export const whyUsApi = makeAdminCrudApi<WhyUsItem>("/api/why-us");
 export const homeStatsApi = makeAdminCrudApi<HomeStat>("/api/home-stats");
 export const announcementsApi = makeAdminCrudApi<Announcement>("/api/announcements");
+export const categoriesApi = makeAdminCrudApi<Category>("/api/products/categories");

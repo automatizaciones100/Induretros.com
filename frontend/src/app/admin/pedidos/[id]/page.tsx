@@ -17,7 +17,7 @@ import {
   Clock,
   Save,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
+import { getOrderAdmin, updateOrderStatus } from "@/lib/api/orders";
 
 type Status = "pending" | "processing" | "completed" | "cancelled";
 
@@ -67,11 +67,9 @@ export default function AdminPedidoDetailPage() {
   const fetchOrder = async () => {
     setError(null);
     try {
-      const res = await authFetch(`/api/admin/orders/${id}`);
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      const data = await res.json();
-      setOrder(data);
-      setNewStatus(data.status);
+      const data = await getOrderAdmin(Number(id));
+      setOrder(data as unknown as OrderDetail);
+      setNewStatus(data.status as Status);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error cargando pedido");
     }
@@ -86,16 +84,8 @@ export default function AdminPedidoDetailPage() {
     if (!newStatus || !order || newStatus === order.status) return;
     setSaving(true);
     try {
-      const res = await authFetch(`/api/admin/orders/${id}/status`, {
-        method: "PATCH",
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      const updated = await res.json();
-      setOrder(updated);
+      const updated = await updateOrderStatus(Number(id), newStatus);
+      setOrder(updated as unknown as OrderDetail);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Error al guardar");
     } finally {

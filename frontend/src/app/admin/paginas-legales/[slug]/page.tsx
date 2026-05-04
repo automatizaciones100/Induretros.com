@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, FormEvent, use } from "react";
+import { use } from "react";
 import Link from "next/link";
 import {
   Save,
@@ -20,14 +20,21 @@ import {
   Link2,
   ArrowLeft,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
+import { useState } from "react";
+import type { LegalPage } from "@/lib/api/types";
+import {
+  getLegalPageBySlug,
+  createLegalPage,
+  updateLegalPage,
+} from "@/lib/api/legalPagesAdmin";
+import { useAdminSingleton } from "@/hooks/useAdminSingleton";
 
-interface LegalPage {
-  slug: string;
+interface FormState {
   title: string;
   content: string;
-  updated_at: string | null;
 }
+
+const EMPTY: FormState = { title: "", content: "" };
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -35,84 +42,33 @@ interface PageProps {
 
 export default function EditLegalPage({ params }: PageProps) {
   const { slug } = use(params);
-
-  const [page, setPage] = useState<LegalPage | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
   const [view, setView] = useState<"editor" | "preview" | "split">("split");
 
-  const [saving, setSaving] = useState(false);
-  const [saveError, setSaveError] = useState<string | null>(null);
-  const [saveOk, setSaveOk] = useState(false);
-
-  const fetchPage = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/api/legal/${encodeURIComponent(slug)}`,
-      );
-      if (res.status === 404) {
-        setPage(null);
-        setTitle("");
-        setContent("");
-        return;
+  const single = useAdminSingleton<LegalPage, FormState>({
+    loader: () => getLegalPageBySlug(slug),
+    saver: async (payload, isCreating) => {
+      const f = payload as FormState;
+      if (isCreating) {
+        return await createLegalPage({ slug, title: f.title, content: f.content });
       }
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      const data: LegalPage = await res.json();
-      setPage(data);
-      setTitle(data.title);
-      setContent(data.content);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando la página");
-    } finally {
-      setLoading(false);
-    }
-  };
+      return await updateLegalPage(slug, f);
+    },
+    emptyForm: EMPTY,
+    toFormState: (p) => ({ title: p.title, content: p.content }),
+    toPayload: (f) => ({ title: f.title.trim(), content: f.content }),
+    loadErrorMessage: "Error cargando la página",
+  });
 
-  useEffect(() => {
-    fetchPage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slug]);
+  const {
+    record: page, loading, loadError,
+    form, setForm, saving, saveError, saveOk, isCreating, dirty,
+    handleSubmit,
+  } = single;
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setSaveError(null);
-    setSaveOk(false);
-    setSaving(true);
-    try {
-      let res: Response;
-      if (page) {
-        res = await authFetch(`/api/legal/${encodeURIComponent(slug)}`, {
-          method: "PUT",
-          body: JSON.stringify({ title: title.trim(), content }),
-        });
-      } else {
-        res = await authFetch(`/api/legal`, {
-          method: "POST",
-          body: JSON.stringify({ slug, title: title.trim(), content }),
-        });
-      }
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      const updated: LegalPage = await res.json();
-      setPage(updated);
-      setSaveOk(true);
-      setTimeout(() => setSaveOk(false), 3000);
-    } catch (err) {
-      setSaveError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const title = form.title;
+  const content = form.content;
+  const setTitle = (v: string) => setForm((f) => ({ ...f, title: v }));
+  const setContent = (v: string) => setForm((f) => ({ ...f, content: v }));
 
   const wrap = (open: string, close: string) => {
     const ta = document.getElementById("legal-content-textarea") as HTMLTextAreaElement | null;
@@ -146,10 +102,6 @@ export default function EditLegalPage({ params }: PageProps) {
     wrap(`<a href="${url}" target="_blank" rel="noopener noreferrer">`, "</a>");
   };
 
-  const dirty = page === null
-    ? title.trim().length > 0 || content.trim().length > 0
-    : title !== page.title || content !== page.content;
-
   const publicUrl = `/${slug}`;
 
   return (
@@ -182,14 +134,14 @@ export default function EditLegalPage({ params }: PageProps) {
           <Loader2 size={24} className="animate-spin text-gray-light mx-auto mb-3" />
           <p className="text-gray-mid font-sans text-sm">Cargando…</p>
         </div>
-      ) : error ? (
+      ) : loadError ? (
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 flex items-start gap-2 text-red-700 text-sm font-sans">
           <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
-          {error}
+          {loadError}
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
-          {!page && (
+          {isCreating && (
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-800 font-sans flex items-start gap-2">
               <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
               Esta página todavía no existe. Al guardar la crearemos en el sistema con el slug <strong>{slug}</strong>.
@@ -307,7 +259,7 @@ export default function EditLegalPage({ params }: PageProps) {
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <button type="submit" disabled={saving || !dirty} className="btn-primary disabled:opacity-60 disabled:cursor-not-allowed">
               {saving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-              {!page ? "Crear página" : dirty ? "Guardar cambios" : "Sin cambios"}
+              {isCreating ? "Crear página" : dirty ? "Guardar cambios" : "Sin cambios"}
             </button>
             {page?.updated_at && (
               <p className="text-xs text-gray-mid font-sans inline-flex items-center gap-1">

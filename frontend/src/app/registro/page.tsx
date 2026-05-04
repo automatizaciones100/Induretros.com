@@ -6,8 +6,7 @@ import Link from "next/link";
 import { Lock, Mail, User, Phone, Loader2, AlertCircle, UserPlus } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { register as registerApi, login as loginApi } from "@/lib/api/auth";
 
 export default function RegistroPage() {
   const router = useRouter();
@@ -45,35 +44,18 @@ export default function RegistroPage() {
 
     try {
       // 1) Crear cuenta
-      const regRes = await fetch(`${API_URL}/api/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      if (!regRes.ok) {
-        const body = await regRes.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || "No se pudo crear la cuenta");
-      }
+      await registerApi(payload);
 
       // 2) Login automático para obtener el JWT
-      const loginRes = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: payload.email, password: payload.password }),
-      });
-      if (!loginRes.ok) {
+      try {
+        const data = await loginApi({ email: payload.email, password: payload.password });
+        setToken(data.access_token);
+        const next = searchParams.get("next") ?? "/mi-cuenta";
+        router.replace(next);
+      } catch {
         // Cuenta creada pero login falló → mandamos al login manual
         router.replace("/login?next=/mi-cuenta");
-        return;
       }
-      const data = await loginRes.json();
-      setToken(data.access_token);
-
-      const next = searchParams.get("next") ?? "/mi-cuenta";
-      router.replace(next);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al crear la cuenta");
       setSubmitting(false);

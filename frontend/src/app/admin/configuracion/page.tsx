@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import {
   Save,
   Loader2,
@@ -20,112 +19,64 @@ import {
   Youtube,
   Sparkles,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
 import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
 import HeroPreview from "@/components/admin/HeroPreview";
-
-interface SiteSettings {
-  site_title?: string | null;
-  title_template?: string | null;
-  default_description?: string | null;
-  default_keywords?: string | null;
-  default_og_image?: string | null;
-  twitter_handle?: string | null;
-  organization_name?: string | null;
-  organization_phone?: string | null;
-  contact_email?: string | null;
-  contact_address?: string | null;
-  contact_business_hours?: string | null;
-  whatsapp_number?: string | null;
-  facebook_url?: string | null;
-  instagram_url?: string | null;
-  youtube_url?: string | null;
-  tiktok_url?: string | null;
-  linkedin_url?: string | null;
-  hero_label?: string | null;
-  hero_title?: string | null;
-  hero_subtitle?: string | null;
-  hero_cta_text?: string | null;
-  hero_cta_url?: string | null;
-  hero_cta2_text?: string | null;
-  hero_cta2_url?: string | null;
-  hero_image_url?: string | null;
-}
+import type { SiteSettings } from "@/lib/api/types";
+import { loadSiteSettings, saveSiteSettings } from "@/lib/api/siteSettings";
+import { useAdminSingleton } from "@/hooks/useAdminSingleton";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.induretros.com";
 
-export default function AdminConfiguracionPage() {
-  const [form, setForm] = useState<SiteSettings>({});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [savedAt, setSavedAt] = useState<Date | null>(null);
+const EMPTY: SiteSettings = {};
 
-  useEffect(() => {
-    authFetch("/api/admin/site-settings")
-      .then((r) => (r.ok ? r.json() : Promise.reject(`Error ${r.status}`)))
-      .then(setForm)
-      .catch((err) =>
-        setError(typeof err === "string" ? err : err instanceof Error ? err.message : "Error cargando settings")
-      )
-      .finally(() => setLoading(false));
-  }, []);
+/** Devuelve un payload donde "" → null y trim() en strings.
+ *  El backend trata null como "limpiar el valor". */
+function buildPayload(form: SiteSettings): Partial<SiteSettings> {
+  const trim = (v?: string | null) => (v?.trim() ? v.trim() : null);
+  return {
+    site_title: trim(form.site_title),
+    title_template: trim(form.title_template),
+    default_description: trim(form.default_description),
+    default_keywords: trim(form.default_keywords),
+    default_og_image: trim(form.default_og_image),
+    twitter_handle: trim(form.twitter_handle),
+    organization_name: trim(form.organization_name),
+    organization_phone: trim(form.organization_phone),
+    contact_email: trim(form.contact_email),
+    contact_address: trim(form.contact_address),
+    contact_business_hours: trim(form.contact_business_hours),
+    whatsapp_number: form.whatsapp_number?.replace(/\D/g, "") || null,
+    facebook_url: trim(form.facebook_url),
+    instagram_url: trim(form.instagram_url),
+    youtube_url: trim(form.youtube_url),
+    tiktok_url: trim(form.tiktok_url),
+    linkedin_url: trim(form.linkedin_url),
+    hero_label: trim(form.hero_label),
+    hero_title: trim(form.hero_title),
+    hero_subtitle: trim(form.hero_subtitle),
+    hero_cta_text: trim(form.hero_cta_text),
+    hero_cta_url: trim(form.hero_cta_url),
+    hero_cta2_text: trim(form.hero_cta2_text),
+    hero_cta2_url: trim(form.hero_cta2_url),
+    hero_image_url: trim(form.hero_image_url),
+  };
+}
+
+export default function AdminConfiguracionPage() {
+  const single = useAdminSingleton<SiteSettings, SiteSettings>({
+    loader: async () => await loadSiteSettings(),
+    saver: async (payload) => await saveSiteSettings(payload as Partial<SiteSettings>),
+    emptyForm: EMPTY,
+    toFormState: (s) => s,
+    toPayload: buildPayload,
+    loadErrorMessage: "Error cargando settings",
+  });
+
+  const { form, setForm, loading, loadError, saving, saveError, saveOk, handleSubmit } = single;
+  const error = loadError || saveError;
 
   const update = <K extends keyof SiteSettings>(key: K, value: SiteSettings[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSaving(true);
-
-    const payload: Record<string, string | null> = {
-      site_title: form.site_title?.trim() || null,
-      title_template: form.title_template?.trim() || null,
-      default_description: form.default_description?.trim() || null,
-      default_keywords: form.default_keywords?.trim() || null,
-      default_og_image: form.default_og_image?.trim() || null,
-      twitter_handle: form.twitter_handle?.trim() || null,
-      organization_name: form.organization_name?.trim() || null,
-      organization_phone: form.organization_phone?.trim() || null,
-      contact_email: form.contact_email?.trim() || null,
-      contact_address: form.contact_address?.trim() || null,
-      contact_business_hours: form.contact_business_hours?.trim() || null,
-      whatsapp_number: form.whatsapp_number?.replace(/\D/g, "") || null,
-      facebook_url: form.facebook_url?.trim() || null,
-      instagram_url: form.instagram_url?.trim() || null,
-      youtube_url: form.youtube_url?.trim() || null,
-      tiktok_url: form.tiktok_url?.trim() || null,
-      linkedin_url: form.linkedin_url?.trim() || null,
-      hero_label: form.hero_label?.trim() || null,
-      hero_title: form.hero_title?.trim() || null,
-      hero_subtitle: form.hero_subtitle?.trim() || null,
-      hero_cta_text: form.hero_cta_text?.trim() || null,
-      hero_cta_url: form.hero_cta_url?.trim() || null,
-      hero_cta2_text: form.hero_cta2_text?.trim() || null,
-      hero_cta2_url: form.hero_cta2_url?.trim() || null,
-      hero_image_url: form.hero_image_url?.trim() || null,
-    };
-
-    try {
-      const res = await authFetch("/api/admin/site-settings", {
-        method: "PUT",
-        body: JSON.stringify(payload),
-      });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      const fresh = await res.json();
-      setForm(fresh);
-      setSavedAt(new Date());
-      setTimeout(() => setSavedAt(null), 3000);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
   };
 
   if (loading) {
@@ -534,7 +485,7 @@ export default function AdminConfiguracionPage() {
           </div>
         )}
 
-        {savedAt && (
+        {saveOk && (
           <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700 font-sans flex items-center gap-2">
             <CheckCircle2 size={16} />
             Configuración guardada correctamente.

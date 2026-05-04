@@ -6,8 +6,7 @@ import Link from "next/link";
 import { Lock, Mail, Loader2, AlertCircle, ShieldCheck } from "lucide-react";
 import { useAuthStore } from "@/stores/authStore";
 import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { login as loginApi } from "@/lib/api/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,28 +42,16 @@ export default function LoginPage() {
     };
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || "Credenciales incorrectas");
-      }
-
-      const data = await res.json();
+      const data = await loginApi(payload);
       setToken(data.access_token);
 
       // Decodificar el token nuevo para saber a dónde redirigir
-      const token = data.access_token as string;
       let isAdminToken = false;
       try {
-        const parts = token.split(".");
+        const parts = data.access_token.split(".");
         if (parts.length === 3) {
-          const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
-          isAdminToken = payload?.is_admin ?? false;
+          const decoded = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+          isAdminToken = decoded?.is_admin ?? false;
         }
       } catch {
         /* ignore decode errors → defaults a cliente */

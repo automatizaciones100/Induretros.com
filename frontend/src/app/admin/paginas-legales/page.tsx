@@ -13,14 +13,12 @@ import {
   X,
   Save,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
-
-interface LegalPage {
-  id: number;
-  slug: string;
-  title: string;
-  updated_at: string | null;
-}
+import {
+  listLegalPagesAdmin,
+  createLegalPage,
+  deleteLegalPage,
+} from "@/lib/api/legalPagesAdmin";
+import type { LegalPage } from "@/lib/api/types";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -38,9 +36,8 @@ export default function AdminLegalPagesListPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await authFetch("/api/legal/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
+      const data = await listLegalPagesAdmin();
+      setList(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error cargando páginas");
     } finally {
@@ -62,18 +59,11 @@ export default function AdminLegalPagesListPage() {
     }
     setCreating(true);
     try {
-      const res = await authFetch("/api/legal", {
-        method: "POST",
-        body: JSON.stringify({
-          slug,
-          title: slug.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()),
-          content: "<p>Contenido pendiente. Edita esta página.</p>",
-        }),
+      await createLegalPage({
+        slug,
+        title: slug.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase()),
+        content: "<p>Contenido pendiente. Edita esta página.</p>",
       });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
       // Redirige al editor de la nueva página
       window.location.href = `/admin/paginas-legales/${slug}`;
     } catch (err) {
@@ -86,8 +76,7 @@ export default function AdminLegalPagesListPage() {
   const handleDelete = async (p: LegalPage) => {
     if (!confirm(`¿Eliminar la página "${p.title}" (slug: ${p.slug})?\nEsta acción quedará registrada en el historial y se puede revertir desde allí.`)) return;
     try {
-      const res = await authFetch(`/api/legal/${encodeURIComponent(p.slug)}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
+      await deleteLegalPage(p.slug);
       fetchAll();
     } catch (err) {
       alert(err instanceof Error ? err.message : "Error al eliminar");

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import {
   Plus,
   Edit3,
@@ -11,16 +10,9 @@ import {
   AlertCircle,
   FolderTree,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
-
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  description?: string | null;
-  image_url?: string | null;
-  parent_id?: number | null;
-}
+import { categoriesApi } from "@/lib/api/adminCrud";
+import type { Category } from "@/lib/api/types";
+import { useAdminCrud } from "@/hooks/useAdminCrud";
 
 interface FormState {
   name: string;
@@ -30,127 +22,43 @@ interface FormState {
   parent_id: string; // string para el select; "" = sin padre
 }
 
-const empty: FormState = { name: "", slug: "", description: "", image_url: "", parent_id: "" };
+const EMPTY: FormState = { name: "", slug: "", description: "", image_url: "", parent_id: "" };
+
+const slugify = (s: string) =>
+  s.toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 100);
 
 export default function AdminCategoriasPage() {
-  const [list, setList] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Estado del editor
-  const [editing, setEditing] = useState<Category | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<FormState>(empty);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authFetch("/api/products/categories/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando categorías");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const slugify = (s: string) =>
-    s.toLowerCase()
-      .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "")
-      .slice(0, 100);
-
-  const startNew = () => {
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-    setShowForm(true);
-  };
-
-  const startEdit = (cat: Category) => {
-    setEditing(cat);
-    setForm({
+  const crud = useAdminCrud<Category, FormState>({
+    api: categoriesApi,
+    emptyForm: EMPTY,
+    toFormState: (cat) => ({
       name: cat.name,
       slug: cat.slug,
       description: cat.description ?? "",
       image_url: cat.image_url ?? "",
       parent_id: cat.parent_id ? String(cat.parent_id) : "",
-    });
-    setFormError(null);
-    setShowForm(true);
-  };
+    }),
+    toPayload: (f) => ({
+      name: f.name.trim(),
+      slug: f.slug.trim(),
+      description: f.description.trim() || null,
+      image_url: f.image_url.trim() || null,
+      parent_id: f.parent_id ? Number(f.parent_id) : null,
+    }),
+    describeForDelete: (cat) => `la categoría "${cat.name}"`,
+    loadErrorMessage: "Error cargando categorías",
+  });
 
-  const cancelForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-    setSaving(true);
-
-    const payload: Record<string, unknown> = {
-      name: form.name.trim(),
-      slug: form.slug.trim(),
-      description: form.description.trim() || null,
-      image_url: form.image_url.trim() || null,
-      parent_id: form.parent_id ? Number(form.parent_id) : null,
-    };
-
-    try {
-      const url = editing
-        ? `/api/products/categories/${editing.id}`
-        : "/api/products/categories";
-      const method = editing ? "PUT" : "POST";
-      const res = await authFetch(url, { method, body: JSON.stringify(payload) });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(
-            body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · ")
-          );
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      cancelForm();
-      fetchAll();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (cat: Category) => {
-    if (!confirm(`¿Eliminar la categoría "${cat.name}"?`)) return;
-    try {
-      const res = await authFetch(`/api/products/categories/${cat.id}`, { method: "DELETE" });
-      if (res.status === 409) {
-        const body = await res.json().catch(() => ({}));
-        alert(body.detail || "La categoría tiene productos o subcategorías.");
-        return;
-      }
-      if (!res.ok && res.status !== 204) {
-        throw new Error(`Error ${res.status}`);
-      }
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al eliminar");
-    }
-  };
+  const {
+    list, loading, error,
+    editing, showForm, form, setForm, saving, formError,
+    startNew, startEdit, cancelForm, handleSubmit, handleDelete,
+  } = crud;
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto">

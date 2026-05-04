@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import { loginWithGoogle } from "@/lib/api/auth";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 declare global {
   interface Window {
@@ -84,16 +84,7 @@ export default function GoogleSignInButton({
         }
         setExchanging(true);
         try {
-          const res = await fetch(`${API_URL}/api/auth/google`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ credential }),
-          });
-          if (!res.ok) {
-            const body = await res.json().catch(() => ({}));
-            throw new Error(body.detail || `Error ${res.status}`);
-          }
-          const data = await res.json();
+          const data = await loginWithGoogle(credential);
           onSuccess(data.access_token);
         } catch (err) {
           onError?.(err instanceof Error ? err.message : "Error al iniciar sesión con Google");

@@ -7,7 +7,7 @@ import Image from "next/image";
 import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search, Loader2 } from "lucide-react";
 import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { resolveImageUrl } from "@/lib/imageUrl";
-import { authFetch } from "@/lib/authFetch";
+import { getOrderById } from "@/lib/api/orders";
 import { useAuthStore } from "@/stores/authStore";
 
 /** Enmascara el email para evitar fuga de PII si la página se imprime/comparte. */
@@ -69,10 +69,9 @@ export default function OrdenPage() {
     // 2) Si hay sesión, intentar la API — el backend valida que el pedido sea del usuario o admin
     if (isAuthenticated()) {
       setFetching(true);
-      authFetch(`/api/orders/${id}`)
-        .then((r) => (r.ok ? r.json() : null))
+      getOrderById(Number(id))
         .then((data) => {
-          if (data) setOrder(data);
+          if (data) setOrder(data as Order);
         })
         .catch(() => {
           /* silencioso — mostrará el estado vacío */

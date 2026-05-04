@@ -1,14 +1,9 @@
 import { cache } from "react";
+import type { LegalPage } from "./api/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export interface LegalPage {
-  id: number;
-  slug: string;
-  title: string;
-  content: string;
-  updated_at: string | null;
-}
+export type { LegalPage };
 
 export const getLegalPage = cache(async (slug: string): Promise<LegalPage | null> => {
   try {

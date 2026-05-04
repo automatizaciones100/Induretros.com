@@ -16,35 +16,10 @@ import {
   LogOut,
   ShieldCheck,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
 import { useAuthStore } from "@/stores/authStore";
-
-interface UserMe {
-  id: number;
-  email: string;
-  name: string;
-  phone: string | null;
-  address: string | null;
-  is_admin: boolean;
-  created_at: string | null;
-}
-
-interface OrderSummary {
-  id: number;
-  status: string;
-  total: number;
-  customer_name: string;
-  items: { id: number; product_id: number; quantity: number }[];
-  created_at: string;
-}
-
-interface OrdersResponse {
-  items: OrderSummary[];
-  total: number;
-  page: number;
-  per_page: number;
-  pages: number;
-}
+import { getMe } from "@/lib/api/users";
+import { listMyOrders } from "@/lib/api/orders";
+import type { UserMe, OrderSummary } from "@/lib/api/types";
 
 const STATUS_STYLES: Record<string, { label: string; class: string }> = {
   pending: { label: "Pendiente", class: "bg-yellow-100 text-yellow-800" },
@@ -80,14 +55,10 @@ export default function MiCuentaPage() {
       setLoading(true);
       setError(null);
       try {
-        const [meRes, ordersRes] = await Promise.all([
-          authFetch("/api/users/me"),
-          authFetch("/api/orders/me?per_page=20"),
+        const [meData, ordersData] = await Promise.all([
+          getMe(),
+          listMyOrders({ per_page: 20 }),
         ]);
-        if (!meRes.ok) throw new Error(`/users/me ${meRes.status}`);
-        if (!ordersRes.ok) throw new Error(`/orders/me ${ordersRes.status}`);
-        const meData: UserMe = await meRes.json();
-        const ordersData: OrdersResponse = await ordersRes.json();
         if (!cancelled) {
           setMe(meData);
           setOrders(ordersData.items);
