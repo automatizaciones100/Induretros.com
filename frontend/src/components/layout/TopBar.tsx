@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube } from "lucide-react";
 import { getSiteSettings, telLink, mailtoLink } from "@/lib/siteSettings";
+import UserMenu from "./UserMenu";
 
 export default async function TopBar() {
   const s = await getSiteSettings();
@@ -46,9 +47,7 @@ export default async function TopBar() {
               <Youtube size={15} />
             </a>
           )}
-          <a href="/login" className="top-bar-link hover:text-primary ml-2 border-l border-gray-600 pl-3">
-            Iniciar sesión
-          </a>
+          <UserMenu />
         </div>
       </div>
     </div>

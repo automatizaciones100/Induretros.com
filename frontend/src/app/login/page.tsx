@@ -25,7 +25,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (!hydrated) return;
     if (isAuthenticated()) {
-      const next = searchParams.get("next") ?? (isAdmin() ? "/admin" : "/");
+      const next = searchParams.get("next") ?? (isAdmin() ? "/admin" : "/mi-cuenta");
       router.replace(next);
     }
   }, [hydrated, isAuthenticated, isAdmin, router, searchParams]);
@@ -56,8 +56,19 @@ export default function LoginPage() {
       const data = await res.json();
       setToken(data.access_token);
 
-      // Decodificar inline para decidir el redirect
-      const next = searchParams.get("next") ?? "/admin";
+      // Decodificar el token nuevo para saber a dónde redirigir
+      const token = data.access_token as string;
+      let isAdminToken = false;
+      try {
+        const parts = token.split(".");
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+          isAdminToken = payload?.is_admin ?? false;
+        }
+      } catch {
+        /* ignore decode errors → defaults a cliente */
+      }
+      const next = searchParams.get("next") ?? (isAdminToken ? "/admin" : "/mi-cuenta");
       router.replace(next);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al iniciar sesión");
@@ -76,7 +87,7 @@ export default function LoginPage() {
             Iniciar sesión
           </h1>
           <p className="text-sm text-gray-mid font-sans mt-2">
-            Acceso al panel de administración
+            Accede a tu cuenta para ver tus pedidos
           </p>
         </div>
 
@@ -154,7 +165,13 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-xs text-gray-light font-sans mt-6">
+        <p className="text-center text-sm text-gray-mid font-sans mt-6">
+          ¿No tienes cuenta?{" "}
+          <Link href="/registro" className="text-primary font-semibold hover:underline">
+            Crear una cuenta
+          </Link>
+        </p>
+        <p className="text-center text-xs text-gray-light font-sans mt-3">
           ¿Problemas para acceder?{" "}
           <Link href="/contacto" className="text-primary hover:underline">
             Contáctanos

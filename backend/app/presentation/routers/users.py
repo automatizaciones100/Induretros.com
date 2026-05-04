@@ -4,10 +4,13 @@ A.8.10 — Eliminación de información (derecho al olvido) | ISO 27001:2022
 A.5.34 — Privacidad y protección de PII | ISO 27001:2022
 """
 from fastapi import APIRouter, Depends, HTTPException, Request, status
+from sqlalchemy.orm import Session
+from app.database import get_db
 from app.application.dtos.user_dto import ChangePasswordCommand, DeleteAccountCommand
 from app.application.use_cases.auth.change_password import ChangePasswordUseCase
 from app.application.use_cases.auth.delete_user import DeleteUserUseCase
 from app.domain.exceptions import InvalidCredentialsError, EntityNotFoundError
+from app.infrastructure.database.models.user_model import UserModel
 from app.presentation.dependencies import (
     change_password_use_case,
     delete_user_use_case,
@@ -17,6 +20,29 @@ from app.presentation.rate_limiter import limiter
 from app.infrastructure.logging.security_logger import log_user_deleted, log_password_changed
 
 router = APIRouter(prefix="/api/users", tags=["users"])
+
+
+@router.get("/me")
+@limiter.limit("60/minute")
+def get_me(
+    request: Request,
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),
+):
+    """Retorna el perfil del usuario autenticado."""
+    user_id = int(current_user.get("sub", 0))
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
+    return {
+        "id": user.id,
+        "email": user.email,
+        "name": user.name,
+        "phone": user.phone,
+        "address": user.address,
+        "is_admin": user.is_admin,
+        "created_at": user.created_at.isoformat() if user.created_at else None,
+    }
 
 
 @router.post("/me/change-password", status_code=204)

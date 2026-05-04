@@ -1,12 +1,15 @@
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt, JWTError
+from sqlalchemy.orm import Session
 from app.config import settings
+from app.database import get_db
 from app.application.dtos.order_dto import CreateOrderCommand, OrderDTO, OrderItemDTO
 from app.application.use_cases.orders.create_order import CreateOrderUseCase
 from app.application.use_cases.orders.get_order import GetOrderUseCase
 from app.domain.exceptions import EntityNotFoundError, OutOfStockError
+from app.infrastructure.database.models.order_model import OrderModel
 from app.presentation.dependencies import create_order_use_case, get_order_use_case, get_current_user
 from app.presentation.rate_limiter import limiter
 from app.infrastructure.logging.security_logger import log_access_denied, log_data_accessed
@@ -52,6 +55,43 @@ def create_order(
         raise HTTPException(status_code=404, detail=str(e))
     except OutOfStockError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.get("/me", response_model=dict)
+@limiter.limit("60/minute")
+def list_my_orders(
+    request: Request,
+    page: int = Query(1, ge=1),
+    per_page: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_db),
+    current_user: dict = Depends(get_current_user),
+):
+    """
+    Lista los pedidos del usuario autenticado, paginados, ordenados de más
+    reciente a más antiguo. Solo el dueño accede a sus propios pedidos.
+    """
+    user_id = int(current_user.get("sub", 0))
+    if user_id <= 0:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No autenticado")
+
+    query = (
+        db.query(OrderModel)
+        .filter(OrderModel.user_id == user_id)
+        .order_by(OrderModel.created_at.desc())
+    )
+    total = query.count()
+    orders = query.offset((page - 1) * per_page).limit(per_page).all()
+
+    ip = request.client.host if request.client else "unknown"
+    log_data_accessed(user_id=user_id, resource="orders:me", ip=ip)
+
+    return {
+        "items": [_order_to_dto(o).model_dump(mode="json") for o in orders],
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "pages": (total + per_page - 1) // per_page if total else 0,
+    }
 
 
 @router.get("/{order_id}", response_model=OrderDTO)

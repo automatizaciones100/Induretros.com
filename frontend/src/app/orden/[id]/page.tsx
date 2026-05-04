@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search } from "lucide-react";
+import { CheckCircle2, Phone, MessageCircle, Printer, Home, Search, Loader2 } from "lucide-react";
 import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { resolveImageUrl } from "@/lib/imageUrl";
+import { authFetch } from "@/lib/authFetch";
+import { useAuthStore } from "@/stores/authStore";
 
 /** Enmascara el email para evitar fuga de PII si la página se imprime/comparte. */
 function maskEmail(email?: string): string {
@@ -49,23 +51,41 @@ export default function OrdenPage() {
 
   const [order, setOrder] = useState<Order | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [fetching, setFetching] = useState(false);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
   useEffect(() => {
     setHydrated(true);
+    // 1) Intentar sessionStorage (caso checkout reciente)
     const raw = sessionStorage.getItem(`order:${id}`);
     if (raw) {
       try {
         setOrder(JSON.parse(raw));
+        return;
       } catch {
-        // ignore
+        // ignore parse error y caer al fallback
       }
     }
-  }, [id]);
+    // 2) Si hay sesión, intentar la API — el backend valida que el pedido sea del usuario o admin
+    if (isAuthenticated()) {
+      setFetching(true);
+      authFetch(`/api/orders/${id}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (data) setOrder(data);
+        })
+        .catch(() => {
+          /* silencioso — mostrará el estado vacío */
+        })
+        .finally(() => setFetching(false));
+    }
+  }, [id, isAuthenticated]);
 
-  if (!hydrated) {
+  if (!hydrated || fetching) {
     return (
       <div className="container mx-auto py-16 text-center">
-        <p className="text-gray-mid font-sans">Cargando…</p>
+        <Loader2 size={20} className="animate-spin text-gray-light mx-auto mb-2" />
+        <p className="text-gray-mid font-sans text-sm">Cargando pedido…</p>
       </div>
     );
   }
