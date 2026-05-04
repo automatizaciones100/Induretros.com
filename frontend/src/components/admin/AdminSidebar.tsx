@@ -14,7 +14,7 @@ import {
   MessageSquareQuote,
   HelpCircle,
   Sparkles,
-  ShieldCheck,
+  FileText,
   History,
   LogOut,
   Home,
@@ -32,7 +32,7 @@ const NAV = [
   { href: "/admin/testimonios", label: "Testimonios", icon: MessageSquareQuote },
   { href: "/admin/por-que-elegirnos", label: "Por qué elegirnos", icon: Sparkles },
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
-  { href: "/admin/garantia", label: "Garantía", icon: ShieldCheck },
+  { href: "/admin/paginas-legales", label: "Páginas legales", icon: FileText },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
   { href: "/admin/historial", label: "Historial", icon: History },
 ];

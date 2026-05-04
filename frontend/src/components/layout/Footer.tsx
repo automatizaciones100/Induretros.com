@@ -16,8 +16,10 @@ const infoLinks = [
   { name: "Repuestos", href: "/repuestos" },
   { name: "Preguntas frecuentes", href: "/faq" },
   { name: "Política de garantía", href: "/garantia" },
-  { name: "Contáctanos", href: "/contacto" },
+  { name: "Devoluciones y cambios", href: "/devoluciones" },
+  { name: "Términos y condiciones", href: "/terminos" },
   { name: "Política de privacidad", href: "/privacidad" },
+  { name: "Contáctanos", href: "/contacto" },
 ];
 
 export default async function Footer() {
