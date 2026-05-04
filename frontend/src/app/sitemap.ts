@@ -10,7 +10,7 @@
 import type { MetadataRoute } from "next";
 import { getCachedProducts, getCachedCategories } from "@/lib/cache";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.induretros.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ items: products }, categories] = await Promise.all([

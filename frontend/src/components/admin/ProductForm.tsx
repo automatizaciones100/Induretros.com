@@ -7,7 +7,7 @@ import { ArrowLeft, Loader2, Save, AlertCircle } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.induretros.com";
 
 interface Category {
   id: number;

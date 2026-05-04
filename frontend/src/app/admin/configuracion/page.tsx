@@ -52,7 +52,7 @@ interface SiteSettings {
   hero_image_url?: string | null;
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://induretros.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.induretros.com";
 
 export default function AdminConfiguracionPage() {
   const [form, setForm] = useState<SiteSettings>({});

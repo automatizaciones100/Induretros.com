@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     // En producción el backend estará en un dominio público y el optimizador funciona normal.
     unoptimized: process.env.NODE_ENV === "development",
     remotePatterns: [
+      { protocol: "https", hostname: "www.induretros.com" },
       { protocol: "https", hostname: "induretros.com" },
       { protocol: "http", hostname: "localhost", port: "8000" },
       { protocol: "http", hostname: "127.0.0.1", port: "8000" },

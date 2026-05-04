@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     secret_key: str
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
-    # En producción debe ser https://induretros.com
+    # En producción debe ser https://www.induretros.com
     frontend_url: str = "http://localhost:3000"
     environment: str = "development"  # "production" deshabilita /docs y /redoc
     # Habilitar docs explícitamente (solo en development). En producción siempre off.
