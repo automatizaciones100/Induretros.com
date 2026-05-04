@@ -8,6 +8,8 @@ import { getHomeStats } from "@/lib/homeStats";
 import { getStatIcon } from "@/lib/statIcon";
 import { getActiveTestimonials } from "@/lib/testimonials";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
+import { getActiveWhyUs } from "@/lib/whyUs";
+import WhyUsSection from "@/components/home/WhyUsSection";
 import { ArrowRight } from "lucide-react";
 
 const categoryIcons: Record<string, string> = {
@@ -27,12 +29,13 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default async function HomePage() {
-  const [featuredResult, categories, settings, statsResult, testimonialsResult] = await Promise.allSettled([
+  const [featuredResult, categories, settings, statsResult, testimonialsResult, whyUsResult] = await Promise.allSettled([
     getProductsUseCase.execute({ featured: true, per_page: 8 }),
     getCategoriesUseCase.execute(),
     getSiteSettings(),
     getHomeStats(),
     getActiveTestimonials(),
+    getActiveWhyUs(),
   ]);
 
   const featuredProducts = featuredResult.status === "fulfilled" ? featuredResult.value.items : [];
@@ -40,6 +43,7 @@ export default async function HomePage() {
   const s = settings.status === "fulfilled" ? settings.value : {};
   const stats = statsResult.status === "fulfilled" ? statsResult.value : [];
   const testimonials = testimonialsResult.status === "fulfilled" ? testimonialsResult.value : [];
+  const whyUs = whyUsResult.status === "fulfilled" ? whyUsResult.value : [];
 
   // Hero — todos los textos editables desde /admin/configuracion
   const heroLabel = s.hero_label || "Importadores directos";
@@ -213,6 +217,9 @@ export default async function HomePage() {
 
       {/* TESTIMONIOS */}
       <TestimonialsSection testimonials={testimonials} />
+
+      {/* POR QUÉ ELEGIRNOS */}
+      <WhyUsSection items={whyUs} />
 
       {/* CTA WHATSAPP */}
       <section className="bg-dark-2 py-14">

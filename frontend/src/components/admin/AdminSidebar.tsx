@@ -13,6 +13,7 @@ import {
   Megaphone,
   MessageSquareQuote,
   HelpCircle,
+  Sparkles,
   LogOut,
   Home,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const NAV = [
   { href: "/admin/estadisticas", label: "Estadísticas home", icon: BarChart3 },
   { href: "/admin/anuncios", label: "Anuncios", icon: Megaphone },
   { href: "/admin/testimonios", label: "Testimonios", icon: MessageSquareQuote },
+  { href: "/admin/por-que-elegirnos", label: "Por qué elegirnos", icon: Sparkles },
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];

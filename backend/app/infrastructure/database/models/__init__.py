@@ -8,6 +8,7 @@ from app.infrastructure.database.models.home_stat_model import HomeStatModel
 from app.infrastructure.database.models.announcement_model import AnnouncementModel
 from app.infrastructure.database.models.testimonial_model import TestimonialModel
 from app.infrastructure.database.models.faq_model import FaqItemModel
+from app.infrastructure.database.models.why_us_model import WhyUsItemModel
 
 __all__ = [
     "ProductModel",
@@ -21,4 +22,5 @@ __all__ = [
     "AnnouncementModel",
     "TestimonialModel",
     "FaqItemModel",
+    "WhyUsItemModel",
 ]
