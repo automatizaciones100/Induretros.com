@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 import GoogleSerpPreview from "@/components/admin/GoogleSerpPreview";
+import HeroPreview from "@/components/admin/HeroPreview";
 
 interface SiteSettings {
   site_title?: string | null;
@@ -251,6 +252,23 @@ export default function AdminConfiguracionPage() {
               />
             </div>
           </Field>
+
+          {/* Vista previa del hero — antes de guardar */}
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-mid font-sans mb-2">
+              Vista previa (cómo se verá en el home antes de guardar)
+            </p>
+            <HeroPreview
+              label={form.hero_label}
+              title={form.hero_title}
+              subtitle={form.hero_subtitle}
+              ctaText={form.hero_cta_text}
+              ctaUrl={form.hero_cta_url}
+              cta2Text={form.hero_cta2_text}
+              cta2Url={form.hero_cta2_url}
+              imageUrl={form.hero_image_url}
+            />
+          </div>
         </Section>
 
         {/* SEO Global */}

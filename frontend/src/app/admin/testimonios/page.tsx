@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, FormEvent } from "react";
+import Image from "next/image";
 import {
   Plus,
   Edit3,
@@ -13,8 +14,11 @@ import {
   Eye,
   EyeOff,
   Star,
+  Quote,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
+import { initialsFromName } from "@/lib/testimonials";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface Testimonial {
   id: number;
@@ -316,6 +320,65 @@ export default function AdminTestimoniosPage() {
             <button type="button" onClick={cancelForm} className="btn-secondary">
               Cancelar
             </button>
+          </div>
+
+          {/* Vista previa antes de guardar */}
+          <div className="pt-4 border-t border-gray-100">
+            <p className="text-xs uppercase tracking-wide text-gray-mid font-sans mb-2">
+              Vista previa (cómo se verá la card en el home)
+            </p>
+            <div className="bg-white rounded-xl p-4 border border-gray-200">
+              <article className="bg-bg-light rounded-xl p-6 flex flex-col gap-4 relative max-w-md">
+                <Quote size={28} className="text-primary opacity-30 absolute top-4 right-4" />
+
+                {form.rating > 0 && (
+                  <div className="flex gap-0.5 text-primary">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <Star
+                        key={n}
+                        size={16}
+                        className={n <= form.rating ? "fill-current" : "opacity-25"}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                <p className="font-sans text-dark-2 text-sm leading-relaxed flex-1">
+                  &ldquo;{form.comment.trim() || "Aquí aparecerá el comentario del cliente."}&rdquo;
+                </p>
+
+                <div className="flex items-center gap-3 pt-3 border-t border-gray-200">
+                  {form.photo_url.trim() ? (
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0 relative">
+                      <Image
+                        src={resolveImageUrl(form.photo_url) || form.photo_url}
+                        alt={form.client_name || "preview"}
+                        fill
+                        className="object-cover"
+                        sizes="48px"
+                        unoptimized
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-primary text-white flex-shrink-0 flex items-center justify-center font-heading font-semibold">
+                      {form.client_name.trim()
+                        ? initialsFromName(form.client_name.trim())
+                        : "??"}
+                    </div>
+                  )}
+                  <div className="min-w-0">
+                    <p className="font-sans font-semibold text-dark-2 text-sm truncate">
+                      {form.client_name.trim() || "Nombre del cliente"}
+                    </p>
+                    {form.client_company.trim() && (
+                      <p className="font-sans text-xs text-gray-mid truncate">
+                        {form.client_company.trim()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
         </form>
       )}

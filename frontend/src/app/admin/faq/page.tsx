@@ -12,6 +12,7 @@ import {
   HelpCircle,
   Eye,
   EyeOff,
+  ChevronDown,
 } from "lucide-react";
 import { authFetch } from "@/lib/authFetch";
 
@@ -277,6 +278,39 @@ export default function AdminFaqPage() {
             <button type="button" onClick={cancelForm} className="btn-secondary">
               Cancelar
             </button>
+          </div>
+
+          {/* Vista previa antes de guardar */}
+          <div className="pt-4 border-t border-gray-100">
+            <p className="text-xs uppercase tracking-wide text-gray-mid font-sans mb-2">
+              Vista previa (cómo se verá en /faq)
+            </p>
+            <div className="bg-bg-light rounded-xl p-4">
+              {form.category.trim() && (
+                <h3 className="font-heading text-base font-semibold uppercase tracking-wide text-primary mb-3">
+                  {form.category.trim()}
+                </h3>
+              )}
+              <article className="bg-white border border-primary rounded-xl shadow-sm">
+                <div className="w-full flex items-center justify-between gap-4 px-5 py-4">
+                  <span className="font-heading font-semibold text-dark-2 text-base leading-snug">
+                    {form.question.trim() || "Aquí aparecerá la pregunta…"}
+                  </span>
+                  <ChevronDown size={20} className="text-primary flex-shrink-0 rotate-180" />
+                </div>
+                <div className="px-5 pb-5 -mt-1">
+                  <div
+                    className="font-sans text-sm text-gray-mid leading-relaxed prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{
+                      __html: (form.answer.trim() || "<em>Aquí aparecerá la respuesta…</em>").replace(/\n/g, "<br/>"),
+                    }}
+                  />
+                </div>
+              </article>
+              <p className="text-xs text-gray-light font-sans mt-2">
+                Los tags HTML no permitidos (script, iframe…) se eliminan automáticamente al guardar.
+              </p>
+            </div>
           </div>
         </form>
       )}
