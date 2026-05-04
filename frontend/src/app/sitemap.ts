@@ -21,9 +21,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
     { url: `${BASE_URL}/repuestos`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${BASE_URL}/marcas`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/ciudades`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/nosotros`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/faq`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/garantia`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
+    { url: `${BASE_URL}/devoluciones`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.4 },
+    { url: `${BASE_URL}/terminos`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE_URL}/contacto`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE_URL}/privacidad`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ];
+
+  // Marcas con landing SEO propia (en sync con migrate_landing_pages.py)
+  const BRANDS = ["caterpillar", "komatsu", "kobelco", "hyundai", "doosan", "sany", "volvo", "case", "kawasaki", "hitachi", "liugong", "kato"];
+  const brandRoutes: MetadataRoute.Sitemap = BRANDS.map((slug) => ({
+    url: `${BASE_URL}/marcas/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  // Ciudades con landing SEO propia
+  const CITIES = ["medellin", "bogota", "cali", "barranquilla", "bucaramanga", "cucuta", "pereira", "monteria"];
+  const cityRoutes: MetadataRoute.Sitemap = CITIES.map((slug) => ({
+    url: `${BASE_URL}/ciudades/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.6,
+  }));
 
   const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
     url: `${BASE_URL}/producto/${product.slug}`,
@@ -39,5 +64,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  return [...staticRoutes, ...productRoutes, ...categoryRoutes];
+  return [...staticRoutes, ...brandRoutes, ...cityRoutes, ...productRoutes, ...categoryRoutes];
 }

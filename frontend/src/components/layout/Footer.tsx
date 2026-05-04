@@ -14,6 +14,9 @@ const productLinks = [
 
 const infoLinks = [
   { name: "Repuestos", href: "/repuestos" },
+  { name: "Marcas", href: "/marcas" },
+  { name: "Cobertura", href: "/ciudades" },
+  { name: "Sobre Induretros", href: "/nosotros" },
   { name: "Preguntas frecuentes", href: "/faq" },
   { name: "Política de garantía", href: "/garantia" },
   { name: "Devoluciones y cambios", href: "/devoluciones" },
