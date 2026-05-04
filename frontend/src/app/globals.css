@@ -72,4 +72,33 @@
   .top-bar-link {
     @apply text-sm text-gray-light hover:text-primary transition-colors duration-150;
   }
+
+  /* Estilos para HTML editable de páginas legales (garantía, términos, etc.) */
+  .legal-content h2 {
+    @apply font-heading text-xl font-semibold text-dark-2 uppercase tracking-wide mt-6 mb-3 first:mt-0;
+  }
+  .legal-content h3 {
+    @apply font-heading text-lg font-semibold text-dark-2 mt-5 mb-2;
+  }
+  .legal-content h4 {
+    @apply font-heading text-base font-semibold text-dark mt-4 mb-2;
+  }
+  .legal-content p {
+    @apply font-sans text-base text-dark leading-relaxed mb-4;
+  }
+  .legal-content ul {
+    @apply list-disc pl-6 space-y-1.5 mb-4 text-dark font-sans;
+  }
+  .legal-content ol {
+    @apply list-decimal pl-6 space-y-1.5 mb-4 text-dark font-sans;
+  }
+  .legal-content a {
+    @apply text-primary underline hover:no-underline;
+  }
+  .legal-content blockquote {
+    @apply border-l-4 border-primary pl-4 italic text-gray-mid my-4;
+  }
+  .legal-content hr {
+    @apply my-6 border-gray-100;
+  }
 }

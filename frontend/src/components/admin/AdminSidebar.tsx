@@ -14,6 +14,7 @@ import {
   MessageSquareQuote,
   HelpCircle,
   Sparkles,
+  ShieldCheck,
   LogOut,
   Home,
 } from "lucide-react";
@@ -30,6 +31,7 @@ const NAV = [
   { href: "/admin/testimonios", label: "Testimonios", icon: MessageSquareQuote },
   { href: "/admin/por-que-elegirnos", label: "Por qué elegirnos", icon: Sparkles },
   { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/admin/garantia", label: "Garantía", icon: ShieldCheck },
   { href: "/admin/configuracion", label: "Configuración", icon: Settings },
 ];
 

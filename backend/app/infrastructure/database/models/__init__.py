@@ -9,6 +9,7 @@ from app.infrastructure.database.models.announcement_model import AnnouncementMo
 from app.infrastructure.database.models.testimonial_model import TestimonialModel
 from app.infrastructure.database.models.faq_model import FaqItemModel
 from app.infrastructure.database.models.why_us_model import WhyUsItemModel
+from app.infrastructure.database.models.legal_page_model import LegalPageModel
 
 __all__ = [
     "ProductModel",
@@ -23,4 +24,5 @@ __all__ = [
     "TestimonialModel",
     "FaqItemModel",
     "WhyUsItemModel",
+    "LegalPageModel",
 ]
