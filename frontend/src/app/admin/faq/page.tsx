@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import {
   Plus,
   Edit3,
@@ -14,16 +13,9 @@ import {
   EyeOff,
   ChevronDown,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
-
-interface FaqItem {
-  id: number;
-  question: string;
-  answer: string;
-  category?: string | null;
-  position: number;
-  active: boolean;
-}
+import { faqApi } from "@/lib/api/adminCrud";
+import type { FaqItem } from "@/lib/api/types";
+import { useAdminCrud } from "@/hooks/useAdminCrud";
 
 interface FormState {
   question: string;
@@ -33,122 +25,38 @@ interface FormState {
   active: boolean;
 }
 
-const empty: FormState = { question: "", answer: "", category: "", position: 0, active: true };
+const EMPTY: FormState = { question: "", answer: "", category: "", position: 0, active: true };
 
 const SUGGESTED_CATEGORIES = ["Pedidos", "Pagos", "Envíos", "Productos", "Garantía", "Cuenta"];
 
 export default function AdminFaqPage() {
-  const [list, setList] = useState<FaqItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [editing, setEditing] = useState<FaqItem | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<FormState>(empty);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authFetch("/api/faq/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando FAQ");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const startNew = () => {
-    setEditing(null);
-    setForm({ ...empty, position: list.length + 1 });
-    setFormError(null);
-    setShowForm(true);
-  };
-
-  const startEdit = (item: FaqItem) => {
-    setEditing(item);
-    setForm({
+  const crud = useAdminCrud<FaqItem, FormState>({
+    api: faqApi,
+    emptyForm: EMPTY,
+    toFormState: (item) => ({
       question: item.question,
       answer: item.answer,
       category: item.category || "",
       position: item.position,
       active: item.active,
-    });
-    setFormError(null);
-    setShowForm(true);
-  };
+    }),
+    toPayload: (f) => ({
+      question: f.question.trim(),
+      answer: f.answer.trim(),
+      category: f.category.trim() || null,
+      position: f.position,
+      active: f.active,
+    }),
+    startNewOverrides: (list) => ({ position: list.length + 1 }),
+    describeForDelete: (item) => `la pregunta "${item.question.slice(0, 60)}..."`,
+    loadErrorMessage: "Error cargando FAQ",
+  });
 
-  const cancelForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-    setSaving(true);
-
-    const payload = {
-      question: form.question.trim(),
-      answer: form.answer.trim(),
-      category: form.category.trim() || null,
-      position: form.position,
-      active: form.active,
-    };
-
-    try {
-      const url = editing ? `/api/faq/${editing.id}` : "/api/faq";
-      const method = editing ? "PUT" : "POST";
-      const res = await authFetch(url, { method, body: JSON.stringify(payload) });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      cancelForm();
-      fetchAll();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (item: FaqItem) => {
-    if (!confirm(`¿Eliminar la pregunta "${item.question.slice(0, 60)}..."?`)) return;
-    try {
-      const res = await authFetch(`/api/faq/${item.id}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al eliminar");
-    }
-  };
-
-  const toggleActive = async (item: FaqItem) => {
-    try {
-      const res = await authFetch(`/api/faq/${item.id}`, {
-        method: "PUT",
-        body: JSON.stringify({ ...item, active: !item.active }),
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al cambiar estado");
-    }
-  };
+  const {
+    list, loading, error,
+    editing, showForm, form, setForm, saving, formError,
+    startNew, startEdit, cancelForm, handleSubmit, handleDelete, toggleActive,
+  } = crud;
 
   // Categorías que ya existen + sugeridas, sin duplicados
   const existingCategories = [...new Set(list.map((f) => f.category).filter(Boolean) as string[])];

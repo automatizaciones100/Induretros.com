@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import {
   Plus,
   Edit3,
@@ -14,21 +13,11 @@ import {
   EyeOff,
   ExternalLink,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
+import { announcementsApi } from "@/lib/api/adminCrud";
+import type { Announcement } from "@/lib/api/types";
+import { useAdminCrud } from "@/hooks/useAdminCrud";
 
-type Theme = "info" | "promo" | "warning" | "success" | "alert" | "dark";
-
-interface Announcement {
-  id: number;
-  text: string;
-  link_url?: string | null;
-  link_text?: string | null;
-  theme: Theme;
-  active: boolean;
-  dismissible: boolean;
-  expires_at?: string | null;
-  priority: number;
-}
+type Theme = Announcement["theme"];
 
 interface FormState {
   text: string;
@@ -41,7 +30,7 @@ interface FormState {
   priority: number;
 }
 
-const empty: FormState = {
+const EMPTY: FormState = {
   text: "",
   link_url: "",
   link_text: "",
@@ -71,44 +60,10 @@ const THEME_LABELS: Record<Theme, string> = {
 };
 
 export default function AdminAnunciosPage() {
-  const [list, setList] = useState<Announcement[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [editing, setEditing] = useState<Announcement | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<FormState>(empty);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authFetch("/api/announcements/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando anuncios");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const startNew = () => {
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-    setShowForm(true);
-  };
-
-  const startEdit = (a: Announcement) => {
-    setEditing(a);
-    setForm({
+  const crud = useAdminCrud<Announcement, FormState>({
+    api: announcementsApi,
+    emptyForm: EMPTY,
+    toFormState: (a) => ({
       text: a.text,
       link_url: a.link_url || "",
       link_text: a.link_text || "",
@@ -118,81 +73,28 @@ export default function AdminAnunciosPage() {
       // Convertir ISO a formato datetime-local: 'YYYY-MM-DDTHH:mm'
       expires_at: a.expires_at ? a.expires_at.slice(0, 16) : "",
       priority: a.priority,
-    });
-    setFormError(null);
-    setShowForm(true);
-  };
+    }),
+    toPayload: (f) => ({
+      text: f.text.trim(),
+      link_url: f.link_url.trim() || null,
+      link_text: f.link_text.trim() || null,
+      theme: f.theme,
+      active: f.active,
+      dismissible: f.dismissible,
+      expires_at: f.expires_at ? new Date(f.expires_at).toISOString() : null,
+      priority: f.priority,
+    }),
+    describeForDelete: (a) => `el anuncio "${a.text.slice(0, 40)}..."`,
+    // El toggle de active necesita preservar el resto de campos del anuncio
+    togglePayload: (a) => ({ ...a, active: !a.active, expires_at: a.expires_at }),
+    loadErrorMessage: "Error cargando anuncios",
+  });
 
-  const cancelForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-    setSaving(true);
-
-    const payload = {
-      text: form.text.trim(),
-      link_url: form.link_url.trim() || null,
-      link_text: form.link_text.trim() || null,
-      theme: form.theme,
-      active: form.active,
-      dismissible: form.dismissible,
-      expires_at: form.expires_at ? new Date(form.expires_at).toISOString() : null,
-      priority: form.priority,
-    };
-
-    try {
-      const url = editing ? `/api/announcements/${editing.id}` : "/api/announcements";
-      const method = editing ? "PUT" : "POST";
-      const res = await authFetch(url, { method, body: JSON.stringify(payload) });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      cancelForm();
-      fetchAll();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (a: Announcement) => {
-    if (!confirm(`¿Eliminar el anuncio "${a.text.slice(0, 40)}..."?`)) return;
-    try {
-      const res = await authFetch(`/api/announcements/${a.id}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al eliminar");
-    }
-  };
-
-  const toggleActive = async (a: Announcement) => {
-    try {
-      const res = await authFetch(`/api/announcements/${a.id}`, {
-        method: "PUT",
-        body: JSON.stringify({
-          ...a,
-          active: !a.active,
-          expires_at: a.expires_at,
-        }),
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al cambiar estado");
-    }
-  };
+  const {
+    list, loading, error,
+    editing, showForm, form, setForm, saving, formError,
+    startNew, startEdit, cancelForm, handleSubmit, handleDelete, toggleActive,
+  } = crud;
 
   const isExpired = (a: Announcement) =>
     a.expires_at ? new Date(a.expires_at) < new Date() : false;

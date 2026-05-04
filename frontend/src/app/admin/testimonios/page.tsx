@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import Image from "next/image";
 import {
   Plus,
@@ -16,20 +15,11 @@ import {
   Star,
   Quote,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
 import { initialsFromName } from "@/lib/testimonials";
 import { resolveImageUrl } from "@/lib/imageUrl";
-
-interface Testimonial {
-  id: number;
-  client_name: string;
-  client_company?: string | null;
-  comment: string;
-  rating: number;
-  photo_url?: string | null;
-  position: number;
-  active: boolean;
-}
+import { testimonialsApi } from "@/lib/api/adminCrud";
+import type { Testimonial } from "@/lib/api/types";
+import { useAdminCrud } from "@/hooks/useAdminCrud";
 
 interface FormState {
   client_name: string;
@@ -41,7 +31,7 @@ interface FormState {
   active: boolean;
 }
 
-const empty: FormState = {
+const EMPTY: FormState = {
   client_name: "",
   client_company: "",
   comment: "",
@@ -52,44 +42,10 @@ const empty: FormState = {
 };
 
 export default function AdminTestimoniosPage() {
-  const [list, setList] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [editing, setEditing] = useState<Testimonial | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<FormState>(empty);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authFetch("/api/testimonials/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando testimonios");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const startNew = () => {
-    setEditing(null);
-    setForm({ ...empty, position: list.length + 1 });
-    setFormError(null);
-    setShowForm(true);
-  };
-
-  const startEdit = (t: Testimonial) => {
-    setEditing(t);
-    setForm({
+  const crud = useAdminCrud<Testimonial, FormState>({
+    api: testimonialsApi,
+    emptyForm: EMPTY,
+    toFormState: (t) => ({
       client_name: t.client_name,
       client_company: t.client_company || "",
       comment: t.comment,
@@ -97,76 +53,26 @@ export default function AdminTestimoniosPage() {
       photo_url: t.photo_url || "",
       position: t.position,
       active: t.active,
-    });
-    setFormError(null);
-    setShowForm(true);
-  };
+    }),
+    toPayload: (f) => ({
+      client_name: f.client_name.trim(),
+      client_company: f.client_company.trim() || null,
+      comment: f.comment.trim(),
+      rating: f.rating,
+      photo_url: f.photo_url.trim() || null,
+      position: f.position,
+      active: f.active,
+    }),
+    startNewOverrides: (list) => ({ position: list.length + 1 }),
+    describeForDelete: (t) => `el testimonio de "${t.client_name}"`,
+    loadErrorMessage: "Error cargando testimonios",
+  });
 
-  const cancelForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-    setSaving(true);
-
-    const payload = {
-      client_name: form.client_name.trim(),
-      client_company: form.client_company.trim() || null,
-      comment: form.comment.trim(),
-      rating: form.rating,
-      photo_url: form.photo_url.trim() || null,
-      position: form.position,
-      active: form.active,
-    };
-
-    try {
-      const url = editing ? `/api/testimonials/${editing.id}` : "/api/testimonials";
-      const method = editing ? "PUT" : "POST";
-      const res = await authFetch(url, { method, body: JSON.stringify(payload) });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      cancelForm();
-      fetchAll();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (t: Testimonial) => {
-    if (!confirm(`¿Eliminar el testimonio de "${t.client_name}"?`)) return;
-    try {
-      const res = await authFetch(`/api/testimonials/${t.id}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al eliminar");
-    }
-  };
-
-  const toggleActive = async (t: Testimonial) => {
-    try {
-      const res = await authFetch(`/api/testimonials/${t.id}`, {
-        method: "PUT",
-        body: JSON.stringify({ ...t, active: !t.active }),
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al cambiar estado");
-    }
-  };
+  const {
+    list, loading, error,
+    editing, showForm, form, setForm, saving, formError,
+    startNew, startEdit, cancelForm, handleSubmit, handleDelete, toggleActive,
+  } = crud;
 
   return (
     <div className="p-6 lg:p-8 max-w-5xl mx-auto">

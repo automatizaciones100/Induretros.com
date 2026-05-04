@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState, FormEvent } from "react";
 import {
   Plus,
   Edit3,
@@ -13,17 +12,10 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import { authFetch } from "@/lib/authFetch";
 import { AVAILABLE_ICONS, getStatIcon } from "@/lib/statIcon";
-
-interface WhyUsItem {
-  id: number;
-  position: number;
-  title: string;
-  description: string;
-  icon?: string | null;
-  active: boolean;
-}
+import { whyUsApi } from "@/lib/api/adminCrud";
+import type { WhyUsItem } from "@/lib/api/types";
+import { useAdminCrud } from "@/hooks/useAdminCrud";
 
 interface FormState {
   position: number;
@@ -33,7 +25,7 @@ interface FormState {
   active: boolean;
 }
 
-const empty: FormState = {
+const EMPTY: FormState = {
   position: 0,
   title: "",
   description: "",
@@ -42,117 +34,33 @@ const empty: FormState = {
 };
 
 export default function AdminPorQueElegirnosPage() {
-  const [list, setList] = useState<WhyUsItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const [editing, setEditing] = useState<WhyUsItem | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState<FormState>(empty);
-  const [saving, setSaving] = useState(false);
-  const [formError, setFormError] = useState<string | null>(null);
-
-  const fetchAll = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await authFetch("/api/why-us/admin/all");
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      setList(await res.json());
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error cargando bloques");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
-
-  const startNew = () => {
-    setEditing(null);
-    setForm({ ...empty, position: list.length + 1 });
-    setFormError(null);
-    setShowForm(true);
-  };
-
-  const startEdit = (w: WhyUsItem) => {
-    setEditing(w);
-    setForm({
+  const crud = useAdminCrud<WhyUsItem, FormState>({
+    api: whyUsApi,
+    emptyForm: EMPTY,
+    toFormState: (w) => ({
       position: w.position,
       title: w.title,
       description: w.description,
       icon: w.icon || "ShieldCheck",
       active: w.active,
-    });
-    setFormError(null);
-    setShowForm(true);
-  };
+    }),
+    toPayload: (f) => ({
+      position: f.position,
+      title: f.title.trim(),
+      description: f.description.trim(),
+      icon: f.icon || null,
+      active: f.active,
+    }),
+    startNewOverrides: (list) => ({ position: list.length + 1 }),
+    describeForDelete: (w) => `el bloque "${w.title}"`,
+    loadErrorMessage: "Error cargando bloques",
+  });
 
-  const cancelForm = () => {
-    setShowForm(false);
-    setEditing(null);
-    setForm(empty);
-    setFormError(null);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setFormError(null);
-    setSaving(true);
-
-    const payload = {
-      position: form.position,
-      title: form.title.trim(),
-      description: form.description.trim(),
-      icon: form.icon || null,
-      active: form.active,
-    };
-
-    try {
-      const url = editing ? `/api/why-us/${editing.id}` : "/api/why-us";
-      const method = editing ? "PUT" : "POST";
-      const res = await authFetch(url, { method, body: JSON.stringify(payload) });
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        if (Array.isArray(body.detail)) {
-          throw new Error(body.detail.map((e: { msg: string; loc: string[] }) => `${e.loc.slice(-1)[0]}: ${e.msg}`).join(" · "));
-        }
-        throw new Error(body.detail || `Error ${res.status}`);
-      }
-      cancelForm();
-      fetchAll();
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Error al guardar");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleDelete = async (w: WhyUsItem) => {
-    if (!confirm(`¿Eliminar el bloque "${w.title}"?`)) return;
-    try {
-      const res = await authFetch(`/api/why-us/${w.id}`, { method: "DELETE" });
-      if (!res.ok && res.status !== 204) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al eliminar");
-    }
-  };
-
-  const toggleActive = async (w: WhyUsItem) => {
-    try {
-      const res = await authFetch(`/api/why-us/${w.id}`, {
-        method: "PUT",
-        body: JSON.stringify({ ...w, icon: w.icon, active: !w.active }),
-      });
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      fetchAll();
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Error al cambiar estado");
-    }
-  };
+  const {
+    list, loading, error,
+    editing, showForm, form, setForm, saving, formError,
+    startNew, startEdit, cancelForm, handleSubmit, handleDelete, toggleActive,
+  } = crud;
 
   return (
     <div className="p-6 lg:p-8 max-w-5xl mx-auto">
