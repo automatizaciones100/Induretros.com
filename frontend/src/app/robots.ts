@@ -12,7 +12,22 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/_next/", "/api/auth/", "/api/orders/"],
+        disallow: [
+          // Internas de Next.js / API
+          "/api/",
+          "/_next/",
+          // Admin — nunca indexar
+          "/admin/",
+          // Páginas privadas de usuario
+          "/mi-cuenta",
+          "/orden/",
+          // Funnel de compra — sin valor SEO y pueden contener datos sensibles
+          "/carrito",
+          "/checkout",
+          // Auth — Google a veces las indexa como duplicado del home
+          "/login",
+          "/registro",
+        ],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,

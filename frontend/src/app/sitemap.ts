@@ -13,8 +13,10 @@ import { getCachedProducts, getCachedCategories } from "@/lib/cache";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.induretros.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // per_page alto para traer todo el catálogo en una sola llamada. Si el catálogo
+  // crece por encima de 5000 productos, conviene paginar aquí.
   const [{ items: products }, categories] = await Promise.all([
-    getCachedProducts({ per_page: 100 }),
+    getCachedProducts({ per_page: 5000 }),
     getCachedCategories(),
   ]);
 
