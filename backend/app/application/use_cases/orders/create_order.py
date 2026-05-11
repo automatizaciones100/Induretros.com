@@ -49,6 +49,13 @@ class CreateOrderUseCase:
             notes=command.notes,
             total=total,
             items=items,
+            utm_source=command.utm_source,
+            utm_medium=command.utm_medium,
+            utm_campaign=command.utm_campaign,
+            utm_term=command.utm_term,
+            utm_content=command.utm_content,
+            gclid=command.gclid,
+            landing_page=command.landing_page,
         )
         saved_order = self._order_repo.create(order)
 

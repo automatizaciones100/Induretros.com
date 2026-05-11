@@ -34,3 +34,13 @@ class Order:
     notes: Optional[str] = None
     created_at: Optional[datetime] = None
     items: list[OrderItem] = field(default_factory=list)
+    # Atribución de marketing — qué fuente trajo al cliente al pedido
+    # (Capa 1 del plan de UTM tracking). Todos opcionales — un pedido directo
+    # los tendrá todos en None.
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
+    utm_term: Optional[str] = None
+    utm_content: Optional[str] = None
+    gclid: Optional[str] = None
+    landing_page: Optional[str] = None

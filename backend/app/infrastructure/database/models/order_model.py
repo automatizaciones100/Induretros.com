@@ -19,6 +19,15 @@ class OrderModel(Base):
     notes = Column(String(1000), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Atribución de marketing (Capa 1) — fuente de la conversión
+    utm_source = Column(String(100), nullable=True, index=True)
+    utm_medium = Column(String(50), nullable=True)
+    utm_campaign = Column(String(150), nullable=True, index=True)
+    utm_term = Column(String(150), nullable=True)
+    utm_content = Column(String(150), nullable=True)
+    gclid = Column(String(255), nullable=True)
+    landing_page = Column(String(500), nullable=True)
+
     user = relationship("UserModel", back_populates="orders")
     items = relationship("OrderItemModel", back_populates="order")
 

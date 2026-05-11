@@ -9,6 +9,7 @@ import { buildOrderWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { resolveImageUrl } from "@/lib/imageUrl";
 import { getOrderById } from "@/lib/api/orders";
 import { useAuthStore } from "@/stores/authStore";
+import { formatAttributionTag, getAttribution } from "@/lib/attribution";
 
 /** Enmascara el email para evitar fuga de PII si la página se imprime/comparte. */
 function maskEmail(email?: string): string {
@@ -127,6 +128,9 @@ export default function OrdenPage() {
   }
 
   // ─── URL de WhatsApp con detalle completo del pedido ───
+  // Re-incluye la atribución para que el vendedor vea el origen aunque el cliente
+  // vuelva a esta página minutos/horas después del checkout original.
+  const attributionTag = formatAttributionTag(getAttribution());
   const whatsappUrl = buildOrderWhatsAppUrl({
     id: order.id,
     customer_name: order.customer_name,
@@ -142,7 +146,7 @@ export default function OrdenPage() {
       unit_price: it.unit_price,
       quantity: it.quantity,
     })),
-  });
+  }, attributionTag);
 
   const formattedDate = new Date(order.created_at).toLocaleDateString("es-CO", {
     day: "2-digit",

@@ -18,6 +18,13 @@ def _order_model_to_entity(model: OrderModel) -> Order:
         shipping_address=model.shipping_address,
         notes=model.notes,
         created_at=model.created_at,
+        utm_source=model.utm_source,
+        utm_medium=model.utm_medium,
+        utm_campaign=model.utm_campaign,
+        utm_term=model.utm_term,
+        utm_content=model.utm_content,
+        gclid=model.gclid,
+        landing_page=model.landing_page,
         items=[
             OrderItem(
                 id=item.id,
@@ -45,6 +52,13 @@ class SQLAlchemyOrderRepository(IOrderRepository):
             shipping_address=order.shipping_address,
             notes=order.notes,
             total=order.total,
+            utm_source=order.utm_source,
+            utm_medium=order.utm_medium,
+            utm_campaign=order.utm_campaign,
+            utm_term=order.utm_term,
+            utm_content=order.utm_content,
+            gclid=order.gclid,
+            landing_page=order.landing_page,
         )
         self._db.add(db_order)
         self._db.flush()

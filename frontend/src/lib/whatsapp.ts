@@ -35,7 +35,7 @@ const fmtCOP = (n: number) => `$${n.toLocaleString("es-CO")}`;
  */
 const escapeMarkdown = (s: string): string => s.replace(/([*_~`])/g, "\\$1");
 
-export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
+export function buildOrderWhatsAppUrl(order: OrderForWhatsApp, attributionTag?: string | null): string {
   const lines: string[] = [];
 
   lines.push("Hola Induretros, quiero coordinar este pedido:");
@@ -78,6 +78,11 @@ export function buildOrderWhatsAppUrl(order: OrderForWhatsApp): string {
   }
 
   lines.push("¿Cómo coordinamos el pago?");
+
+  if (attributionTag) {
+    lines.push("");
+    lines.push(`_Origen: ${escapeMarkdown(attributionTag)}_`);
+  }
 
   const message = lines.join("\n");
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;

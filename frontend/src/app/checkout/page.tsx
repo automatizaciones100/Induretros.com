@@ -8,6 +8,7 @@ import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
 import { buildOrderWhatsAppUrl } from "@/lib/whatsapp";
 import { resolveImageUrl } from "@/lib/imageUrl";
+import { getAttributionPayload, formatAttributionTag, getAttribution } from "@/lib/attribution";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
@@ -56,6 +57,7 @@ export default function CheckoutPage() {
     };
     const payload = {
       ...customer,
+      ...getAttributionPayload(),
       items: items.map((i) => ({ product_id: i.product_id, quantity: i.quantity })),
     };
 
@@ -92,6 +94,7 @@ export default function CheckoutPage() {
       sessionStorage.setItem(`order:${order.id}`, JSON.stringify(enrichedOrder));
 
       // Construir URL de WhatsApp con el detalle completo del pedido
+      const attributionTag = formatAttributionTag(getAttribution());
       const whatsappUrl = buildOrderWhatsAppUrl({
         id: order.id,
         customer_name: customer.customer_name,
@@ -107,7 +110,7 @@ export default function CheckoutPage() {
           unit_price: i.unit_price,
           quantity: i.quantity,
         })),
-      });
+      }, attributionTag);
 
       clearCart();
 

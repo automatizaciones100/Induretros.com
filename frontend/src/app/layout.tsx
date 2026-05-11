@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
+import AttributionTracker from "@/components/analytics/AttributionTracker";
 import { getSiteSettings } from "@/lib/siteSettings";
 import { getActiveAnnouncements } from "@/lib/announcements";
 
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="min-h-screen flex flex-col">
         <PageViewTracker />
+        <AttributionTracker />
         <ConditionalChrome
           announcement={announcementNode}
           header={headerNode}
