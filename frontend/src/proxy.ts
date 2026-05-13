@@ -13,6 +13,7 @@ export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString("base64");
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL || "";
   const isDev = process.env.NODE_ENV === "development";
 
   const csp = [
@@ -23,8 +24,8 @@ export function proxy(request: NextRequest) {
     `script-src 'self' 'nonce-${nonce}' https://challenges.cloudflare.com${isDev ? " 'unsafe-eval'" : ""}`,
     // Estilos: 'unsafe-inline' necesario para Tailwind CSS
     "style-src 'self' 'unsafe-inline'",
-    // Permite imágenes del propio dominio, del backend local (dev) y del CDN de producción
-    `img-src 'self' ${apiUrl} https://www.induretros.com https://induretros.com data:`,
+    // Permite imágenes del propio dominio, del backend (dev), del CDN (prod) y del dominio canónico.
+    `img-src 'self' ${apiUrl} ${cdnUrl} https://www.induretros.com https://induretros.com data:`.replace(/\s+/g, " "),
     "font-src 'self'",
     // Turnstile hace fetch a su API desde el iframe y el script
     `connect-src 'self' ${apiUrl} https://challenges.cloudflare.com`,

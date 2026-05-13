@@ -10,8 +10,12 @@ Prioridad al matchear:
     2. filtro-aceite-komatsu.jpg -> producto con slug 'filtro-aceite-komatsu'
     3. filtros.jpg              -> categoria con slug 'filtros'
 
-El script copia las imágenes a static/images/ y actualiza image_url en la BD.
-No requiere que el servidor esté corriendo.
+Storage:
+  - Si AWS_S3_BUCKET está configurado → sube a S3 (key: images/<archivo>).
+  - Si no → copia a static/images/ (filesystem local, sólo dev).
+
+En ambos casos image_url en BD es '/images/<archivo>' (path canónico,
+agnóstico al storage backend).
 
 Formatos aceptados: .jpg .jpeg .png .webp .avif
 """
@@ -21,20 +25,28 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from app.config import settings
 from app.database import SessionLocal, Base, engine
 import app.infrastructure.database.models  # noqa: F401 — registra modelos
 from app.infrastructure.database.repositories.product_repository import (
     SQLAlchemyProductRepository,
     SQLAlchemyCategoryRepository,
 )
+from app.infrastructure.storage import s3_client
 
 Base.metadata.create_all(bind=engine)
 
 ALLOWED = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
-# Imágenes servidas por FastAPI: <project_root>/static/images/
+# Filesystem destino — sólo se usa cuando S3 no está habilitado (dev).
 DEST_DIR = Path(__file__).resolve().parent.parent / "static" / "images"
 DEST_DIR.mkdir(parents=True, exist_ok=True)
-IMAGE_BASE_URL = "/static/images"
+# Path en BD — canónico, independiente del storage backend.
+IMAGE_BASE_URL = "/images"
+S3_KEY_PREFIX = "images"
+CONTENT_TYPES = {
+    ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+    ".png": "image/png", ".webp": "image/webp", ".avif": "image/avif",
+}
 
 
 def run(source_dir: Path) -> None:
@@ -48,7 +60,10 @@ def run(source_dir: Path) -> None:
         print(f"[WARN] No se encontraron imagenes en '{source_dir}'.")
         return
 
-    print(f"\nProcesando {len(image_files)} imagenes desde '{source_dir}'...\n")
+    use_s3 = s3_client.is_s3_enabled()
+    storage_label = f"S3 ({settings.aws_s3_bucket})" if use_s3 else f"filesystem local ({DEST_DIR})"
+    print(f"\nProcesando {len(image_files)} imagenes desde '{source_dir}'...")
+    print(f"Storage: {storage_label}\n")
 
     db = SessionLocal()
     product_repo = SQLAlchemyProductRepository(db)
@@ -69,10 +84,16 @@ def run(source_dir: Path) -> None:
             not_found += 1
             continue
 
-        # Copiar archivo
-        dest = DEST_DIR / f"{stem}{ext}"
-        shutil.copy2(img, dest)
-        image_url = f"{IMAGE_BASE_URL}/{stem}{ext}"
+        filename = f"{stem}{ext}"
+        if use_s3:
+            s3_client.upload_bytes(
+                key=f"{S3_KEY_PREFIX}/{filename}",
+                content=img.read_bytes(),
+                content_type=CONTENT_TYPES.get(ext, "application/octet-stream"),
+            )
+        else:
+            shutil.copy2(img, DEST_DIR / filename)
+        image_url = f"{IMAGE_BASE_URL}/{filename}"
 
         if product:
             product_repo.update_image_url(product.id, image_url)

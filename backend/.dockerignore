@@ -1,0 +1,36 @@
+# No copiar el entorno virtual ni caches al image — los reconstruimos limpios.
+venv/
+.venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Secretos y datos locales — NUNCA en la imagen.
+.env
+.env.local
+*.db
+*.sqlite
+*.sqlite3
+induretros.db
+
+# Scripts y data sólo para desarrollo o migraciones one-off (App Runner no los necesita).
+import_products.py
+bulk_images.py
+create_admin.py
+migrate_*.py
+*.csv
+*.json.bak
+
+# Imágenes locales — en prod las sirve S3, no la imagen Docker.
+static/
+
+# Misc dev
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.git/
+.gitignore
+README*.md
+*.log
