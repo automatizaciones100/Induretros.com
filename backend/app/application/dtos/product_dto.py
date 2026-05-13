@@ -106,7 +106,7 @@ class CreateProductCommand(BaseModel):
         if v is None or v == "":
             return v
         if not (v.startswith("https://") or v.startswith("http://") or v.startswith("/")):
-            raise ValueError("image_url debe ser http/https o ruta relativa (/static/...)")
+            raise ValueError("image_url debe ser http/https o ruta relativa (/images/... o /static/...)")
         return v
 
 
@@ -178,7 +178,7 @@ class UpdateCategoryCommand(BaseModel):
         if v is None or v == "":
             return v
         if not (v.startswith("https://") or v.startswith("http://") or v.startswith("/")):
-            raise ValueError("image_url debe ser http/https o ruta relativa (/static/...)")
+            raise ValueError("image_url debe ser http/https o ruta relativa (/images/... o /static/...)")
         return v
 
 

@@ -64,8 +64,14 @@ app.include_router(why_us.router)
 app.include_router(legal.router)
 app.include_router(changes.router)
 
-# Servir imágenes subidas como archivos estáticos: GET /static/images/FLT-001.jpg
+# En dev sin S3, servir las imágenes subidas desde filesystem local.
+# - /static/images/FOO.jpg → BD heredada (URLs antiguas)
+# - /images/FOO.jpg        → BD nueva (path canónico — en prod resuelve al CDN, no al backend)
+# En prod (S3 habilitado), CloudFront sirve /images/* directamente desde el bucket y
+# el backend nunca recibe estas rutas.
 app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
+if not settings.aws_s3_bucket:
+    app.mount("/images", StaticFiles(directory=str(_STATIC_DIR / "images")), name="images-dev")
 
 
 @app.get("/")

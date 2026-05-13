@@ -288,13 +288,13 @@ export default function ProductForm({ initial, mode }: Props) {
               ))}
             </select>
           </Field>
-          <Field label="URL de imagen" hint="https://… o /static/images/SKU.jpg">
+          <Field label="URL de imagen" hint="https://… o /images/SKU.jpg">
             <input
               type="text"
               maxLength={500}
               value={form.image_url ?? ""}
               onChange={(e) => update("image_url", e.target.value)}
-              placeholder="/static/images/FLT-001.jpg"
+              placeholder="/images/FLT-001.jpg"
               className="input-field font-mono text-xs"
             />
           </Field>

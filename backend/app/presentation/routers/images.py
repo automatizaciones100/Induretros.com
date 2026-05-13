@@ -26,6 +26,7 @@ from app.infrastructure.database.repositories.product_repository import (
     SQLAlchemyProductRepository,
     SQLAlchemyCategoryRepository,
 )
+from app.infrastructure.storage import s3_client
 from app.presentation.dependencies import get_current_admin
 from app.presentation.rate_limiter import limiter
 from app.infrastructure.logging.security_logger import log_admin_action
@@ -33,13 +34,26 @@ from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/api/images", tags=["images"])
 
+# Filesystem local — fallback para desarrollo cuando AWS_S3_BUCKET está vacío.
 IMAGES_DIR = Path(__file__).resolve().parents[4] / "static" / "images"
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
 MAX_FILE_SIZE = 5 * 1024 * 1024
 MAX_FILES = 50
-IMAGE_BASE_URL = "/static/images"
+# Path relativo guardado en BD. El frontend lo resuelve contra CDN (prod) o
+# contra el backend /static (dev sin S3). Independiente del storage backend.
+IMAGE_BASE_URL = "/images"
+# Key prefix dentro del bucket S3 (sin slash inicial).
+S3_KEY_PREFIX = "images"
+
+CONTENT_TYPES = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+    ".avif": "image/avif",
+}
 
 # Stopwords del español que se ignoran en el matching de tokens
 _STOPWORDS = {"de", "del", "la", "las", "el", "los", "y", "o", "u", "para"}
@@ -228,11 +242,17 @@ async def upload_images(
             })
             continue
 
-        # Guardar archivo
+        # Guardar archivo — S3 si está habilitado, filesystem local si no.
         safe_stem = _safe_filename(stem)
         dest_filename = f"{safe_stem}{ext}"
-        dest_path = IMAGES_DIR / dest_filename
-        dest_path.write_bytes(content)
+        if s3_client.is_s3_enabled():
+            s3_client.upload_bytes(
+                key=f"{S3_KEY_PREFIX}/{dest_filename}",
+                content=content,
+                content_type=CONTENT_TYPES.get(ext, "application/octet-stream"),
+            )
+        else:
+            (IMAGES_DIR / dest_filename).write_bytes(content)
         image_url = f"{IMAGE_BASE_URL}/{dest_filename}"
 
         # Actualizar la entidad correspondiente
@@ -278,9 +298,22 @@ def list_images(
     _admin: dict = Depends(get_current_admin),
 ):
     """Lista todas las imágenes subidas con su nombre de archivo."""
-    files = [
-        {"filename": f.name, "url": f"{IMAGE_BASE_URL}/{f.name}", "size_kb": round(f.stat().st_size / 1024, 1)}
-        for f in sorted(IMAGES_DIR.iterdir())
-        if f.is_file() and f.suffix.lower() in ALLOWED_EXTENSIONS
-    ]
+    if s3_client.is_s3_enabled():
+        objects = s3_client.list_objects(prefix=f"{S3_KEY_PREFIX}/")
+        files = [
+            {
+                "filename": obj["key"].rsplit("/", 1)[-1],
+                "url": f"{IMAGE_BASE_URL}/{obj['key'].rsplit('/', 1)[-1]}",
+                "size_kb": round(obj["size"] / 1024, 1),
+            }
+            for obj in objects
+            if Path(obj["key"]).suffix.lower() in ALLOWED_EXTENSIONS
+        ]
+        files.sort(key=lambda x: x["filename"])
+    else:
+        files = [
+            {"filename": f.name, "url": f"{IMAGE_BASE_URL}/{f.name}", "size_kb": round(f.stat().st_size / 1024, 1)}
+            for f in sorted(IMAGES_DIR.iterdir())
+            if f.is_file() and f.suffix.lower() in ALLOWED_EXTENSIONS
+        ]
     return {"total": len(files), "images": files}

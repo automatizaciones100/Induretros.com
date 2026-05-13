@@ -203,7 +203,7 @@ export default function AdminTestimoniosPage() {
               maxLength={500}
               value={form.photo_url}
               onChange={(e) => setForm((f) => ({ ...f, photo_url: e.target.value }))}
-              placeholder="/static/images/cliente.jpg o https://…"
+              placeholder="/images/cliente.jpg o https://…"
               className="input-field font-mono text-xs"
             />
             <p className="text-xs text-gray-light font-sans mt-1">

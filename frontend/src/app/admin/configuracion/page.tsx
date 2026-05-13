@@ -282,7 +282,7 @@ export default function AdminConfiguracionPage() {
                 maxLength={500}
                 value={form.default_og_image ?? ""}
                 onChange={(e) => update("default_og_image", e.target.value)}
-                placeholder="/static/images/og-default.jpg"
+                placeholder="/images/og-default.jpg"
                 className="input-field pl-9 font-mono text-xs"
               />
             </div>

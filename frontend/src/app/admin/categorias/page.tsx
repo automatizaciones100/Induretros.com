@@ -161,7 +161,7 @@ export default function AdminCategoriasPage() {
                 maxLength={500}
                 value={form.image_url}
                 onChange={(e) => setForm((f) => ({ ...f, image_url: e.target.value }))}
-                placeholder="/static/images/categoria.jpg"
+                placeholder="/images/categoria.jpg"
                 className="input-field font-mono text-xs"
               />
             </div>

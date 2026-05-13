@@ -18,6 +18,14 @@ class Settings(BaseSettings):
     turnstile_secret_key: str = ""
     # Google Sign-In — Client ID OAuth (no es secreto). Vacío = endpoint deshabilitado.
     google_client_id: str = ""
+    # AWS S3 para imágenes UGC. En dev (vacío) usa filesystem local. En prod
+    # OBLIGATORIO — el validador rechaza el arranque si falta.
+    aws_s3_bucket: str = ""
+    aws_region: str = "sa-east-1"
+    # URL pública del CDN (CloudFront) que sirve el bucket. Las imágenes en BD
+    # se guardan como path relativo (/images/FLT-001.jpg) y el frontend prefija
+    # con esto. En dev queda vacío y el frontend usa NEXT_PUBLIC_API_URL.
+    cdn_base_url: str = ""
 
     @model_validator(mode="after")
     def validate_production_settings(self) -> "Settings":
@@ -30,6 +38,11 @@ class Settings(BaseSettings):
             if not self.frontend_url.startswith("https://"):
                 raise ValueError(
                     "FRONTEND_URL debe usar HTTPS en producción."
+                )
+            if not self.aws_s3_bucket:
+                raise ValueError(
+                    "AWS_S3_BUCKET es obligatorio en producción — el filesystem "
+                    "de App Runner es efímero y los uploads se perderían."
                 )
         return self
 
