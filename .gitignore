@@ -26,6 +26,10 @@ frontend/.vercel/
 *.db
 *.sqlite
 
+# Storage local de imágenes UGC (sólo dev sin S3). El backend lo recrea al arrancar.
+# Los assets estáticos de categorías viven en frontend/public/categorias/, versionados.
+/static/
+
 # Next.js generados
 frontend/next-env.d.ts
 frontend/tsconfig.tsbuildinfo
